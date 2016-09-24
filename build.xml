@@ -17,8 +17,9 @@
 <project name="Solitaire" default="debug">
     <!-- SDK Locations -->
     <!-- NOTE: You must change these to match your configuration. -->
-    <property name="sdk-folder" value="/usr/local/android-sdk-linux_x86-1.0_r1" />
-    <property name="android-tools" value="/usr/local/android-sdk-linux_x86-1.0_r1/tools" />
+    <property name="sdk-folder" value="${user.home}/Android/Sdk/platforms/android-23/" />
+    <property name="android-tools" value="${user.home}/Android/Sdk/build-tools/24.0.2/" />
+    <property name="zipalign" value="${android-tools}/zipalign" />
     
     <!-- Application Package Name -->
     <property name="application-package" value="com.kmagic.solitaire" />
@@ -33,9 +34,11 @@
     <property name="android-framework" value="${android-tools}/lib/framework.aidl" />
 
     <!-- Input directories -->
-    <property name="resource-dir" value="res" />
+    <property name="app-dir" value="app/src/main/" />
+    <property name="android-manifest" value="${app-dir}/AndroidManifest.xml" />
+    <property name="resource-dir" value="${app-dir}/res" />
     <property name="asset-dir" value="assets" />
-    <property name="srcdir" value="src" />
+    <property name="srcdir" value="${app-dir}/java" />
     <condition property="srcdir-ospath"
             value="${basedir}\${srcdir}"
             else="${basedir}/${srcdir}" >
@@ -56,9 +59,6 @@
             else="${basedir}/${outdir-classes}" >
         <os family="windows"/>
     </condition>
-
-    <!-- Create R.java in the source directory -->
-    <property name="outdir-r" value="src" />
 
     <!-- Intermediate files -->
     <property name="dex-file" value="classes.dex" />
@@ -104,21 +104,26 @@
     <condition property="dx" value="${android-tools}/dx.bat" else="${android-tools}/dx" >
         <os family="windows"/>
     </condition>
-    <condition property="apk-builder" value="${android-tools}/apkbuilder.bat" else="${android-tools}/apkbuilder" >
-        <os family="windows"/>
-    </condition>
 
     <property name="android-jar" value="${sdk-folder}/android.jar" />
 
     <!-- Rules -->
 
+    <!-- Removing conflicting directories if they exist. -->
+    <target name="clean-dirs">
+        <echo>Removing directories if needed...</echo>
+        <delete dir="gen" failonerror="false" />
+    </target>
+
     <!-- Create the output directories if they don't exist yet. -->
-    <target name="dirs">
+    <target name="dirs" depends="clean-dirs">
         <echo>Creating output directories if needed...</echo>
         <mkdir dir="${outdir}" />
         <mkdir dir="${outdir-classes}" />
+        <mkdir dir="${external-libs}" />
     </target>
 
+    <!-- Create R.java in the source directory -->
     <!-- Generate the R.java file for this project's resources. -->
     <target name="resource-src" depends="dirs">
         <echo>Generating R.java / Manifest.java from the resources...</echo>
@@ -126,9 +131,9 @@
             <arg value="package" />
             <arg value="-m" />
             <arg value="-J" />
-            <arg value="${outdir-r}" />
+            <arg value="${srcdir}" />
             <arg value="-M" />
-            <arg value="AndroidManifest.xml" />
+            <arg value="${android-manifest}" />
             <arg value="-S" />
             <arg value="${resource-dir}" />
             <arg value="-I" />
@@ -150,7 +155,7 @@
 
     <!-- Compile this project's .java files into .class files. -->
     <target name="compile" depends="dirs, resource-src, aidl">
-        <javac encoding="ascii" target="1.5" debug="true" extdirs=""
+        <javac encoding="ascii" target="1.7" debug="true" extdirs=""
                 srcdir="."
                 destdir="${outdir-classes}"
                 bootclasspath="${android-jar}">
@@ -178,7 +183,7 @@
             <arg value="package" />
             <arg value="-f" />
             <arg value="-M" />
-            <arg value="AndroidManifest.xml" />
+            <arg value="${android-manifest}" />
             <arg value="-S" />
             <arg value="${resource-dir}" />
             <arg value="-A" />
@@ -197,7 +202,7 @@
             <arg value="package" />
             <arg value="-f" />
             <arg value="-M" />
-            <arg value="AndroidManifest.xml" />
+            <arg value="${android-manifest}" />
             <arg value="-S" />
             <arg value="${resource-dir}" />
             <!-- No assets directory -->
