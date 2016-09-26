@@ -3,3 +3,4 @@ android:
   components:
   - build-tools-24.0.3
   - android-23
+script: "gradle build"
