@@ -64,7 +64,7 @@ public class Solitaire extends Activity {
     if (mSettings.getBoolean("SolitaireSaveValid", false)) {
       SharedPreferences.Editor editor = GetSettings().edit();
       editor.putBoolean("SolitaireSaveValid", false);
-      editor.commit();
+      editor.apply();
       // If save is corrupt, just start a new game.
       if (mSolitaireView.LoadSave()) {
         HelpSplashScreen();
