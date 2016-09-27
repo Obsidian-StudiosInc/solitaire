@@ -20,7 +20,7 @@
     <string name="menu_spider">Spider</string>
     <string name="menu_freecell">Freecell</string>
     <string name="menu_fortythieves">Forty Thieves</string>
-    <string name="menu_newgame">New Game</string>
+    <string name="menu_new_game">New Game</string>
     <string name="menu_restart">Restart</string>
     <string name="menu_stats">Stats</string>
     <string name="menu_options">Options</string>
