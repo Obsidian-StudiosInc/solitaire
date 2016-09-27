@@ -93,6 +93,8 @@ public class SolitaireView extends View {
 
   private int mWinningScore;
 
+    private boolean mLongKeyPress = false;
+
   public SolitaireView(Context context, AttributeSet attrs) {
     super(context, attrs);
     setFocusable(true);
@@ -525,13 +527,30 @@ public class SolitaireView extends View {
         Refresh();
       }
       return true;
-      case KeyEvent.KEYCODE_BACK:
-        Undo();
-        return true;
       }
     mRules.HandleEvents();
     return super.onKeyDown(keyCode, msg);
   }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent msg) {
+        mLongKeyPress = true;
+        return super.onKeyLongPress(keyCode, msg);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent msg) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if(mLongKeyPress) {
+                    mLongKeyPress = false;
+                } else {
+                    Undo();
+                    return true;
+                }
+        }
+        return super.onKeyUp(keyCode, msg);
+    }
 
   @Override
   public boolean onTouchEvent(MotionEvent event) {
