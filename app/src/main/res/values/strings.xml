@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2008 Google Inc.
+  Copyright 2008 - 2010 Google Inc.
+  Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -25,7 +26,7 @@
     <string name="menu_stats">Stats</string>
     <string name="menu_options">Options</string>
     <string name="menu_help">Help</string>
-    <string name="menu_save_quit">Save&amp;Quit</string>
+    <string name="menu_save_quit">Save &amp; Quit</string>
     <string name="menu_quit">Quit</string>
     <string name="solitaire_layout_text_text"></string>
     <string name="accept">Accept</string>
