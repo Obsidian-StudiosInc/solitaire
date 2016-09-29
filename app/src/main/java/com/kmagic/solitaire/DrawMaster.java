@@ -1,13 +1,13 @@
 /*
-  Copyright 2008 - 2010 Google Inc.
-  Copyright 2016 Obsidian-Studios, Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
   
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,10 +21,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
+import android.view.Display;
+import android.view.WindowManager;
+
 
 public class DrawMaster {
 
@@ -52,12 +56,16 @@ public class DrawMaster {
   private Bitmap mBoardBitmap;
   private Canvas mBoardCanvas;
 
+    private int mFontSize;
+
 public DrawMaster(Context context) {
 
     mContext = context;
-    // Default to this for simplicity
-    mScreenWidth = 480;
-    mScreenHeight = 295;
+    Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    mScreenWidth = size.x;
+    mScreenHeight = size.y;
 
     // Background
     mBGPaint = new Paint();
@@ -75,8 +83,10 @@ public DrawMaster(Context context) {
     mDoneEmptyAnchorPaint = new Paint();
     mDoneEmptyAnchorPaint.setARGB(128, 255, 0, 0);
 
+    mFontSize = mContext.getResources().getDimensionPixelSize(R.dimen.font_size);
+
     mTimePaint = new Paint();
-    mTimePaint.setTextSize(18);
+    mTimePaint.setTextSize(mFontSize);
     mTimePaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
     mTimePaint.setTextAlign(Paint.Align.RIGHT);
     mTimePaint.setAntiAlias(true);
@@ -154,8 +164,6 @@ public DrawMaster(Context context) {
     Bitmap[] blackFont = new Bitmap[13];
     Bitmap[] redFont = new Bitmap[13];
     Canvas canvas;
-    int width = Card.WIDTH;
-    int height = Card.HEIGHT;
 
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
 
@@ -203,11 +211,11 @@ public DrawMaster(Context context) {
     for (int suitIdx = 0; suitIdx < 4; suitIdx++) {
       for (int valueIdx = 0; valueIdx < 13; valueIdx++) {
         mCardBitmap[suitIdx*13+valueIdx] = Bitmap.createBitmap(
-            width, height, Bitmap.Config.ARGB_4444);
+                Card.WIDTH, Card.HEIGHT, Bitmap.Config.ARGB_4444);
         canvas = new Canvas(mCardBitmap[suitIdx*13+valueIdx]);
-        pos.set(0, 0, width, height);
+        pos.set(0, 0, Card.WIDTH, Card.HEIGHT);
         canvas.drawRoundRect(pos, 4, 4, cardBorderPaint);
-        pos.set(1, 1, width-1, height-1);
+        pos.set(1, 1, Card.WIDTH-1, Card.HEIGHT-1);
         canvas.drawRoundRect(pos, 4, 4, cardFrontPaint);
 
         if ((suitIdx & 1) == 1) {
@@ -216,9 +224,8 @@ public DrawMaster(Context context) {
           canvas.drawBitmap(blackFont[valueIdx], 3, 4, mSuitPaint);
         }
 
-
-        canvas.drawBitmap(suit[suitIdx], width-14, 4, mSuitPaint);
-        canvas.drawBitmap(bigSuit[suitIdx], width/2-12, height/2-13, mSuitPaint);
+        canvas.drawBitmap(suit[suitIdx], Card.WIDTH-14, 4, mSuitPaint);
+        canvas.drawBitmap(bigSuit[suitIdx], Card.WIDTH/2-12, Card.HEIGHT/2-13, mSuitPaint);
       }
     }
   }
@@ -532,33 +539,37 @@ public DrawMaster(Context context) {
     }
   }
 
-  public void DrawTime(Canvas canvas, int millis) {
-    int seconds = (millis / 1000) % 60;
-    int minutes = millis / 60000;
-    if (seconds != mLastSeconds) {
-      mLastSeconds = seconds;
-      // String.format is insanely slow (~15ms)
-      if (seconds < 10) {
-        mTimeString = minutes + ":0" + seconds;
-      } else {
-        mTimeString = minutes + ":" + seconds;
-      }
+    public void DrawTime(Canvas canvas, int millis) {
+        int seconds = (millis / 1000) % 60;
+        int minutes = millis / 60000;
+        if (seconds != mLastSeconds) {
+            mLastSeconds = seconds;
+            // String.format is insanely slow (~15ms)
+            if (seconds < 10) {
+                mTimeString = minutes + ":0" + seconds;
+            } else {
+                mTimeString = minutes + ":" + seconds;
+            }
+        }
+        mTimePaint.setARGB(255, 20, 20, 20);
+        final int textX = mScreenHeight-mFontSize;
+        final int textY = mScreenWidth-mFontSize;
+        canvas.drawText(mTimeString, textY, textX, mTimePaint);
+        mTimePaint.setARGB(255, 0, 0, 0);
+        canvas.drawText(mTimeString, textY-1, textX-1, mTimePaint);
     }
-    mTimePaint.setARGB(255, 20, 20, 20);
-    canvas.drawText(mTimeString, mScreenWidth-9, mScreenHeight-9, mTimePaint);
-    mTimePaint.setARGB(255, 0, 0, 0);
-    canvas.drawText(mTimeString, mScreenWidth-10, mScreenHeight-10, mTimePaint);
-  }
 
   public void DrawRulesString(Canvas canvas, String score) {
     mTimePaint.setARGB(255, 20, 20, 20);
-    canvas.drawText(score, mScreenWidth-9, mScreenHeight-29, mTimePaint);
+      final int textX = mScreenHeight-mFontSize;
+      final int textY = mFontSize*2;
+    canvas.drawText(score, textY, textX, mTimePaint);
     if (score.charAt(0) == '-') {
       mTimePaint.setARGB(255, 255, 0, 0);
     } else {
       mTimePaint.setARGB(255, 0, 0, 0);
     }
-    canvas.drawText(score, mScreenWidth-10, mScreenHeight-30, mTimePaint);
+    canvas.drawText(score, textY-1, textX-1, mTimePaint);
 
   }
 }
