@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.MotionEvent;
@@ -56,9 +57,6 @@ public class SolitaireView extends View {
   private static final String SAVE_FILENAME = "solitaire_save.bin";
   // This is incremented only when the save system changes.
   private static final String SAVE_VERSION = "solitaire_save_2";
-
-  private CharSequence mHelpText;
-  private CharSequence mWinText;
 
   private CardAnchor[] mCardAnchor;
   private DrawMaster mDrawMaster;
@@ -114,8 +112,6 @@ public class SolitaireView extends View {
     mSpeed = new Speed();
     mReplay = new Replay(this, mAnimateCard);
 
-    mHelpText = context.getResources().getText(R.string.help_text);
-    mWinText = context.getResources().getText(R.string.win_text);
     mContext = context;
     mTextViewDown = false;
     mRefreshThread.start();
@@ -152,7 +148,7 @@ public class SolitaireView extends View {
     if (oldGameType.equals(mRules.GetGameTypeString())) {
       mRules.SetCarryOverScore(oldScore);
     }
-    Card.SetSize(gameType);
+    Card.SetSize(gameType,mDrawMaster.GetWidth(), mDrawMaster.GetHeight());
     mDrawMaster.DrawCards(GetSettings().getBoolean("DisplayBigCards", false));
     mCardAnchor = mRules.GetAnchorArray();
     if (mDrawMaster.GetWidth() > 1) {
@@ -388,7 +384,7 @@ public class SolitaireView extends View {
 
       mGameStarted = !mMoveHistory.isEmpty();
       mRules = Rules.CreateRules(type, map, this, mMoveHistory, mAnimateCard);
-      Card.SetSize(type);
+      Card.SetSize(type,mDrawMaster.GetWidth(), mDrawMaster.GetHeight());
       SetDisplayTime(GetSettings().getBoolean("DisplayTime", true));
       mCardAnchor = mRules.GetAnchorArray();
       if (mDrawMaster.GetWidth() > 1) {
@@ -438,14 +434,14 @@ public class SolitaireView extends View {
   public void DisplayHelp() {
     mTextView.setTextSize(15);
     mTextView.setGravity(Gravity.START);
-    DisplayText(mHelpText);
+    DisplayText(mContext.getResources().getText(R.string.help_text));
   }
 
   public void DisplayWin() {
     MarkWin();
-    mTextView.setTextSize(24);
+    mTextView.setTextSize(mContext.getResources().getDimensionPixelSize(R.dimen.font_size));
     mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-    DisplayText(mWinText);
+    DisplayText(mContext.getResources().getText(R.string.win_text));
     ChangeViewMode(MODE_WIN);
     mTextView.setVisibility(View.VISIBLE);
     mRules.SetIgnoreEvents(true);
