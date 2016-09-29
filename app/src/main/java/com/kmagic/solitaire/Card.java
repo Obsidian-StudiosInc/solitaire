@@ -1,5 +1,6 @@
 /*
-  Copyright 2008 Google Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -26,9 +27,6 @@ class Card {
   public static final int JACK = 11;
   public static final int QUEEN = 12;
   public static final int KING = 13;
-  public static final String TEXT[] = {
-    "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
-  };
 
   public static int WIDTH = 45;
   public static int HEIGHT = 64;
@@ -38,18 +36,25 @@ class Card {
   private float mX;
   private float mY;
 
-  public static void SetSize(int type) {
-    if (type == Rules.SOLITAIRE) {
-      WIDTH = 51;
-      HEIGHT = 72;
-    } else if (type == Rules.FREECELL) {
-      WIDTH = 49;
-      HEIGHT = 68;
-    } else {
-      WIDTH = 45;
-      HEIGHT = 64;
+    /**
+     * Set card size, based on game type and screen dimensions
+     *
+     * @param type game type
+     * @param screenWidth screen width
+     * @param screenHeight screen height
+     */
+    public static void SetSize(int type, int screenWidth, int screenHeight) {
+      if (type == Rules.SOLITAIRE) {
+          WIDTH = screenHeight/10;
+          HEIGHT = screenWidth/10;
+      } else if (type == Rules.FREECELL) {
+          WIDTH = screenHeight/11;
+          HEIGHT = screenWidth/11;
+      } else {
+          WIDTH = screenHeight/12;
+          HEIGHT = screenWidth/12;
+      }
     }
-  }
 
   public Card(int value, int suit) {
     mValue = value;
