@@ -1,9 +1,7 @@
 # Solitare
 
-A fork of the famous ad free Solitaire Game Suite from Ken Magic. This 
-is an intial import from where Mr. Magic left off. There is another 
-fork in existence, with various changes, some opposed stylistic.
-
+A fork of the famous ad free 
+[Solitaire Game Suite from Ken Magic] (https://code.google.com/archive/p/solitaire-for-android/)
 The idea behind this fork is to update the app and keep it in sync with 
 current Android SDK/NDK. This is a very early fork, no build 
 instructions or other at this time beyond original below.
