@@ -58,7 +58,7 @@ public class DrawMaster {
 
     private int mFontSize;
 
-public DrawMaster(Context context) {
+  public DrawMaster(Context context) {
 
     mContext = context;
     Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
