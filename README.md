@@ -2,29 +2,43 @@
 
 A fork of the famous ad free 
 [Solitaire Game Suite from Ken Magic] (https://code.google.com/archive/p/solitaire-for-android/)
-The idea behind this fork is to update the app and keep it in sync with 
-current Android SDK/NDK. This is a very early fork, no build 
-instructions or other at this time beyond original below.
+The idea behind this fork is to update the app for higher resolution 
+displays, phones without menu buttons, and keep it in sync with current 
+Android version.
 
-Contributions will be welcome as things progress.
+This is a very early fork, contributions are welcome!
 
-## Original README
+## Build Instructions
 
-Simple solitaire game.
+To build you need the following
 
-Currently documentation is limited but I will add comments to the source 
-and detail the structure in here. 
+JDK 1.8 or newer
+Gradle 2.14.1 or newer
+Android SDK 23 or newer ( update version in app/build.gradle)
+Android Build Tools 23.0.1 or newer ( update version in app/build.gradle)
+Android Support Repository 38
+Google Repository 36
 
-Build Instructions:
-------------------
-I do not use eclipse so I can't really guarantee that it will build in 
-that environment. 
+The easiest way to build is by using Android Studio, if you have it 
+installed. It comes with Gradle, a JDK, and SDK Manager for the 
+installation of the Android SDKs and build tools, emulator and other 
+resources. You can use the Build menu to generate an APK for use.
 
-First off you need to download the SDK from http://code.google.com/android.
-Once installed you need to modify solitaire's build.xml file to include 
-the path to the SDK (Two lines near the top). Then running ant should 
-complete the job. If you have difficulties, try building a sample 
-program from code.google.com first which has a bunch of detail and 
-troubleshooting info.
+If building via cli, the dependencies will need to be installed and 
+available for build.
 
+To build via command line use gradle warpper in the project root 
+directory, and make sure it is executable.
 
+```shell
+chmod 775 gradlew
+./gradlew build
+```
+
+This will generate a debug apk to install
+```shell
+app/build/outputs/apk/app-debug.apk
+```
+
+More will be added as things progress
+Till then, that's all for now folks...
