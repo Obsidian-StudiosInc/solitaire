@@ -16,7 +16,7 @@
 -->
 <resources>
     <string-array name="card_values">
-        <item>1</item>
+        <item>A</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -25,9 +25,9 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>10</item>
         <item>J</item>
         <item>Q</item>
         <item>K</item>
-        <item>A</item>
     </string-array>
 </resources>
