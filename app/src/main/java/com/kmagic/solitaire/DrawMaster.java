@@ -33,6 +33,7 @@ import android.view.WindowManager;
 public class DrawMaster {
 
   private Context mContext;
+  private Resources mResources;
 
   // Background
   private int mScreenWidth;
@@ -61,6 +62,7 @@ public class DrawMaster {
   public DrawMaster(Context context) {
 
     mContext = context;
+    mResources = mContext.getResources();
     Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
     Point size = new Point();
     display.getSize(size);
@@ -87,7 +89,7 @@ public class DrawMaster {
     mDoneEmptyAnchorPaint = new Paint();
     mDoneEmptyAnchorPaint.setARGB(128, 255, 0, 0);
 
-    mFontSize = mContext.getResources().getDimensionPixelSize(R.dimen.font_size);
+    mFontSize = mResources.getDimensionPixelSize(R.dimen.font_size);
 
     mTimePaint = new Paint();
     mTimePaint.setTextSize(mFontSize);
@@ -165,8 +167,6 @@ public class DrawMaster {
     Paint cardBorderPaint = new Paint();
     Bitmap[] bigSuit = new Bitmap[4];
     Bitmap[] suit = new Bitmap[4];
-    Bitmap[] blackFont = new Bitmap[13];
-    Bitmap[] redFont = new Bitmap[13];
     Canvas canvas;
 
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
@@ -193,21 +193,12 @@ public class DrawMaster {
       drawable.draw(canvas);
     }
 
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.bigblackfont, null);
-    for (int i = 0; i < 13; i++) {
-      blackFont[i] = Bitmap.createBitmap(18, 15, Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(blackFont[i]);
-      drawable.setBounds(-i*18, 0, -i*18+234, 15);
-      drawable.draw(canvas);
-    }
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.bigredfont, null);
-    for (int i = 0; i < 13; i++) {
-      redFont[i] = Bitmap.createBitmap(18, 15, Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(redFont[i]);
-      drawable.setBounds(-i*18, 0, -i*18+234, 15);
-      drawable.draw(canvas);
-    }
+    String[] card_values = mResources.getStringArray(R.array.card_values);
+    Paint cardNumPaint = new Paint();
+    cardNumPaint.setTextSize(mFontSize/2);
+    cardNumPaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
+    cardNumPaint.setTextAlign(Paint.Align.LEFT);
+    cardNumPaint.setAntiAlias(true);
 
     cardBorderPaint.setARGB(255, 0, 0, 0);
     cardFrontPaint.setARGB(255, 255, 255, 255);
@@ -223,10 +214,11 @@ public class DrawMaster {
         canvas.drawRoundRect(pos, 4, 4, cardFrontPaint);
 
         if ((suitIdx & 1) == 1) {
-          canvas.drawBitmap(redFont[valueIdx], 3, 4, mSuitPaint);
+          cardNumPaint.setARGB(255, 255, 0, 0);
         } else {
-          canvas.drawBitmap(blackFont[valueIdx], 3, 4, mSuitPaint);
+          cardNumPaint.setARGB(255, 0, 0, 0);
         }
+        canvas.drawText(card_values[valueIdx], 3, cardNumPaint.getTextSize(), cardNumPaint);
 
         canvas.drawBitmap(suit[suitIdx], Card.WIDTH-14, 4, mSuitPaint);
         canvas.drawBitmap(bigSuit[suitIdx], Card.WIDTH/2-12, Card.HEIGHT/2-13, mSuitPaint);
