@@ -27,7 +27,7 @@ resources. You can use the Build menu to generate an APK for use.
 If building via cli, the dependencies will need to be installed and 
 available for build.
 
-To build via command line use gradle warpper in the project root 
+To build via command line use gradle wrapper in the project root 
 directory, and make sure it is executable.
 
 ```shell
