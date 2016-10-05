@@ -127,7 +127,7 @@ public class Options {
         }
 
         if (commit) {
-          editor.commit();
+          editor.apply();
           solitaire.RefreshOptions();
         }
         if (newGame) {
