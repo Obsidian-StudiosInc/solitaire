@@ -91,11 +91,7 @@ public class DrawMaster {
 
     mFontSize = mResources.getDimensionPixelSize(R.dimen.font_size);
 
-    mTimePaint = new Paint();
-    mTimePaint.setTextSize(mFontSize);
-    mTimePaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
-    mTimePaint.setTextAlign(Paint.Align.RIGHT);
-    mTimePaint.setAntiAlias(true);
+    mTimePaint = getTextPaint(mFontSize,Paint.Align.RIGHT);
     mLastSeconds = -1;
 
     mCardBitmap = new Bitmap[52];
@@ -153,6 +149,14 @@ public class DrawMaster {
     mBoardCanvas = new Canvas(mBoardBitmap);
   }
 
+  public static Paint getTextPaint(float fontSize,Paint.Align align) {
+    Paint paint = new Paint();
+    paint.setTextSize(fontSize);
+    paint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
+    paint.setTextAlign(align);
+    paint.setAntiAlias(true);
+    return(paint);
+  }
   public void DrawCards(boolean bigCards) {
     if (bigCards) {
       DrawBigCards(mContext.getResources());
@@ -194,11 +198,8 @@ public class DrawMaster {
     }
 
     String[] card_values = mResources.getStringArray(R.array.card_values);
-    Paint cardNumPaint = new Paint();
-    cardNumPaint.setTextSize(mFontSize/2);
-    cardNumPaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
-    cardNumPaint.setTextAlign(Paint.Align.LEFT);
-    cardNumPaint.setAntiAlias(true);
+    Paint textPaintLeft = getTextPaint(mFontSize/2,Paint.Align.LEFT);
+    float textSize = textPaintLeft.getTextSize();
 
     cardBorderPaint.setARGB(255, 0, 0, 0);
     cardFrontPaint.setARGB(255, 255, 255, 255);
@@ -214,14 +215,20 @@ public class DrawMaster {
         canvas.drawRoundRect(pos, 4, 4, cardFrontPaint);
 
         if ((suitIdx & 1) == 1) {
-          cardNumPaint.setARGB(255, 255, 0, 0);
+          textPaintLeft.setARGB(255, 255, 0, 0);
         } else {
-          cardNumPaint.setARGB(255, 0, 0, 0);
+          textPaintLeft.setARGB(255, 0, 0, 0);
         }
-        canvas.drawText(card_values[valueIdx], 3, cardNumPaint.getTextSize(), cardNumPaint);
-
+        // Top
+        canvas.drawText(card_values[valueIdx], 3, textSize, textPaintLeft);
         canvas.drawBitmap(suit[suitIdx], Card.WIDTH-14, 4, mSuitPaint);
+        // Middle
         canvas.drawBitmap(bigSuit[suitIdx], Card.WIDTH/2-12, Card.HEIGHT/2-13, mSuitPaint);
+        // Bottom
+        canvas.save();
+        canvas.rotate(180);
+        canvas.drawBitmap(suit[suitIdx], -14, -Card.HEIGHT+4, mSuitPaint);
+        canvas.drawText(card_values[valueIdx], -Card.WIDTH+3, -Card.HEIGHT+textSize, textPaintLeft);
       }
     }
   }
