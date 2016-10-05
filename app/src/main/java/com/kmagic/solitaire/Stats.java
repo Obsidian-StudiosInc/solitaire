@@ -77,7 +77,7 @@ public class Stats {
         editor.putInt(gameAttemptString, 0);
         editor.putInt(gameWinString, 0);
         editor.putInt(gameTimeString, -1);
-        editor.commit();
+        editor.apply();
         view.ClearGameStarted();
         solitaire.CancelOptions();
       }
