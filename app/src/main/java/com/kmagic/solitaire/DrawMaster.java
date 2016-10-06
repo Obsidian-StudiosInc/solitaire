@@ -177,15 +177,12 @@ public class DrawMaster {
     return(paint);
   }
 
-  public void drawClub(final Canvas canvas, final float width, final float height) {
+  public void drawPedestal(final Canvas canvas, final float width, final float height) {
     final Paint paint = getBlackPaint();
     final float width_half = width/2;
     final float width_fifth = width/5;
     final float width_3_5ths = width_fifth*3;
     final float height_5th = height/5;
-    canvas.drawCircle(width_half,height_5th,width_fifth,paint);
-    canvas.drawCircle(width_fifth,height/2,width_fifth,paint);
-    canvas.drawCircle(width-width_fifth,height/2,width_fifth,paint);
     canvas.drawRect(width_3_5ths,height_5th,width-width_3_5ths,height,paint);
     final Path path = new Path();
     path.moveTo(width_fifth,height);
@@ -194,6 +191,17 @@ public class DrawMaster {
     path.lineTo(width_fifth,height);
     path.close();
     canvas.drawPath(path,paint);
+  }
+
+  public void drawClub(final Canvas canvas, final float width, final float height) {
+    final Paint paint = getBlackPaint();
+    final float width_half = width/2;
+    final float width_fifth = width/5;
+    final float height_5th = height/5;
+    canvas.drawCircle(width_half,height_5th,width_fifth,paint);
+    canvas.drawCircle(width_fifth,height/2,width_fifth,paint);
+    canvas.drawCircle(width-width_fifth,height/2,width_fifth,paint);
+    drawPedestal(canvas,width,height);
   }
 
   public void drawDiamond(final Canvas canvas, final float width, final float height) {
@@ -226,12 +234,30 @@ public class DrawMaster {
     canvas.drawPath(path,paint);
   }
 
+  public void drawSpade(final Canvas canvas, final float width, final float height) {
+    final Paint paint = getBlackPaint();
+    final float width_half = width/2;
+    final float width_quarter = width/4;
+    final float width_fifth = width/5;
+    final float width_25th = width/25;
+    final float height_3_5th = height/5*3;
+    final Path path = new Path();
+    path.moveTo(width_half,0);
+    path.lineTo(width-width_25th,height_3_5th);
+    path.lineTo(width_25th,height_3_5th);
+    path.lineTo(width_half,0);
+    path.close();
+    canvas.drawPath(path,paint);
+    canvas.drawCircle(width_quarter,height_3_5th,width_fifth,paint);
+    canvas.drawCircle(width_quarter*3,height_3_5th,width_fifth,paint);
+    drawPedestal(canvas,width,height);
+  }
+
   public void DrawCards(boolean bigCards) {
     if (bigCards) {
       DrawBigCards(mContext.getResources());
     } else {
       DrawCards(mContext.getResources());
-
     }
   }
 
@@ -251,7 +277,6 @@ public class DrawMaster {
     drawable.setBounds(0, 0, Card.WIDTH, Card.HEIGHT);
     drawable.draw(canvas);
 
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.suits, null);
     for (int i = 0; i < 4; i++) {
       suit[i] = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(suit[i]);
@@ -259,15 +284,13 @@ public class DrawMaster {
         drawClub(canvas, 10, 10);
       } else if(i==1) {
         drawDiamond(canvas, 10, 10);
+      } else if(i==2) {
+        drawSpade(canvas, 10, 10);
       } else if(i==3) {
         drawHeart(canvas, 10, 10);
-      } else {
-        drawable.setBounds(-i*10, 0, -i*10+40, 10);
-        drawable.draw(canvas);
       }
     }
 
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.bigsuits, null);
     for (int i = 0; i < 4; i++) {
       bigSuit[i] = Bitmap.createBitmap(25, 25, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(bigSuit[i]);
@@ -275,11 +298,10 @@ public class DrawMaster {
         drawClub(canvas, 25, 25);
       } else if(i==1) {
         drawDiamond(canvas, 25, 25);
+      } else if(i==2) {
+        drawSpade(canvas, 25, 25);
       } else if(i==3) {
         drawHeart(canvas, 25, 25);
-      } else {
-        drawable.setBounds(-i * 25, 0, -i * 25 + 100, 25);
-        drawable.draw(canvas);
       }
     }
 
