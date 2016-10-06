@@ -263,11 +263,14 @@ public class DrawMaster {
 
   private void DrawBigCards(Resources r) {
 
-    Paint cardFrontPaint = new Paint();
-    Paint cardBorderPaint = new Paint();
-    Bitmap[] bigSuit = new Bitmap[4];
-    Bitmap[] suit = new Bitmap[4];
+    final Bitmap[] bigSuit = new Bitmap[4];
+    final Bitmap[] suit = new Bitmap[4];
     Canvas canvas;
+    final String[] card_values = mResources.getStringArray(R.array.card_values);
+    final Paint cardFrontPaint = new Paint();
+    final Paint cardBorderPaint = new Paint();
+    final Paint textPaintLeft = getTextPaint(mFontSize/2,Paint.Align.LEFT);
+    float textSize = textPaintLeft.getTextSize();
 
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
 
@@ -277,37 +280,35 @@ public class DrawMaster {
     drawable.setBounds(0, 0, Card.WIDTH, Card.HEIGHT);
     drawable.draw(canvas);
 
+    final float smallSuit = textSize/2;
     for (int i = 0; i < 4; i++) {
-      suit[i] = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
+      suit[i] = Bitmap.createBitmap((int)smallSuit, (int)smallSuit, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(suit[i]);
       if(i==0) {
-        drawClub(canvas, 10, 10);
+        drawClub(canvas, smallSuit, smallSuit);
       } else if(i==1) {
-        drawDiamond(canvas, 10, 10);
+        drawDiamond(canvas, smallSuit, smallSuit);
       } else if(i==2) {
-        drawSpade(canvas, 10, 10);
+        drawSpade(canvas, smallSuit, smallSuit);
       } else if(i==3) {
-        drawHeart(canvas, 10, 10);
+        drawHeart(canvas, smallSuit, smallSuit);
       }
     }
 
+    final float largeSuit = textSize;
     for (int i = 0; i < 4; i++) {
-      bigSuit[i] = Bitmap.createBitmap(25, 25, Bitmap.Config.ARGB_8888);
+      bigSuit[i] = Bitmap.createBitmap((int)largeSuit, (int)largeSuit, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(bigSuit[i]);
       if(i==0) {
-        drawClub(canvas, 25, 25);
+        drawClub(canvas, largeSuit, largeSuit);
       } else if(i==1) {
-        drawDiamond(canvas, 25, 25);
+        drawDiamond(canvas, largeSuit, largeSuit);
       } else if(i==2) {
-        drawSpade(canvas, 25, 25);
+        drawSpade(canvas, largeSuit, largeSuit);
       } else if(i==3) {
-        drawHeart(canvas, 25, 25);
+        drawHeart(canvas, largeSuit, largeSuit);
       }
     }
-
-    String[] card_values = mResources.getStringArray(R.array.card_values);
-    Paint textPaintLeft = getTextPaint(mFontSize/2,Paint.Align.LEFT);
-    float textSize = textPaintLeft.getTextSize();
 
     cardBorderPaint.setARGB(255, 0, 0, 0);
     cardFrontPaint.setARGB(255, 255, 255, 255);
@@ -329,13 +330,13 @@ public class DrawMaster {
         }
         // Top
         canvas.drawText(card_values[valueIdx], 3, textSize, textPaintLeft);
-        canvas.drawBitmap(suit[suitIdx], Card.WIDTH-14, 4, mSuitPaint);
+        canvas.drawBitmap(suit[suitIdx], Card.WIDTH-smallSuit-4, 4, mSuitPaint);
         // Middle
-        canvas.drawBitmap(bigSuit[suitIdx], Card.WIDTH/2-12, Card.HEIGHT/2-13, mSuitPaint);
+        canvas.drawBitmap(bigSuit[suitIdx], Card.WIDTH/2-largeSuit/2, Card.HEIGHT/2-largeSuit/2, mSuitPaint);
         // Bottom
         canvas.save();
         canvas.rotate(180);
-        canvas.drawBitmap(suit[suitIdx], -14, -Card.HEIGHT+4, mSuitPaint);
+        canvas.drawBitmap(suit[suitIdx], -smallSuit-4, -Card.HEIGHT+4, mSuitPaint);
         canvas.drawText(card_values[valueIdx], -Card.WIDTH+3, -Card.HEIGHT+textSize, textPaintLeft);
       }
     }
