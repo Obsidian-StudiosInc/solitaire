@@ -150,6 +150,24 @@ public class DrawMaster {
     mBoardCanvas = new Canvas(mBoardBitmap);
   }
 
+  public static Paint getPaint() {
+    final Paint paint = new Paint();
+    paint.setAntiAlias(true);
+    return(paint);
+  }
+
+  public static Paint getBlackPaint() {
+    final Paint paint = getPaint();
+    paint.setARGB(255, 0, 0, 0);
+    return(paint);
+  }
+
+  public static Paint getRedPaint() {
+    final Paint paint = getPaint();
+    paint.setARGB(255, 255, 0, 0);
+    return(paint);
+  }
+
   public static Paint getTextPaint(float fontSize,Paint.Align align) {
     Paint paint = new Paint();
     paint.setTextSize(fontSize);
@@ -159,10 +177,27 @@ public class DrawMaster {
     return(paint);
   }
 
+  public void drawClub(final Canvas canvas, final float width, final float height) {
+    final Paint paint = getBlackPaint();
+    final float width_half = width/2;
+    final float width_fifth = width/5;
+    final float width_3_5ths = width_fifth*3;
+    final float height_5th = height/5;
+    canvas.drawCircle(width_half,height_5th,width_fifth,paint);
+    canvas.drawCircle(width_fifth,height/2,width_fifth,paint);
+    canvas.drawCircle(width-width_fifth,height/2,width_fifth,paint);
+    canvas.drawRect(width_3_5ths,height_5th,width-width_3_5ths,height,paint);
+    final Path path = new Path();
+    path.moveTo(width_fifth,height);
+    path.lineTo(width_half,height-height_5th);
+    path.lineTo(width-width_fifth,height);
+    path.lineTo(width_fifth,height);
+    path.close();
+    canvas.drawPath(path,paint);
+  }
+
   public void drawDiamond(final Canvas canvas, final float width, final float height) {
-    final Paint paint = new Paint();
-    paint.setARGB(255, 255, 0, 0);
-    paint.setAntiAlias(true);
+    final Paint paint = getRedPaint();
     final Path path = new Path();
     path.moveTo(width/2,0);
     final float offset = height/5;
@@ -175,9 +210,7 @@ public class DrawMaster {
   }
 
   public void drawHeart(final Canvas canvas, final float width, final float height) {
-    final Paint paint = new Paint();
-    paint.setARGB(255, 255, 0, 0);
-    paint.setAntiAlias(true);
+    final Paint paint = getRedPaint();
     final float width_half = width/2;
     final float width_quarter = width/4;
     final float height_quarter = height/4;
@@ -222,7 +255,9 @@ public class DrawMaster {
     for (int i = 0; i < 4; i++) {
       suit[i] = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(suit[i]);
-      if(i==1) {
+      if(i==0) {
+        drawClub(canvas, 10, 10);
+      } else if(i==1) {
         drawDiamond(canvas, 10, 10);
       } else if(i==3) {
         drawHeart(canvas, 10, 10);
@@ -236,7 +271,9 @@ public class DrawMaster {
     for (int i = 0; i < 4; i++) {
       bigSuit[i] = Bitmap.createBitmap(25, 25, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(bigSuit[i]);
-      if(i==1) {
+      if(i==0) {
+        drawClub(canvas, 25, 25);
+      } else if(i==1) {
         drawDiamond(canvas, 25, 25);
       } else if(i==3) {
         drawHeart(canvas, 25, 25);
