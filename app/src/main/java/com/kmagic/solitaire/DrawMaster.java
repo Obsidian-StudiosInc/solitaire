@@ -174,11 +174,31 @@ public class DrawMaster {
     canvas.drawPath(path,paint);
   }
 
+  public void drawHeart(final Canvas canvas, final float width, final float height) {
+    final Paint paint = new Paint();
+    paint.setARGB(255, 255, 0, 0);
+    paint.setAntiAlias(true);
+    final float width_half = width/2;
+    final float width_quarter = width/4;
+    final float height_quarter = height/4;
+    final float height_third = height/3;
+    canvas.drawCircle(width_quarter,height_quarter,width_quarter,paint);
+    canvas.drawCircle(width_quarter*3,height_quarter,width_quarter,paint);
+    final Path path = new Path();
+    path.moveTo(0,height_third);
+    path.lineTo(width_half,height);
+    path.lineTo(width,height_third);
+    path.lineTo(0,height_third);
+    path.close();
+    canvas.drawPath(path,paint);
+  }
+
   public void DrawCards(boolean bigCards) {
     if (bigCards) {
       DrawBigCards(mContext.getResources());
     } else {
       DrawCards(mContext.getResources());
+
     }
   }
 
@@ -202,11 +222,13 @@ public class DrawMaster {
     for (int i = 0; i < 4; i++) {
       suit[i] = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(suit[i]);
-      if(i!=1) {
+      if(i==1) {
+        drawDiamond(canvas, 10, 10);
+      } else if(i==3) {
+        drawHeart(canvas, 10, 10);
+      } else {
         drawable.setBounds(-i*10, 0, -i*10+40, 10);
         drawable.draw(canvas);
-      } else {
-        drawDiamond(canvas, 10, 10);
       }
     }
 
@@ -214,11 +236,13 @@ public class DrawMaster {
     for (int i = 0; i < 4; i++) {
       bigSuit[i] = Bitmap.createBitmap(25, 25, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(bigSuit[i]);
-      if(i!=1) {
+      if(i==1) {
+        drawDiamond(canvas, 25, 25);
+      } else if(i==3) {
+        drawHeart(canvas, 25, 25);
+      } else {
         drawable.setBounds(-i * 25, 0, -i * 25 + 100, 25);
         drawable.draw(canvas);
-      } else {
-        drawDiamond(canvas, 25, 25);
       }
     }
 
