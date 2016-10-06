@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -157,6 +158,22 @@ public class DrawMaster {
     paint.setAntiAlias(true);
     return(paint);
   }
+
+  public void drawDiamond(final Canvas canvas, final float width, final float height) {
+    final Paint paint = new Paint();
+    paint.setARGB(255, 255, 0, 0);
+    paint.setAntiAlias(true);
+    final Path path = new Path();
+    path.moveTo(width/2,0);
+    final float offset = height/5;
+    path.lineTo(offset,height/2);
+    path.lineTo(width/2,height);
+    path.lineTo(width-offset,height/2);
+    path.lineTo(width/2,0);
+    path.close();
+    canvas.drawPath(path,paint);
+  }
+
   public void DrawCards(boolean bigCards) {
     if (bigCards) {
       DrawBigCards(mContext.getResources());
@@ -185,16 +202,24 @@ public class DrawMaster {
     for (int i = 0; i < 4; i++) {
       suit[i] = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(suit[i]);
-      drawable.setBounds(-i*10, 0, -i*10+40, 10);
-      drawable.draw(canvas);
+      if(i!=1) {
+        drawable.setBounds(-i*10, 0, -i*10+40, 10);
+        drawable.draw(canvas);
+      } else {
+        drawDiamond(canvas, 10, 10);
+      }
     }
 
     drawable = ResourcesCompat.getDrawable(r, R.drawable.bigsuits, null);
     for (int i = 0; i < 4; i++) {
       bigSuit[i] = Bitmap.createBitmap(25, 25, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(bigSuit[i]);
-      drawable.setBounds(-i*25, 0, -i*25+100, 25);
-      drawable.draw(canvas);
+      if(i!=1) {
+        drawable.setBounds(-i * 25, 0, -i * 25 + 100, 25);
+        drawable.draw(canvas);
+      } else {
+        drawDiamond(canvas, 25, 25);
+      }
     }
 
     String[] card_values = mResources.getStringArray(R.array.card_values);
