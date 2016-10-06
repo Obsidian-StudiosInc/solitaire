@@ -45,13 +45,13 @@ class Card {
      */
     public static void SetSize(int type, int screenWidth, int screenHeight) {
       if (type == Rules.SOLITAIRE) {
-          WIDTH = screenHeight/10;
-          HEIGHT = screenWidth/10;
+          WIDTH = screenHeight/8;
+          HEIGHT = screenWidth/9;
       } else if (type == Rules.FREECELL) {
-          WIDTH = screenHeight/11;
+          WIDTH = screenHeight/10;
           HEIGHT = screenWidth/11;
       } else {
-          WIDTH = screenHeight/12;
+          WIDTH = screenHeight/11;
           HEIGHT = screenWidth/12;
       }
     }
