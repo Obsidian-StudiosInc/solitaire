@@ -346,10 +346,6 @@ public class DrawMaster {
     Bitmap[] revSuit = new Bitmap[4];
     Bitmap[] smallSuit = new Bitmap[4];
     Bitmap[] revSmallSuit = new Bitmap[4];
-    Bitmap[] blackFont = new Bitmap[13];
-    Bitmap[] revBlackFont = new Bitmap[13];
-    Bitmap[] redFont = new Bitmap[13];
-    Bitmap[] revRedFont = new Bitmap[13];
     Bitmap redJack;
     Bitmap redRevJack;
     Bitmap redQueen;
@@ -365,13 +361,14 @@ public class DrawMaster {
     Canvas canvas;
     int width = Card.WIDTH;
     int height = Card.HEIGHT;
-    int fontWidth;
-    int fontHeight;
     float[] faceBox = { 9,8,width-10,8,
                         width-10,8,width-10,height-9,
                         width-10,height-9,9,height-9,
                         9,height-8,9,8
                       };
+    final String[] card_values = mResources.getStringArray(R.array.card_values);
+    final Paint textPaintLeft = getTextPaint(mFontSize/4,Paint.Align.LEFT);
+    float textSize = textPaintLeft.getTextSize();
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
 
     mCardHidden = Bitmap.createBitmap(Card.WIDTH, Card.HEIGHT,
@@ -400,34 +397,6 @@ public class DrawMaster {
       canvas = new Canvas(revSmallSuit[i]);
       canvas.rotate(180);
       drawSuit(i,canvas,suitsSmallSize);
-    }
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.medblackfont, null);
-    fontWidth = 7;
-    fontHeight = 9;
-    for (int i = 0; i < 13; i++) {
-      blackFont[i] = Bitmap.createBitmap(fontWidth, fontHeight, Bitmap.Config.ARGB_8888);
-      revBlackFont[i] = Bitmap.createBitmap(fontWidth, fontHeight, Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(blackFont[i]);
-      drawable.setBounds(-i*fontWidth, 0, -i*fontWidth+13*fontWidth, fontHeight);
-      drawable.draw(canvas);
-      canvas = new Canvas(revBlackFont[i]);
-      canvas.rotate(180);
-      drawable.setBounds(-i*fontWidth-fontWidth, -fontHeight, -i*fontWidth+(12*fontWidth), 0);
-      drawable.draw(canvas);
-    }
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.medredfont, null);
-    for (int i = 0; i < 13; i++) {
-      redFont[i] = Bitmap.createBitmap(fontWidth, fontHeight, Bitmap.Config.ARGB_8888);
-      revRedFont[i] = Bitmap.createBitmap(fontWidth, fontHeight, Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(redFont[i]);
-      drawable.setBounds(-i*fontWidth, 0, -i*fontWidth+13*fontWidth, fontHeight);
-      drawable.draw(canvas);
-      canvas = new Canvas(revRedFont[i]);
-      canvas.rotate(180);
-      drawable.setBounds(-i*fontWidth-fontWidth, -fontHeight, -i*fontWidth+(12*fontWidth), 0);
-      drawable.draw(canvas);
     }
 
     int faceWidth = width - 20;
@@ -512,21 +481,22 @@ public class DrawMaster {
         canvas.drawRoundRect(pos, 4, 4, cardFrontPaint);
 
         if ((suitIdx & 1) == 1) {
-          canvas.drawBitmap(redFont[valueIdx], 2, 4, mSuitPaint);
-          canvas.drawBitmap(revRedFont[valueIdx], width-fontWidth-2, height-fontHeight-4,
-                            mSuitPaint);
+          textPaintLeft.setARGB(255, 255, 0, 0);
         } else {
-          canvas.drawBitmap(blackFont[valueIdx], 2, 4, mSuitPaint);
-          canvas.drawBitmap(revBlackFont[valueIdx], width-fontWidth-2, height-fontHeight-4,
-                            mSuitPaint);
+          textPaintLeft.setARGB(255, 0, 0, 0);
         }
-        if (fontWidth > 6) {
-          canvas.drawBitmap(smallSuit[suitIdx], 3, suitsSmallSize+fontHeight, mSuitPaint);
-          canvas.drawBitmap(revSmallSuit[suitIdx], width-7, height-11-fontHeight,
+        canvas.drawText(card_values[valueIdx], 2, textSize, textPaintLeft);
+        canvas.save();
+        canvas.rotate(180);
+        canvas.drawText(card_values[valueIdx], -Card.WIDTH+2, -Card.HEIGHT+textSize, textPaintLeft);
+        canvas.restore();
+        if (textSize > 6) {
+          canvas.drawBitmap(smallSuit[suitIdx], 3, suitsSmallSize+textSize, mSuitPaint);
+          canvas.drawBitmap(revSmallSuit[suitIdx], width-7, height-11-textSize,
                             mSuitPaint);
         } else {
-          canvas.drawBitmap(smallSuit[suitIdx], 2, suitsSmallSize+fontHeight, mSuitPaint);
-          canvas.drawBitmap(revSmallSuit[suitIdx], width-6, height-11-fontHeight,
+          canvas.drawBitmap(smallSuit[suitIdx], 2, suitsSmallSize+textSize, mSuitPaint);
+          canvas.drawBitmap(revSmallSuit[suitIdx], width-6, height-11-textSize,
                             mSuitPaint);
         }
 
