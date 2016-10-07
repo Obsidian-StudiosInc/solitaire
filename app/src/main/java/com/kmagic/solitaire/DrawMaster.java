@@ -269,7 +269,7 @@ public class DrawMaster {
     final String[] card_values = mResources.getStringArray(R.array.card_values);
     final Paint cardFrontPaint = new Paint();
     final Paint cardBorderPaint = new Paint();
-    final Paint textPaintLeft = getTextPaint(mFontSize/2,Paint.Align.LEFT);
+    final Paint textPaintLeft = getTextPaint(mFontSize*0.75f,Paint.Align.LEFT);
     float textSize = textPaintLeft.getTextSize();
 
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
