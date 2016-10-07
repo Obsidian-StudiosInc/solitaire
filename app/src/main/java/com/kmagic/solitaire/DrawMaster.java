@@ -384,7 +384,7 @@ public class DrawMaster {
       canvas = new Canvas(suit[i]);
       drawSuit(i,canvas,suitsSize);
       canvas = new Canvas(revSuit[i]);
-      canvas.rotate(180);
+      canvas.rotate(180,suitsSize/2,suitsSize/2);
       drawSuit(i,canvas,suitsSize);
     }
 
@@ -395,7 +395,7 @@ public class DrawMaster {
       canvas = new Canvas(smallSuit[i]);
       drawSuit(i,canvas,suitsSmallSize);
       canvas = new Canvas(revSmallSuit[i]);
-      canvas.rotate(180);
+      canvas.rotate(180,suitsSmallSize/2,suitsSmallSize/2);
       drawSuit(i,canvas,suitsSmallSize);
     }
 
