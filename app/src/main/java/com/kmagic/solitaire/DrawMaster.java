@@ -261,6 +261,18 @@ public class DrawMaster {
     }
   }
 
+  public void drawSuit(final int suit, final Canvas canvas, final  float size) {
+    if(suit==0) {
+      drawClub(canvas, size, size);
+    } else if(suit==1) {
+      drawDiamond(canvas, size, size);
+    } else if(suit==2) {
+      drawSpade(canvas, size, size);
+    } else if(suit==3) {
+      drawHeart(canvas, size, size);
+    }
+  }
+
   private void DrawBigCards(Resources r) {
 
     final Bitmap[] bigSuit = new Bitmap[4];
@@ -284,30 +296,14 @@ public class DrawMaster {
     for (int i = 0; i < 4; i++) {
       suit[i] = Bitmap.createBitmap((int)smallSuit, (int)smallSuit, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(suit[i]);
-      if(i==0) {
-        drawClub(canvas, smallSuit, smallSuit);
-      } else if(i==1) {
-        drawDiamond(canvas, smallSuit, smallSuit);
-      } else if(i==2) {
-        drawSpade(canvas, smallSuit, smallSuit);
-      } else if(i==3) {
-        drawHeart(canvas, smallSuit, smallSuit);
-      }
+      drawSuit(i,canvas,smallSuit);
     }
 
     final float largeSuit = textSize;
     for (int i = 0; i < 4; i++) {
       bigSuit[i] = Bitmap.createBitmap((int)largeSuit, (int)largeSuit, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(bigSuit[i]);
-      if(i==0) {
-        drawClub(canvas, largeSuit, largeSuit);
-      } else if(i==1) {
-        drawDiamond(canvas, largeSuit, largeSuit);
-      } else if(i==2) {
-        drawSpade(canvas, largeSuit, largeSuit);
-      } else if(i==3) {
-        drawHeart(canvas, largeSuit, largeSuit);
-      }
+      drawSuit(i,canvas,largeSuit);
     }
 
     cardBorderPaint.setARGB(255, 0, 0, 0);
@@ -384,30 +380,26 @@ public class DrawMaster {
     drawable.setBounds(0, 0, Card.WIDTH, Card.HEIGHT);
     drawable.draw(canvas);
 
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.suits, null);
+    final float suitsSize = 10;
     for (int i = 0; i < 4; i++) {
-      suit[i] = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
-      revSuit[i] = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
+      suit[i] = Bitmap.createBitmap((int)suitsSize, (int)suitsSize, Bitmap.Config.ARGB_8888);
+      revSuit[i] = Bitmap.createBitmap((int)suitsSize, (int)suitsSize, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(suit[i]);
-      drawable.setBounds(-i*10, 0, -i*10+40, 10);
-      drawable.draw(canvas);
+      drawSuit(i,canvas,suitsSize);
       canvas = new Canvas(revSuit[i]);
       canvas.rotate(180);
-      drawable.setBounds(-i*10-10, -10, -i*10+30, 0);
-      drawable.draw(canvas);
+      drawSuit(i,canvas,suitsSize);
     }
 
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.smallsuits, null);
+    final float suitsSmallSize = 5;
     for (int i = 0; i < 4; i++) {
-      smallSuit[i] = Bitmap.createBitmap(5, 5, Bitmap.Config.ARGB_8888);
-      revSmallSuit[i] = Bitmap.createBitmap(5, 5, Bitmap.Config.ARGB_8888);
+      smallSuit[i] = Bitmap.createBitmap((int)suitsSmallSize, (int)suitsSmallSize, Bitmap.Config.ARGB_8888);
+      revSmallSuit[i] = Bitmap.createBitmap((int)suitsSmallSize, (int)suitsSmallSize, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(smallSuit[i]);
-      drawable.setBounds(-i*5, 0, -i*5+20, 5);
-      drawable.draw(canvas);
+      drawSuit(i,canvas,suitsSmallSize);
       canvas = new Canvas(revSmallSuit[i]);
       canvas.rotate(180);
-      drawable.setBounds(-i*5-5, -5, -i*5+15, 0);
-      drawable.draw(canvas);
+      drawSuit(i,canvas,suitsSmallSize);
     }
 
     drawable = ResourcesCompat.getDrawable(r, R.drawable.medblackfont, null);
@@ -529,23 +521,23 @@ public class DrawMaster {
                             mSuitPaint);
         }
         if (fontWidth > 6) {
-          canvas.drawBitmap(smallSuit[suitIdx], 3, 5+fontHeight, mSuitPaint);
+          canvas.drawBitmap(smallSuit[suitIdx], 3, suitsSmallSize+fontHeight, mSuitPaint);
           canvas.drawBitmap(revSmallSuit[suitIdx], width-7, height-11-fontHeight,
                             mSuitPaint);
         } else {
-          canvas.drawBitmap(smallSuit[suitIdx], 2, 5+fontHeight, mSuitPaint);
+          canvas.drawBitmap(smallSuit[suitIdx], 2, suitsSmallSize+fontHeight, mSuitPaint);
           canvas.drawBitmap(revSmallSuit[suitIdx], width-6, height-11-fontHeight,
                             mSuitPaint);
         }
 
         if (valueIdx >= 10) {
-          canvas.drawBitmap(suit[suitIdx], 10, 9, mSuitPaint);
+          canvas.drawBitmap(suit[suitIdx], suitsSize, 9, mSuitPaint);
           canvas.drawBitmap(revSuit[suitIdx], width-21, height-20,
                             mSuitPaint);
         }
 
-        int[] suitX = {9,width/2-5,width-20};
-        int[] suitY = {7,2*height/5-5,3*height/5-5,height-18};
+        int[] suitX = {9,width/2-(int)suitsSmallSize,width-20};
+        int[] suitY = {7,2*height/(int)suitsSmallSize-(int)suitsSmallSize,3*height/(int)suitsSmallSize-(int)suitsSmallSize,height-18};
         int suitMidY = height/2 - 6;
         switch (valueIdx+1) {
           case 1:
@@ -619,31 +611,31 @@ public class DrawMaster {
           case Card.JACK:
             canvas.drawLines(faceBox, cardBorderPaint);
             if ((suitIdx & 1) == 1) {
-              canvas.drawBitmap(redJack, 10, 9, mSuitPaint);
-              canvas.drawBitmap(redRevJack, 10, height-faceHeight-9, mSuitPaint);
+              canvas.drawBitmap(redJack, suitsSize, suitsSize, mSuitPaint);
+              canvas.drawBitmap(redRevJack, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
             } else {
-              canvas.drawBitmap(blackJack, 10, 9, mSuitPaint);
-              canvas.drawBitmap(blackRevJack, 10, height-faceHeight-9, mSuitPaint);
+              canvas.drawBitmap(blackJack, suitsSize, suitsSize, mSuitPaint);
+              canvas.drawBitmap(blackRevJack, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
             }
             break;
           case Card.QUEEN:
             canvas.drawLines(faceBox, cardBorderPaint);
             if ((suitIdx & 1) == 1) {
-              canvas.drawBitmap(redQueen, 10, 9, mSuitPaint);
-              canvas.drawBitmap(redRevQueen, 10, height-faceHeight-9, mSuitPaint);
+              canvas.drawBitmap(redQueen, suitsSize, suitsSize, mSuitPaint);
+              canvas.drawBitmap(redRevQueen, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
             } else {
-              canvas.drawBitmap(blackQueen, 10, 9, mSuitPaint);
-              canvas.drawBitmap(blackRevQueen, 10, height-faceHeight-9, mSuitPaint);
+              canvas.drawBitmap(blackQueen, suitsSize, suitsSize, mSuitPaint);
+              canvas.drawBitmap(blackRevQueen, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
             }
             break;
           case Card.KING:
             canvas.drawLines(faceBox, cardBorderPaint);
             if ((suitIdx & 1) == 1) {
-              canvas.drawBitmap(redKing, 10, 9, mSuitPaint);
-              canvas.drawBitmap(redRevKing, 10, height-faceHeight-9, mSuitPaint);
+              canvas.drawBitmap(redKing, suitsSize, suitsSize, mSuitPaint);
+              canvas.drawBitmap(redRevKing, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
             } else {
-              canvas.drawBitmap(blackKing, 10, 9, mSuitPaint);
-              canvas.drawBitmap(blackRevKing, 10, height-faceHeight-9, mSuitPaint);
+              canvas.drawBitmap(blackKing, suitsSize, suitsSize, mSuitPaint);
+              canvas.drawBitmap(blackRevKing, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
             }
             break;
         }
