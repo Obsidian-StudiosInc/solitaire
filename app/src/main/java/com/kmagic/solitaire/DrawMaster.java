@@ -345,29 +345,18 @@ public class DrawMaster {
     Bitmap[] suit = new Bitmap[4];
     Bitmap[] revSuit = new Bitmap[4];
     Bitmap[] smallSuit = new Bitmap[4];
-    Bitmap[] revSmallSuit = new Bitmap[4];
     Bitmap redJack;
-    Bitmap redRevJack;
     Bitmap redQueen;
-    Bitmap redRevQueen;
     Bitmap redKing;
-    Bitmap redRevKing;
     Bitmap blackJack;
-    Bitmap blackRevJack;
     Bitmap blackQueen;
-    Bitmap blackRevQueen;
     Bitmap blackKing;
-    Bitmap blackRevKing;
     Canvas canvas;
     int width = Card.WIDTH;
     int height = Card.HEIGHT;
-    float[] faceBox = { 9,8,width-10,8,
-                        width-10,8,width-10,height-9,
-                        width-10,height-9,9,height-9,
-                        9,height-8,9,8
-                      };
+
     final String[] card_values = mResources.getStringArray(R.array.card_values);
-    final Paint textPaintLeft = getTextPaint(mFontSize/4,Paint.Align.LEFT);
+    final Paint textPaintLeft = getTextPaint(mFontSize/3,Paint.Align.LEFT);
     float textSize = textPaintLeft.getTextSize();
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
 
@@ -377,7 +366,7 @@ public class DrawMaster {
     drawable.setBounds(0, 0, Card.WIDTH, Card.HEIGHT);
     drawable.draw(canvas);
 
-    final float suitsSize = 10;
+    final float suitsSize = textSize;
     for (int i = 0; i < 4; i++) {
       suit[i] = Bitmap.createBitmap((int)suitsSize, (int)suitsSize, Bitmap.Config.ARGB_8888);
       revSuit[i] = Bitmap.createBitmap((int)suitsSize, (int)suitsSize, Bitmap.Config.ARGB_8888);
@@ -388,83 +377,49 @@ public class DrawMaster {
       drawSuit(i,canvas,suitsSize);
     }
 
-    final float suitsSmallSize = 5;
+    final float suitsSmallSize = textSize/2;
     for (int i = 0; i < 4; i++) {
       smallSuit[i] = Bitmap.createBitmap((int)suitsSmallSize, (int)suitsSmallSize, Bitmap.Config.ARGB_8888);
-      revSmallSuit[i] = Bitmap.createBitmap((int)suitsSmallSize, (int)suitsSmallSize, Bitmap.Config.ARGB_8888);
       canvas = new Canvas(smallSuit[i]);
-      drawSuit(i,canvas,suitsSmallSize);
-      canvas = new Canvas(revSmallSuit[i]);
-      canvas.rotate(180,suitsSmallSize/2,suitsSmallSize/2);
       drawSuit(i,canvas,suitsSmallSize);
     }
 
     int faceWidth = width - 20;
-    int faceHeight = height/2 - 9;
+    int faceHeight = height/2 - (int)suitsSize;
     drawable = ResourcesCompat.getDrawable(r, R.drawable.redjack, null);
     redJack = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    redRevJack = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
     canvas = new Canvas(redJack);
     drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-    canvas = new Canvas(redRevJack);
-    canvas.rotate(180);
-    drawable.setBounds(-faceWidth, -faceHeight, 0, 0);
     drawable.draw(canvas);
 
     drawable = ResourcesCompat.getDrawable(r, R.drawable.redqueen, null);
     redQueen = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    redRevQueen = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
     canvas = new Canvas(redQueen);
     drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-    canvas = new Canvas(redRevQueen);
-    canvas.rotate(180);
-    drawable.setBounds(-faceWidth, -faceHeight, 0, 0);
     drawable.draw(canvas);
 
     drawable = ResourcesCompat.getDrawable(r, R.drawable.redking, null);
     redKing = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    redRevKing = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
     canvas = new Canvas(redKing);
     drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-    canvas = new Canvas(redRevKing);
-    canvas.rotate(180);
-    drawable.setBounds(-faceWidth, -faceHeight, 0, 0);
     drawable.draw(canvas);
 
     drawable = ResourcesCompat.getDrawable(r, R.drawable.blackjack, null);
     blackJack = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    blackRevJack = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
     canvas = new Canvas(blackJack);
     drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-    canvas = new Canvas(blackRevJack);
-    canvas.rotate(180);
-    drawable.setBounds(-faceWidth, -faceHeight, 0, 0);
     drawable.draw(canvas);
 
     drawable = ResourcesCompat.getDrawable(r, R.drawable.blackqueen, null);
     blackQueen = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    blackRevQueen = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
     canvas = new Canvas(blackQueen);
     drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-    canvas = new Canvas(blackRevQueen);
-    canvas.rotate(180);
-    drawable.setBounds(-faceWidth, -faceHeight, 0, 0);
     drawable.draw(canvas);
 
     drawable = ResourcesCompat.getDrawable(r, R.drawable.blackking, null);
     blackKing = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    blackRevKing = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
     canvas = new Canvas(blackKing);
     drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-    canvas = new Canvas(blackRevKing);
-    canvas.rotate(180);
-    drawable.setBounds(-faceWidth, -faceHeight, 0, 0);
     drawable.draw(canvas);
 
     cardBorderPaint.setARGB(255, 0, 0, 0);
@@ -485,30 +440,38 @@ public class DrawMaster {
         } else {
           textPaintLeft.setARGB(255, 0, 0, 0);
         }
-        canvas.drawText(card_values[valueIdx], 2, textSize, textPaintLeft);
+        final float halfSuitsSmallSize = suitsSmallSize/2;
+        canvas.drawText(card_values[valueIdx], halfSuitsSmallSize, textSize, textPaintLeft);
+        canvas.drawBitmap(smallSuit[suitIdx],
+                          halfSuitsSmallSize,
+                          halfSuitsSmallSize+textSize,
+                          mSuitPaint);
         canvas.save();
-        canvas.rotate(180);
-        canvas.drawText(card_values[valueIdx], -Card.WIDTH+2, -Card.HEIGHT+textSize, textPaintLeft);
+        canvas.rotate(180,Card.WIDTH/2,Card.HEIGHT/2);
+        canvas.drawBitmap(smallSuit[suitIdx],
+                          halfSuitsSmallSize,
+                          halfSuitsSmallSize+textSize,
+                          mSuitPaint);
+        canvas.drawText(card_values[valueIdx], halfSuitsSmallSize, textSize, textPaintLeft);
         canvas.restore();
-        if (textSize > 6) {
-          canvas.drawBitmap(smallSuit[suitIdx], 3, suitsSmallSize+textSize, mSuitPaint);
-          canvas.drawBitmap(revSmallSuit[suitIdx], width-7, height-11-textSize,
-                            mSuitPaint);
-        } else {
-          canvas.drawBitmap(smallSuit[suitIdx], 2, suitsSmallSize+textSize, mSuitPaint);
-          canvas.drawBitmap(revSmallSuit[suitIdx], width-6, height-11-textSize,
-                            mSuitPaint);
-        }
 
         if (valueIdx >= 10) {
-          canvas.drawBitmap(suit[suitIdx], suitsSize, 9, mSuitPaint);
-          canvas.drawBitmap(revSuit[suitIdx], width-21, height-20,
+          canvas.drawBitmap(suit[suitIdx], suitsSize, suitsSize, mSuitPaint);
+          canvas.drawBitmap(revSuit[suitIdx],
+                            width-suitsSize*2,
+                            height-suitsSize*2,
                             mSuitPaint);
         }
 
-        int[] suitX = {9,width/2-(int)suitsSmallSize,width-20};
-        int[] suitY = {7,2*height/(int)suitsSmallSize-(int)suitsSmallSize,3*height/(int)suitsSmallSize-(int)suitsSmallSize,height-18};
-        int suitMidY = height/2 - 6;
+        final float height_5th = height/5;
+        final int suitsSizeHalf = (int)suitsSize/2;
+        final int suitsSizeAndAHalf = (int)(suitsSize*1.5);
+        final int[] suitX = {suitsSizeAndAHalf,width/2-suitsSizeHalf,width-(int)(suitsSizeAndAHalf*1.75)};
+        final int[] suitY = {suitsSizeAndAHalf,
+                             (int)height_5th*2-suitsSizeHalf,
+                             (int)height_5th*3,
+                             height-(int)(suitsSizeAndAHalf*1.75)};
+        final int suitMidY = height/2 - (int)suitsSize/2;
         switch (valueIdx+1) {
           case 1:
             canvas.drawBitmap(suit[suitIdx], suitX[1], suitMidY, mSuitPaint);
@@ -548,7 +511,7 @@ public class DrawMaster {
             canvas.drawBitmap(suit[suitIdx], suitX[2], suitY[0], mSuitPaint);
             canvas.drawBitmap(suit[suitIdx], suitX[0], suitMidY, mSuitPaint);
             canvas.drawBitmap(suit[suitIdx], suitX[2], suitMidY, mSuitPaint);
-            canvas.drawBitmap(suit[suitIdx], suitX[1], (suitMidY+suitY[0])/2, mSuitPaint);
+            canvas.drawBitmap(suit[suitIdx], suitX[1], suitMidY, mSuitPaint);
             canvas.drawBitmap(revSuit[suitIdx], suitX[0], suitY[3], mSuitPaint);
             canvas.drawBitmap(revSuit[suitIdx], suitX[2], suitY[3], mSuitPaint);
             break;
@@ -579,39 +542,41 @@ public class DrawMaster {
             break;
 
           case Card.JACK:
-            canvas.drawLines(faceBox, cardBorderPaint);
             if ((suitIdx & 1) == 1) {
-              canvas.drawBitmap(redJack, suitsSize, suitsSize, mSuitPaint);
-              canvas.drawBitmap(redRevJack, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
+              drawFaceBitmap(canvas, redJack, suitsSmallSize, suitsSize, mSuitPaint);
             } else {
-              canvas.drawBitmap(blackJack, suitsSize, suitsSize, mSuitPaint);
-              canvas.drawBitmap(blackRevJack, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
+              drawFaceBitmap(canvas, blackJack, suitsSmallSize, suitsSize, mSuitPaint);
             }
             break;
           case Card.QUEEN:
-            canvas.drawLines(faceBox, cardBorderPaint);
             if ((suitIdx & 1) == 1) {
-              canvas.drawBitmap(redQueen, suitsSize, suitsSize, mSuitPaint);
-              canvas.drawBitmap(redRevQueen, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
+              drawFaceBitmap(canvas, redQueen, suitsSmallSize, suitsSize, mSuitPaint);
             } else {
-              canvas.drawBitmap(blackQueen, suitsSize, suitsSize, mSuitPaint);
-              canvas.drawBitmap(blackRevQueen, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
+              drawFaceBitmap(canvas, blackQueen, suitsSmallSize, suitsSize, mSuitPaint);
             }
             break;
           case Card.KING:
-            canvas.drawLines(faceBox, cardBorderPaint);
             if ((suitIdx & 1) == 1) {
-              canvas.drawBitmap(redKing, suitsSize, suitsSize, mSuitPaint);
-              canvas.drawBitmap(redRevKing, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
+              drawFaceBitmap(canvas, redKing, suitsSmallSize, suitsSize, mSuitPaint);
             } else {
-              canvas.drawBitmap(blackKing, suitsSize, suitsSize, mSuitPaint);
-              canvas.drawBitmap(blackRevKing, suitsSize, height-faceHeight-suitsSize, mSuitPaint);
+              drawFaceBitmap(canvas, blackKing, suitsSmallSize, suitsSize, mSuitPaint);
             }
             break;
         }
       }
     }
   }
+
+  public void drawFaceBitmap(final Canvas canvas,
+                             final Bitmap bitmap,
+                             final float suitsSmallSize,
+                             final float suitsSize,
+                             final Paint paint) {
+    canvas.drawBitmap(bitmap, suitsSmallSize, suitsSize, paint);
+    canvas.rotate(180,Card.WIDTH/2,Card.HEIGHT/2);
+    canvas.drawBitmap(bitmap, suitsSmallSize, suitsSize, paint);
+  }
+
 
     public void DrawTime(Canvas canvas, int millis) {
         int seconds = (millis / 1000) % 60;
