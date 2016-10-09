@@ -338,6 +338,18 @@ public class DrawMaster {
     }
   }
 
+  private Bitmap createFaceBitmap(final Resources r,
+                                  final int id,
+                                  final int width,
+                                  final int height) {
+    Drawable drawable = ResourcesCompat.getDrawable(r, id, null);
+    Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(bitmap);
+    drawable.setBounds(0, 0, width, height);
+    drawable.draw(canvas);
+    return(bitmap);
+  }
+
   private void DrawCards(Resources r) {
 
     Paint cardFrontPaint = new Paint();
@@ -386,41 +398,12 @@ public class DrawMaster {
 
     int faceWidth = width - 20;
     int faceHeight = height/2 - (int)suitsSize;
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.redjack, null);
-    redJack = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    canvas = new Canvas(redJack);
-    drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.redqueen, null);
-    redQueen = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    canvas = new Canvas(redQueen);
-    drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.redking, null);
-    redKing = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    canvas = new Canvas(redKing);
-    drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.blackjack, null);
-    blackJack = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    canvas = new Canvas(blackJack);
-    drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.blackqueen, null);
-    blackQueen = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    canvas = new Canvas(blackQueen);
-    drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
-
-    drawable = ResourcesCompat.getDrawable(r, R.drawable.blackking, null);
-    blackKing = Bitmap.createBitmap(faceWidth, faceHeight, Bitmap.Config.ARGB_8888);
-    canvas = new Canvas(blackKing);
-    drawable.setBounds(0, 0, faceWidth, faceHeight);
-    drawable.draw(canvas);
+    blackJack = createFaceBitmap(r,R.drawable.blackjack, faceWidth, faceHeight);
+    blackQueen = createFaceBitmap(r,R.drawable.blackqueen, faceWidth, faceHeight);
+    blackKing = createFaceBitmap(r,R.drawable.blackking, faceWidth, faceHeight);
+    redJack = createFaceBitmap(r,R.drawable.redjack, faceWidth, faceHeight);
+    redQueen = createFaceBitmap(r,R.drawable.redqueen, faceWidth, faceHeight);
+    redKing = createFaceBitmap(r,R.drawable.redking, faceWidth, faceHeight);
 
     cardBorderPaint.setARGB(255, 0, 0, 0);
     cardFrontPaint.setARGB(255, 255, 255, 255);
