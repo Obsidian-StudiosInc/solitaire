@@ -1,5 +1,6 @@
 /*
-  Copyright 2008 Google Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +17,6 @@
 package com.kmagic.solitaire;
 
 import android.graphics.Canvas;
-import android.util.Log;
 
 class SelectCard {
 
@@ -50,7 +50,6 @@ class SelectCard {
   }
 
   public void SetHeight(int height) { mHeight = height; }
-  public boolean IsValid() { return mValid; }
 
   public CardAnchor GetAnchor() { return mCardAnchor; }
   public int GetCount() {
