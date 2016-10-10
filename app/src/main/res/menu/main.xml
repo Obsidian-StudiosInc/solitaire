@@ -29,6 +29,8 @@
                  android:title="@string/menu_fortythieves" />
        </menu> 
     </item>
+    <item android:id="@+id/menu_deal"
+          android:title="@string/menu_deal" />
     <item android:id="@+id/menu_restart"
           android:title="@string/menu_restart" />
     <item android:id="@+id/menu_options"
