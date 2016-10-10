@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.MotionEvent;
@@ -472,6 +471,15 @@ public class SolitaireView extends View {
       }
   }
 
+  public void deal() {
+    if (mViewMode == MODE_TEXT) {
+      ChangeViewMode(MODE_NORMAL);
+    } else if (mViewMode == MODE_NORMAL) {
+      mRules.EventAlert(Rules.EVENT_DEAL, mCardAnchor[0]);
+      Refresh();
+    }
+  }
+
   @Override
   public void onDraw(Canvas canvas) {
 
@@ -516,14 +524,9 @@ public class SolitaireView extends View {
     switch (keyCode) {
     case KeyEvent.KEYCODE_DPAD_CENTER:
     case KeyEvent.KEYCODE_SEARCH:
-      if (mViewMode == MODE_TEXT) {
-        ChangeViewMode(MODE_NORMAL);
-      } else if (mViewMode == MODE_NORMAL) {
-        mRules.EventAlert(Rules.EVENT_DEAL, mCardAnchor[0]);
-        Refresh();
-      }
+      deal();
       return true;
-      }
+    }
     mRules.HandleEvents();
     return super.onKeyDown(keyCode, msg);
   }
