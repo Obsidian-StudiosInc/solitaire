@@ -108,6 +108,9 @@ public class Solitaire extends Activity {
       case R.id.menu_restart:
         mSolitaireView.RestartGame();
         break;
+      case R.id.menu_deal:
+        mSolitaireView.deal();
+        break;
       case R.id.menu_stats:
         DisplayStats();
         break;
