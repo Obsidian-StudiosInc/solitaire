@@ -6,6 +6,13 @@ The idea behind this fork is to update the app for higher resolution
 displays, phones without menu buttons, and keep it in sync with current 
 Android version.
 
+Initial work has been done to replace low resolution bitmaps with draw 
+graphics based on screen and card size. All suits and card values have 
+been replaced with drawn graphics and text. The face cards will remain 
+low resolution bitmaps for now but do scale. Work is still being done to 
+dial in the scaling of cards, and adjusting suit and font sizes based on 
+screen size.
+
 This is a very early fork, contributions are welcome!
 
 ## Build Instructions
