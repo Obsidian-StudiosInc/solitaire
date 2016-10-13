@@ -30,7 +30,6 @@ import android.widget.TextView;
 public class Solitaire extends Activity {
 
   // View extracted from main.xml.
-  private View mMainView;
   private SolitaireView mSolitaireView;
   private SharedPreferences mSettings;
 
@@ -51,7 +50,6 @@ public class Solitaire extends Activity {
     // If the user has never accepted the EULA show it again.
     mSettings = getSharedPreferences("SolitairePreferences", 0);
     setContentView(R.layout.main);
-    mMainView = findViewById(R.id.main_view);
     mSolitaireView = (SolitaireView) findViewById(R.id.solitaire);
     mSolitaireView.SetTextView((TextView) findViewById(R.id.text));
 
@@ -170,19 +168,19 @@ public class Solitaire extends Activity {
   }
 
   public void CancelOptions() {
-    setContentView(mMainView);
+    setContentView(mSolitaireView);
     mSolitaireView.requestFocus();
     mSolitaireView.SetTimePassing(true);
   }
 
   public void NewOptions() {
-    setContentView(mMainView);
+    setContentView(mSolitaireView);
     mSolitaireView.InitGame(mSettings.getInt("LastType", Rules.SOLITAIRE));
   }
 
   // This is called for option changes that require a refresh, but not a new game
   public void RefreshOptions() {
-    setContentView(mMainView);
+    setContentView(mSolitaireView);
     mSolitaireView.RefreshOptions();
   }
 }
