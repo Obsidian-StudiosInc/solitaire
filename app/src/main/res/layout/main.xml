@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2008 Google Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,28 +15,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_view"
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
     <com.kmagic.solitaire.SolitaireView
       android:id="@+id/solitaire"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent" />
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-        <TextView
-          android:id="@+id/text"
-          android:text="@string/solitaire_layout_text_text"
-          android:visibility="visible"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerInParent="true"
-          android:gravity="center_horizontal"
-          />
-     </RelativeLayout>
-
-</FrameLayout>
+    <TextView
+      android:id="@+id/text"
+      android:text="@string/solitaire_layout_text_text"
+      android:visibility="visible"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:gravity="center_horizontal"
+      />
+</merge>
 
