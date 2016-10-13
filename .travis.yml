@@ -10,7 +10,6 @@ android:
 jdk:
   - oraclejdk8
 before_script:
-  - android list sdk --no-ui --all --extended
   - wget http://services.gradle.org/distributions/gradle-2.14.1-bin.zip
   - unzip gradle-2.14.1-bin.zip
   - export GRADLE_HOME=$PWD/gradle-2.14.1
