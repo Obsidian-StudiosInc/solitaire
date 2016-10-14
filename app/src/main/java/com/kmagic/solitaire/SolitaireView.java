@@ -552,6 +552,12 @@ public class SolitaireView extends View {
     }
 
   @Override
+  public boolean performClick() {
+    super.performClick();
+    return true;
+  }
+
+  @Override
   public boolean onTouchEvent(MotionEvent event) {
     boolean ret = false;
 
@@ -560,7 +566,7 @@ public class SolitaireView extends View {
       return false;
     }
 
-    // Text mode only handles clickys
+    // Text mode only handles clicks
     if (mViewMode == MODE_TEXT) {
       if (event.getAction() == MotionEvent.ACTION_UP && mTextViewDown) {
         SharedPreferences.Editor editor = mContext.getSharedPreferences("SolitairePreferences", 0).edit();
@@ -571,6 +577,7 @@ public class SolitaireView extends View {
       } if (event.getAction() == MotionEvent.ACTION_DOWN) {
         mTextViewDown = true;
       }
+      performClick();
       return true;
     }
 
