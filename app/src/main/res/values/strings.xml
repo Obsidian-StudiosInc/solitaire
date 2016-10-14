@@ -50,6 +50,11 @@
     <string name="fling_only">Fling Only</string>
     <string name="never">Never</string>
     <string name="display_time">Display Time</string>
+    <string name="stats_attempts">Attempts</string>
+    <string name="stats_fastest_time">Fastest Time</string>
+    <string name="stats_high_score">High Score</string>
+    <string name="stats_win_percent">Winning Percentage</string>
+    <string name="stats_wins">Wins</string>
     <string name="help_text">
 Moving:\n
 Single Card: Drag the card.\n
