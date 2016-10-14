@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 public class Stats {
 
   public Stats(final Solitaire solitaire, final SolitaireView view) {
@@ -47,20 +49,27 @@ public class Stats {
     }
 
     TextView tv = (TextView)solitaire.findViewById(R.id.text_title);
-    tv.setText(rules.GetPrettyGameTypeString() + " Statistics\n\n");
+    String text = rules.GetPrettyGameTypeString() + " \n\n";
+    tv.setText(text);
     tv = (TextView)solitaire.findViewById(R.id.text_wins);
-    tv.setText("Wins: " + wins + " Attempts: " + attempts);
+    text = R.string.stats_wins+": "+ wins + " "
+           + R.string.stats_attempts+": " + attempts;
+    tv.setText(text);
     tv = (TextView)solitaire.findViewById(R.id.text_percentage);
-    tv.setText("Winning Percentage: " + ratio);
+    text = R.string.stats_win_percent+": " + ratio;
+    tv.setText(text);
     if (bestTime != -1) {
       int seconds = (bestTime / 1000) % 60;
       int minutes = bestTime / 60000;
       tv = (TextView)solitaire.findViewById(R.id.text_best_time);
-      tv.setText("Fastest Time: " + String.format("%d:%02d", minutes, seconds));
+      text = R.string.stats_fastest_time+": "
+             + String.format(Locale.getDefault(),"%d:%02d", minutes, seconds);
+      tv.setText(text);
     }
     if (rules.HasScore()) {
       tv = (TextView)solitaire.findViewById(R.id.text_high_score);
-      tv.setText("High Score: " + highScore);
+      text = R.string.stats_high_score+": " + highScore;
+      tv.setText(text);
     }
 
 
