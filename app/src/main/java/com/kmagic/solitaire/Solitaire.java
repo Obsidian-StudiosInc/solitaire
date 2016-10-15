@@ -44,7 +44,8 @@ public class Solitaire extends Activity {
 
     // Force landscape and no title for extra room
     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    requestWindowFeature(Window.FEATURE_NO_TITLE);
+    requestWindowFeature(Window.FEATURE_ACTION_BAR);
+    getActionBar().hide();
 
     // If the user has never accepted the EULA show it again.
     mSettings = getSharedPreferences("SolitairePreferences", 0);
@@ -84,7 +85,7 @@ public class Solitaire extends Activity {
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
-    return true;
+    return super.onCreateOptionsMenu(menu);
   }
 
   @Override
