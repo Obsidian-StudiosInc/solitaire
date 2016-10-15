@@ -16,6 +16,7 @@
 */ 
 package com.kmagic.solitaire;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -547,6 +548,7 @@ public class SolitaireView extends View {
       switch (keyCode) {
           case KeyEvent.KEYCODE_BACK:
               if(mLongKeyPress) {
+                ((Activity) mContext).openOptionsMenu();
                 mLongKeyPress = false;
               } else {
                 Undo();
