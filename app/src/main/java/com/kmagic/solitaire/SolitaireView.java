@@ -532,24 +532,30 @@ public class SolitaireView extends View {
   }
 
     @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent msg) {
+  public boolean onKeyLongPress(int keyCode, KeyEvent msg) {
+    switch (keyCode) {
+      case KeyEvent.KEYCODE_BACK:
         mLongKeyPress = true;
-        return super.onKeyLongPress(keyCode, msg);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent msg) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                if(mLongKeyPress) {
-                    mLongKeyPress = false;
-                } else {
-                    Undo();
-                    return true;
-                }
-        }
+        return true;
+      default:
         return super.onKeyUp(keyCode, msg);
     }
+  }
+
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent msg) {
+      switch (keyCode) {
+          case KeyEvent.KEYCODE_BACK:
+              if(mLongKeyPress) {
+                mLongKeyPress = false;
+              } else {
+                Undo();
+              }
+            return true;
+        default:
+          return super.onKeyUp(keyCode, msg);
+      }
+  }
 
   @Override
   public boolean performClick() {
