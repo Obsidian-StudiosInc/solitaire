@@ -63,11 +63,13 @@ Partial Stack: Tap the stack, scroll to adjust, then drag the top card.\n\n
 Auto Move:\n
 Fling a card to start a chain of moving cards to their home.\n\n
 Dealing:\n
-Tap the deck or click the trackball or search key.\n\n
+Tap the deck or use Deal from the menu.
+Legacy devices can use click the trackball or search key.\n\n
 Undo:\n
 Push the back button.\n\n
 Menu:\n
-Change the gametype, save, options, and view this help.
+Press, hold, and release the back button.
+Change the game type, save, options, and view this help.
 </string>
     <string name="win_text">You Win!\n\nUse the menu to start a new game.</string>
 </resources>
