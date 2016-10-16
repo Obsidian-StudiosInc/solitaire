@@ -1,5 +1,6 @@
 /*
-  Copyright 2008 Google Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,16 +16,12 @@
 */ 
 package com.kmagic.solitaire;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
-import android.view.WindowManager;
 
 
 public class Options {
