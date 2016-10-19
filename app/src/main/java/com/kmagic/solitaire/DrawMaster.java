@@ -360,7 +360,7 @@ public class DrawMaster {
     int height = Card.HEIGHT;
 
     final String[] card_values = mResources.getStringArray(R.array.card_values);
-    final Paint textPaintLeft = getTextPaint(mFontSize/size,Paint.Align.LEFT);
+    final Paint textPaintLeft = getTextPaint(mFontSize*size,Paint.Align.LEFT);
     float textSize = textPaintLeft.getTextSize();
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
 
@@ -445,7 +445,7 @@ public class DrawMaster {
         final float width_5th = width/5;
         final float[] suitX = {width_5th,
                                width/2-suitsSizeHalf,
-                               width-(width_5th*2)};
+                               width-width_5th-suitsSize};
         // Rows
         final float[] suitY = {height_7th, // row 1
                                height_9th*3, // row 2
@@ -552,7 +552,7 @@ public class DrawMaster {
     if (bigCards) {
       DrawBigCards(mContext.getResources());
     } else {
-      DrawCards(mContext.getResources(),2);
+      DrawCards(mContext.getResources(),0.5f);
     }
   }
 
