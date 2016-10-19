@@ -253,14 +253,6 @@ public class DrawMaster {
     drawPedestal(canvas,width,height);
   }
 
-  public void DrawCards(boolean bigCards) {
-    if (bigCards) {
-      DrawBigCards(mContext.getResources());
-    } else {
-      DrawCards(mContext.getResources());
-    }
-  }
-
   public void drawSuit(final int suit, final Canvas canvas, final  float size) {
     if(suit==0) {
       drawClub(canvas, size, size);
@@ -350,7 +342,7 @@ public class DrawMaster {
     return(bitmap);
   }
 
-  private void DrawCards(Resources r) {
+  private void DrawCards(Resources r, float size) {
 
     Paint cardFrontPaint = new Paint();
     Paint cardBorderPaint = new Paint();
@@ -368,7 +360,7 @@ public class DrawMaster {
     int height = Card.HEIGHT;
 
     final String[] card_values = mResources.getStringArray(R.array.card_values);
-    final Paint textPaintLeft = getTextPaint(mFontSize/3,Paint.Align.LEFT);
+    final Paint textPaintLeft = getTextPaint(mFontSize/size,Paint.Align.LEFT);
     float textSize = textPaintLeft.getTextSize();
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
 
@@ -414,9 +406,9 @@ public class DrawMaster {
             width, height, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(mCardBitmap[suitIdx*13+valueIdx]);
         pos.set(0, 0, width, height);
-        canvas.drawRoundRect(pos, 4, 4, cardBorderPaint);
+        canvas.drawRoundRect(pos, suitsSmallSize, suitsSmallSize, cardBorderPaint);
         pos.set(1, 1, width-1, height-1);
-        canvas.drawRoundRect(pos, 4, 4, cardFrontPaint);
+        canvas.drawRoundRect(pos, suitsSmallSize, suitsSmallSize, cardFrontPaint);
 
         if ((suitIdx & 1) == 1) {
           textPaintLeft.setARGB(255, 255, 0, 0);
@@ -446,15 +438,21 @@ public class DrawMaster {
                             mSuitPaint);
         }
 
-        final float height_5th = height/5;
-        final int suitsSizeHalf = (int)suitsSize/2;
-        final int suitsSizeAndAHalf = (int)(suitsSize*1.5);
-        final int[] suitX = {suitsSizeAndAHalf,width/2-suitsSizeHalf,width-(int)(suitsSizeAndAHalf*1.75)};
-        final int[] suitY = {suitsSizeAndAHalf,
-                             (int)height_5th*2-suitsSizeHalf,
-                             (int)height_5th*3,
-                             height-(int)(suitsSizeAndAHalf*1.75)};
-        final int suitMidY = height/2 - (int)suitsSize/2;
+        final float height_7th = height/7;
+        final float height_9th = height/9;
+        final float suitsSizeHalf = suitsSize/2;
+        // Columns
+        final float width_5th = width/5;
+        final float[] suitX = {width_5th,
+                               width/2-suitsSizeHalf,
+                               width-(width_5th*2)};
+        // Rows
+        final float[] suitY = {height_7th, // row 1
+                               height_9th*3, // row 2
+                               height-(height_9th*4)-suitsSizeHalf/2, // row 4
+                               height-(height_7th*2)}; // row 5
+        // Center
+        final float suitMidY = height/2 - suitsSizeHalf;
         switch (valueIdx+1) {
           case 1:
             canvas.drawBitmap(suit[suitIdx], suitX[1], suitMidY, mSuitPaint);
@@ -520,8 +518,8 @@ public class DrawMaster {
               canvas.drawBitmap(suit[suitIdx], suitX[(i%2)*2], suitY[i/2], mSuitPaint);
               canvas.drawBitmap(revSuit[suitIdx], suitX[(i%2)*2], suitY[i/2+2], mSuitPaint);
             }
-            canvas.drawBitmap(suit[suitIdx], suitX[1], (suitY[1]+suitY[0])/2, mSuitPaint);
-            canvas.drawBitmap(revSuit[suitIdx], suitX[1], (suitY[3]+suitY[2])/2, mSuitPaint);
+            canvas.drawBitmap(suit[suitIdx], suitX[1], (suitMidY+suitY[0])/2-suitsSizeHalf, mSuitPaint);
+            canvas.drawBitmap(revSuit[suitIdx], suitX[1], (suitY[3]+suitMidY)/2+suitsSizeHalf/2, mSuitPaint);
             break;
 
           case Card.JACK:
@@ -547,6 +545,14 @@ public class DrawMaster {
             break;
         }
       }
+    }
+  }
+
+  public void DrawCards(boolean bigCards) {
+    if (bigCards) {
+      DrawBigCards(mContext.getResources());
+    } else {
+      DrawCards(mContext.getResources(),2);
     }
   }
 
