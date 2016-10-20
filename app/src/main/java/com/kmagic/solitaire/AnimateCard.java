@@ -59,7 +59,7 @@ public class AnimateCard {
   public void draw(DrawMaster drawMaster, Canvas canvas) {
     if (mAnimate) {
       for (int j = 0; j < mCount; j++) {
-        mCard[j].MovePosition(-mDx, -mDy);
+        mCard[j].movePosition(-mDx, -mDy);
       }
       for (int i = 0; i < mCount; i++) {
         drawMaster.DrawCard(canvas, mCard[i]);
@@ -120,8 +120,8 @@ public class AnimateCard {
    * @param y the y coordinate to move to
    */
   private void move(Card card, float x, float y) {
-    float dx = x - card.GetX(); 
-    float dy = y - card.GetY(); 
+    float dx = x - card.getX();
+    float dy = y - card.getY();
 
     mFrames = Math.round((float)Math.sqrt(dx * dx + dy * dy) / PPF);
     if (mFrames == 0) {

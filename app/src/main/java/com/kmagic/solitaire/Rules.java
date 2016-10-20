@@ -583,11 +583,11 @@ class Spider extends Rules {
     if (event == EVENT_STACK_ADD) {
       if (anchor.GetCount() - anchor.GetHiddenCount() >= 13) {
         Card[] card = anchor.GetCards();
-        if (card[anchor.GetCount()-1].GetValue() == 1) {
-          int suit = card[anchor.GetCount()-1].GetSuit();
+        if (card[anchor.GetCount()-1].getValue() == 1) {
+          int suit = card[anchor.GetCount()-1].getSuit();
           int val = 2;
           for (int i = anchor.GetCount() - 2; i >= 0 && val < 14; i--, val++) {
-            if (card[i].GetValue() != val || card[i].GetSuit() != suit) {
+            if (card[i].getValue() != val || card[i].getSuit() != suit) {
               break;
             }
           }

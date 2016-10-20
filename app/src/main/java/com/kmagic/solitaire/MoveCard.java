@@ -18,8 +18,6 @@ package com.kmagic.solitaire;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 
-import android.util.Log;
-
 
 class MoveCard {
 
@@ -72,7 +70,7 @@ class MoveCard {
 
   public void AddCard(Card card) {
     if (mCardCount == 0) {
-      mOriginalPoint.set(card.GetX(), card.GetY());
+      mOriginalPoint.set(card.getX(), card.getY());
     }
     mCard[mCardCount++] = card;
     mValid = true;
@@ -80,7 +78,7 @@ class MoveCard {
 
   public void MovePosition(float dx, float dy) {
     for (int i = 0; i < mCardCount; i++) {
-      mCard[i].MovePosition(dx, dy);
+      mCard[i].movePosition(dx, dy);
     }
   }
 
@@ -110,7 +108,7 @@ class MoveCard {
     Card[] cards = selectCard.DumpCards();
 
     for (int i = 0; i < count; i++) {
-      cards[i].SetPosition(x - Card.WIDTH/2, y - Card.HEIGHT/2 + 15*i);
+      cards[i].setPosition(x - Card.WIDTH/2, y - Card.HEIGHT/2 + 15*i);
       AddCard(cards[i]);
     }
     mValid = true;
@@ -121,15 +119,15 @@ class MoveCard {
     Card[] cards = cardAnchor.GetCardStack();
 
     for (int i = 0; i < cards.length; i++) {
-      cards[i].SetPosition(x, y + 15*i);
+      cards[i].setPosition(x, y + 15*i);
       AddCard(cards[i]);
     }
     mValid = true;
   }
 
   public boolean HasMoved() {
-    float x = mCard[0].GetX();
-    float y = mCard[0].GetY();
+    float x = mCard[0].getX();
+    float y = mCard[0].getY();
 
     if (x >= mOriginalPoint.x - 2 && x <= mOriginalPoint.x + 2 &&
         y >= mOriginalPoint.y - 2 && y <= mOriginalPoint.y + 2) {

@@ -300,8 +300,8 @@ public class SolitaireView extends View {
           anchorHiddenCount[i] = mCardAnchor[i].GetHiddenCount();
           card = mCardAnchor[i].GetCards();
           for (int j = 0; j < anchorCardCount[i]; j++, cardCount++) {
-            value[cardCount] = card[j].GetValue();
-            suit[cardCount] = card[j].GetSuit();
+            value[cardCount] = card[j].getValue();
+            suit[cardCount] = card[j].getSuit();
           }
         }
 
@@ -692,7 +692,7 @@ public class SolitaireView extends View {
           for (CardAnchor ca : mCardAnchor) {
               card = ca.GrabCard(x, y);
               if (card != null) {
-                  if (y < card.GetY() + Card.HEIGHT / 4) {
+                  if (y < card.getY() + Card.HEIGHT / 4) {
                       boolean lastIgnore = mRules.GetIgnoreEvents();
                       mRules.SetIgnoreEvents(true);
                       ca.AddCard(card);
@@ -815,7 +815,7 @@ public class SolitaireView extends View {
       if (move.GetAddDealCount()) {
         mRules.AddDealCount();
       }
-      if (mUndoStorage[0].GetValue() == 1) {
+      if (mUndoStorage[0].getValue() == 1) {
         for (int i = 0; i < mCardAnchor[from].GetCount(); i++) {
           Card card = mCardAnchor[from].GetCards()[i];
         }
@@ -889,11 +889,11 @@ public class SolitaireView extends View {
       for (CardAnchor ca : mCardAnchor) {
           for (int j = 0; j < ca.GetCount(); j++) {
               Card card = ca.GetCards()[j];
-              int idx = card.GetSuit() * 13 + card.GetValue() - 1;
+              int idx = card.getSuit() * 13 + card.getValue() - 1;
               if (cards[idx] >= matchCount) {
                   mTextView.setTextSize(20);
                   mTextView.setGravity(Gravity.CENTER);
-                  DisplayText("Sanity Check Failed\nExtra: " + card.GetValue() + " " + card.GetSuit());
+                  DisplayText("Sanity Check Failed\nExtra: " + card.getValue() + " " + card.getSuit());
                   return;
               }
               cards[idx]++;

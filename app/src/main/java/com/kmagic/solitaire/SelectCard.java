@@ -79,15 +79,15 @@ class SelectCard {
     if (mCardCount % 2 == 0) {
       mid--;
     }
-    float x = mCard[0].GetX(); 
-    float y = mCard[mid].GetY();
+    float x = mCard[0].getX();
+    float y = mCard[mid].getY();
     if (y - mid * (Card.HEIGHT + 5) < 0) {
       mid = 0;
       y = 5;
     }
 
     for (int i = 0; i < mCardCount; i++) {
-      mCard[i].SetPosition(x, y + (i - mid) * (Card.HEIGHT + 5));
+      mCard[i].setPosition(x, y + (i - mid) * (Card.HEIGHT + 5));
     }
 
     mLeftEdge = cardAnchor.GetLeftEdge();
@@ -95,12 +95,12 @@ class SelectCard {
   }
 
   public boolean Tap(float x, float y) {
-    float left = mLeftEdge == -1 ? mCard[0].GetX() : mLeftEdge;
-    float right = mRightEdge == -1 ? mCard[0].GetX() + Card.WIDTH : mRightEdge;
+    float left = mLeftEdge == -1 ? mCard[0].getX() : mLeftEdge;
+    float right = mRightEdge == -1 ? mCard[0].getX() + Card.WIDTH : mRightEdge;
     mSelected = -1;
     if (x >= left && x <= right) {
       for (int i = 0; i < mCardCount; i++) {
-        if (y >= mCard[i].GetY() && y <= mCard[i].GetY() + Card.HEIGHT) {
+        if (y >= mCard[i].getY() && y <= mCard[i].getY() + Card.HEIGHT) {
           mSelected = i;
           return true;
         }
@@ -148,9 +148,9 @@ class SelectCard {
   public void Scroll(float dy) {
     float x, y;
     for (int i = 0; i < mCardCount; i++) {
-      x = mCard[i].GetX();
-      y = mCard[i].GetY() - dy;
-      mCard[i].SetPosition(x, y);
+      x = mCard[i].getX();
+      y = mCard[i].getY() - dy;
+      mCard[i].setPosition(x, y);
     }
   }
 

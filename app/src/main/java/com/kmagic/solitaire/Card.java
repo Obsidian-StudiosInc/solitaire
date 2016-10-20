@@ -16,6 +16,9 @@
 */ 
 package com.kmagic.solitaire;
 
+/**
+ * Playing Card
+ */
 class Card {
 
   public static final int CLUBS = 0;
@@ -36,26 +39,11 @@ class Card {
   private float mX;
   private float mY;
 
-    /**
-     * Set card size, based on game type and screen dimensions
-     *
-     * @param type game type
-     * @param screenWidth screen width
-     * @param screenHeight screen height
-     */
-    public static void SetSize(int type, int screenWidth, int screenHeight) {
-      if (type == Rules.SOLITAIRE) {
-          WIDTH = screenHeight/8;
-          HEIGHT = screenWidth/9;
-      } else if (type == Rules.FREECELL) {
-          WIDTH = screenHeight/10;
-          HEIGHT = screenWidth/11;
-      } else {
-          WIDTH = screenHeight/11;
-          HEIGHT = screenWidth/12;
-      }
-    }
-
+  /**
+   * Create a new card
+   * @param value the card value
+   * @param suit the card suit
+   */
   public Card(int value, int suit) {
     mValue = value;
     mSuit = suit;
@@ -63,20 +51,68 @@ class Card {
     mY = 1;
   }
 
-  public float GetX() { return mX; }
-  public float GetY() { return mY; }
-  public int GetValue() { return mValue; }
-  public int GetSuit() { return mSuit; }
+  /**
+   * Get card x coordinate
+   * @return x coordinate
+   */
+  public float getX() { return mX; }
 
-  public void SetPosition(float x, float y) {
+  /**
+   * Get card y coordinate
+   * @return y coordinate
+   */
+  public float getY() { return mY; }
+
+  /**
+   * Get card value
+   * @return the card value
+   */
+  public int getValue() { return mValue; }
+
+  /**
+   * Get card suit
+   * @return the card suit
+   */
+  public int getSuit() { return mSuit; }
+
+  /**
+   * Set card x,y coordinates
+   * @param x x coordinate
+   * @param y y coordinate
+   */
+  public void setPosition(float x, float y) {
     mX = x;
     mY = y;
   }
 
-  public void MovePosition(float dx, float dy) {
+  /**
+   * Move card to destination x,y coordinates
+   * @param dx destination x coordinate
+   * @param dx destination y coordinate
+   */
+  public void movePosition(float dx, float dy) {
     mX -= dx;
     mY -= dy;
   }
+
+  /**
+   * Set card size, based on game type and screen dimensions
+   * @param type game type
+   * @param screenWidth screen width
+   * @param screenHeight screen height
+   */
+  public static void SetSize(int type,
+                             int screenWidth,
+                             int screenHeight) {
+    if (type == Rules.SOLITAIRE) {
+      WIDTH = screenHeight/8;
+      HEIGHT = screenWidth/9;
+    } else if (type == Rules.FREECELL) {
+      WIDTH = screenHeight/10;
+      HEIGHT = screenWidth/11;
+    } else {
+      WIDTH = screenHeight/11;
+      HEIGHT = screenWidth/12;
+    }
+  }
 }
-
-

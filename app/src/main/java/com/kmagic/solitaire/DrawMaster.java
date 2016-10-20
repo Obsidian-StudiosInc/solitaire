@@ -106,15 +106,15 @@ public class DrawMaster {
   public Canvas GetBoardCanvas() { return mBoardCanvas; }
 
   public void DrawCard(Canvas canvas, Card card) {
-    float x = card.GetX();
-    float y = card.GetY();
-    int idx = card.GetSuit()*13+(card.GetValue()-1);
+    float x = card.getX();
+    float y = card.getY();
+    int idx = card.getSuit()*13+(card.getValue()-1);
     canvas.drawBitmap(mCardBitmap[idx], x, y, mSuitPaint);
   }
 
   public void DrawHiddenCard(Canvas canvas, Card card) {
-    float x = card.GetX();
-    float y = card.GetY();
+    float x = card.getX();
+    float y = card.getY();
     canvas.drawBitmap(mCardHidden, x, y, mSuitPaint);
   }
 
