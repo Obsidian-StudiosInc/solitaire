@@ -492,7 +492,7 @@ public class DrawMaster {
             canvas.drawBitmap(suit[suitIdx], suitX[2], suitY[0], mSuitPaint);
             canvas.drawBitmap(suit[suitIdx], suitX[0], suitMidY, mSuitPaint);
             canvas.drawBitmap(suit[suitIdx], suitX[2], suitMidY, mSuitPaint);
-            canvas.drawBitmap(suit[suitIdx], suitX[1], suitMidY, mSuitPaint);
+            canvas.drawBitmap(suit[suitIdx], suitX[1], (suitMidY+suitY[0])/2, mSuitPaint);
             canvas.drawBitmap(revSuit[suitIdx], suitX[0], suitY[3], mSuitPaint);
             canvas.drawBitmap(revSuit[suitIdx], suitX[2], suitY[3], mSuitPaint);
             break;
