@@ -8,10 +8,18 @@ android:
   - extra-android-m2repository
   - extra-android-support
 jdk:
-  - oraclejdk8
+- oraclejdk8
 before_script:
-  - wget http://services.gradle.org/distributions/gradle-2.14.1-bin.zip
-  - unzip gradle-2.14.1-bin.zip
-  - export GRADLE_HOME=$PWD/gradle-2.14.1
-  - export PATH=$GRADLE_HOME/bin:$PATH
-script: "gradle build"
+- wget http://services.gradle.org/distributions/gradle-2.14.1-bin.zip
+- unzip gradle-2.14.1-bin.zip
+- export GRADLE_HOME=$PWD/gradle-2.14.1
+- export PATH=$GRADLE_HOME/bin:$PATH
+script: gradle build
+deploy:
+  provider: releases
+  api-key:
+    secure: nCqDpv9DoBGxJWjYyFUFQYhWHkgzcXKwU5GPqQKb+hK8ganrVCanJwUKb1v+p4RX0lZ4vLBybMPWpcmAyPohf2Id60U4ofIgFES253kohsfErcISlQy0vaKSftZp84yTyzudxEOwcvhCDRxNPtdrBDYPqIOAVF5I9Gh4xH08KhDrdbhfQ1fBnPRDpUmqeK8YxroEqMGssG1sl2Q0/sdEZEtdIG+vuCiQgaDGnVcyaEbc7RtNkfiEqclHpdBc+6xqPbn2ievCq0RNV9n+0LyohQVc5ACFMrUo4fejqaIelJW2d+ZdA53ijf9ZkGmZCAf8yfmWylxlybzjFer/TaWp18dVGwJppY/a/zmWaaxJOYYl1/ZuOhpeHrjiI10D5wxAPVvRxkq5ri8p85g5qJ7iGD5caU1LbytTyVBvtkYMYKu086qWCcHGTjjEdwxSTD2v/SBpb0m4JTcjKHWUp9bvkdDxjwPFfZGYbpY6LeCjlk6g13WCV2PhRHgJy8kHOVVtZH+wgeE73YUhqcE6A5sb5Qp1iOtR9FGVF5gqvB7040FrSCUfAaELO6aSfy/TYu1x/IM8Be5C2ZC7gbm/DanuaKTUpav7VfdgScd91eTs+cZxmNrUBPQ61+RSj5vC9TxiaKVaOongcpZ9TRdyJ0VecktmcJQhnyfTB7ZaMH9t9W0=
+  file: app/build/outputs/apk/app-debug.apk
+  skip_cleanup: true
+  on:
+    tags: true
