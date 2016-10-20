@@ -1,5 +1,6 @@
 /*
-  Copyright 2008 Google Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -86,7 +87,7 @@ public class Replay implements Runnable {
           mSinkCard[i] = mSinkFrom.PopCard();
         }
       }
-      mAnimateCard.MoveCards(mSinkCard, mSinkAnchor, mSinkCount, this);
+      mAnimateCard.moveCards(mSinkCard, mSinkAnchor, mSinkCount, this);
     } else {
       Log.e("Replay.java", "Invalid move encountered, aborting.");
       mIsPlaying = false;

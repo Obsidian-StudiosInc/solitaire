@@ -381,7 +381,7 @@ class NormalSolitaire extends Rules {
     for (int i = 0; i < 4; i++) {
       if (mCardAnchor[i+2].DropSingleCard(card)) {
         mMoveHistory.push(new Move(anchor.GetNumber(), i+2, 1, false, anchor.UnhideTopCard()));
-        mAnimateCard.MoveCard(card, mCardAnchor[i+2]);
+        mAnimateCard.moveCard(card, mCardAnchor[i+2]);
         return true;
       }
     }
@@ -610,13 +610,13 @@ class Spider extends Rules {
     } else if (event == EVENT_DEAL) {
       if (mCardAnchor[10].GetCount() > 0) {
         int count = mCardAnchor[10].GetCount() > 10 ? 10 : mCardAnchor[10].GetCount();
-        mAnimateCard.MoveCard(mCardAnchor[10].PopCard(), mCardAnchor[0]);
+        mAnimateCard.moveCard(mCardAnchor[10].PopCard(), mCardAnchor[0]);
         mMoveHistory.push(new Move(10, 0, count-1, 1, false, false));
         mStillDealing = true;
       }
     } else if (event == EVENT_DEAL_NEXT) {
       if (mCardAnchor[10].GetCount() > 0 && anchor.GetNumber() < 10) {
-        mAnimateCard.MoveCard(mCardAnchor[10].PopCard(), anchor);
+        mAnimateCard.moveCard(mCardAnchor[10].PopCard(), anchor);
       } else {
         mView.StopAnimating();
         mStillDealing = false;
@@ -810,7 +810,7 @@ class Freecell extends Rules {
   private boolean TryToSinkCard(CardAnchor anchor, Card card) {
     for (int i = 0; i < 4; i++) {
       if (mCardAnchor[i+4].DropSingleCard(card)) {
-        mAnimateCard.MoveCard(card, mCardAnchor[i+4]);
+        mAnimateCard.moveCard(card, mCardAnchor[i+4]);
         mMoveHistory.push(new Move(anchor.GetNumber(), i+4, 1, false, false));
         return true;
       }
@@ -998,7 +998,7 @@ class FortyThieves extends Rules {
   private boolean TryToSinkCard(CardAnchor anchor, Card card) {
     for (int i = 0; i < 8; i++) {
       if (mCardAnchor[i+10].DropSingleCard(card)) {
-        mAnimateCard.MoveCard(card, mCardAnchor[i+10]);
+        mAnimateCard.moveCard(card, mCardAnchor[i+10]);
         mMoveHistory.push(new Move(anchor.GetNumber(), i+10, 1, false, false));
         return true;
       }

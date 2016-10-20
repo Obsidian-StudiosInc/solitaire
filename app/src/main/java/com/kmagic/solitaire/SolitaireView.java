@@ -254,8 +254,8 @@ public class SolitaireView extends View {
       } catch (InterruptedException ignored) {
       }
       mRefreshThread = null;
-      if (mAnimateCard.GetAnimate()) {
-        mAnimateCard.Cancel();
+      if (mAnimateCard.isAnimated()) {
+        mAnimateCard.cancel();
       }
       if (mViewMode != MODE_WIN && mViewMode != MODE_WIN_STOP) {
         ChangeViewMode(MODE_NORMAL);
@@ -507,14 +507,14 @@ public class SolitaireView extends View {
         break;
       case MODE_WIN:
         if (mReplay.IsPlaying()) {
-          mAnimateCard.Draw(mDrawMaster, canvas);
+          mAnimateCard.draw(mDrawMaster, canvas);
         }
       case MODE_WIN_STOP:
       case MODE_TEXT:
         mDrawMaster.DrawShade(canvas);
         break;
       case MODE_ANIMATE:
-        mAnimateCard.Draw(mDrawMaster, canvas);
+        mAnimateCard.draw(mDrawMaster, canvas);
     }
 
     mRules.HandleEvents();

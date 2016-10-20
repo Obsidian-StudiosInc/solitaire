@@ -1,12 +1,13 @@
 /*
-  Copyright 2008 Google Inc.
-  
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,15 +17,15 @@
 package com.kmagic.solitaire;
 
 import android.graphics.Canvas;
-import android.util.Log;
-import java.lang.InterruptedException;
 import java.lang.Runnable;
-import java.lang.Thread;
 import java.lang.Math;
-import java.util.concurrent.Semaphore;
 
+/**
+ * AnimateCard handles card animations, moving cards around
+ */
 public class AnimateCard {
 
+  // Animation speed, pixels per frame
   private static final float PPF = 40;
 
   protected SolitaireView mView;
@@ -44,9 +45,18 @@ public class AnimateCard {
     mCallback = null;
   }
 
-  public boolean GetAnimate() { return mAnimate; }
+  /**
+   * Return animation status
+   * @return true if animated, false if not
+   */
+  public boolean isAnimated() { return mAnimate; }
 
-  public void Draw(DrawMaster drawMaster, Canvas canvas) {
+  /**
+   * Draw one or more card(s), actual animation
+   * @param drawMaster DrawMaster instance to use
+   * @param canvas canvas to draw on, passed to DrawMaster
+   */
+  public void draw(DrawMaster drawMaster, Canvas canvas) {
     if (mAnimate) {
       for (int j = 0; j < mCount; j++) {
         mCard[j].MovePosition(-mDx, -mDy);
@@ -57,12 +67,22 @@ public class AnimateCard {
       mFrames--;
       if (mFrames <= 0) {
         mAnimate = false;
-        Finish();
+        finish();
       }
     }
   }
 
-  public void MoveCards(Card[] card, CardAnchor anchor, int count, Runnable callback) {
+  /**
+   * Move cards to a given anchor's location
+   * @param cards the cards to move
+   * @param anchor the card anchor to move the card to
+   * @param count the count/number of cards to move
+   * @param callback callback to alert calling class
+   */
+  public void moveCards(Card[] cards,
+                        CardAnchor anchor,
+                        int count,
+                        Runnable callback) {
     float x = anchor.GetX();
     float y = anchor.GetNewY();
     mCardAnchor = anchor;
@@ -70,13 +90,18 @@ public class AnimateCard {
     mAnimate = true;
 
     for (int i = 0; i < count; i++) {
-      mCard[i] = card[i];
+      mCard[i] = cards[i];
     }
     mCount = count;
-    Move(mCard[0], x, y);
+    move(mCard[0], x, y);
   }
 
-  public void MoveCard(Card card, CardAnchor anchor) {
+  /**
+   * Move card to a given anchor's location
+   * @param card the card to move
+   * @param anchor the card anchor to move the card to
+   */
+  public void moveCard(Card card, CardAnchor anchor) {
     float x = anchor.GetX();
     float y = anchor.GetNewY();
     mCardAnchor = anchor;
@@ -85,10 +110,16 @@ public class AnimateCard {
 
     mCard[0] = card;
     mCount = 1;
-    Move(card, x, y);
+    move(card, x, y);
   }
 
-  private void Move(Card card, float x, float y) {
+  /**
+   * Move a card
+   * @param card the card to move
+   * @param x the x coordinate to move to
+   * @param y the y coordinate to move to
+   */
+  private void move(Card card, float x, float y) {
     float dx = x - card.GetX(); 
     float dy = y - card.GetY(); 
 
@@ -101,11 +132,14 @@ public class AnimateCard {
 
     mView.StartAnimating();
     if (!mAnimate) {
-      Finish();
+      finish();
     }
   }
 
-  private void Finish() {
+  /**
+   * Finish animation
+   */
+  private void finish() {
     for (int i = 0; i < mCount; i++) {
       mCardAnchor.AddCard(mCard[i]);
       mCard[i] = null;
@@ -117,7 +151,10 @@ public class AnimateCard {
     }
   }
 
-  public void Cancel() {
+  /**
+   * Cancel animation
+   */
+  public void cancel() {
     if (mAnimate) {
       for (int i = 0; i < mCount; i++) {
         mCardAnchor.AddCard(mCard[i]);
