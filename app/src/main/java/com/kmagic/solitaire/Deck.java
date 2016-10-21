@@ -1,5 +1,6 @@
 /*
-  Copyright 2008 Google Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -17,27 +18,44 @@ package com.kmagic.solitaire;
 
 import java.util.Random;
 
-
+/**
+ * Deck of Playing Cards
+ */
 public class Deck {
 
   private Card[] mCard;
   private int mCardCount;
   private int mTotalCards;
 
+  /**
+   * Create a new deck of 4 suit cards
+   * @param decks the amount of decks
+   */
   public Deck(int decks) {
-    Init(decks, 4);
+    init(decks, 4);
   }
 
+  /**
+   * Create a new deck with the specified
+   * amount of suits of cards
+   * @param decks the amount of decks
+   * @param suits the amount of suits
+   */
   public Deck(int decks, int suits) {
     if (suits == 2) {
       decks *= 2;
     } else if (suits == 1) {
       decks *= 4;
     }
-    Init(decks, suits);
+    init(decks, suits);
   }
 
-  private void Init(int decks, int suits) {
+  /**
+   * Initialize one or more decks of cards
+   * @param decks the number of decks of 13 cards
+   * @param suits the number of suits
+   */
+  private void init(int decks, int suits) {
     mCardCount = decks * 13 * suits;
     mTotalCards = mCardCount;
     mCard = new Card[mCardCount];
@@ -49,27 +67,34 @@ public class Deck {
       }
     }
 
-    Shuffle();
-    Shuffle();
-    Shuffle();
+    shuffle();
+    shuffle();
+    shuffle();
   }
 
-  public void PushCard(Card card) {
-    mCard[mCardCount++] = card;
-  }
-
-  public Card PopCard() {
+  /**
+   * Get last card from the deck
+   * @return the last card
+   */
+  public Card popCard() {
     if (mCardCount > 0) {
       return mCard[--mCardCount];
     }
     return null;
   }
 
-  public boolean Empty() {
+  /**
+   * Check if the deck is empty or not
+   * @return true if empty false if not
+   */
+  public boolean isEmpty() {
     return mCardCount == 0;
   }
 
-  public void Shuffle() {
+  /**
+   * Shuffle cards in deck
+   */
+  public void shuffle() {
     int lastIdx = mCardCount - 1;
     int swapIdx;
     Card swapCard;

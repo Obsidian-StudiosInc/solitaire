@@ -210,13 +210,13 @@ class NormalSolitaire extends Rules {
     mDeck = new Deck(1);
     for (int i = 0; i < 7; i++) {
       for (int j = 0; j <= i; j++) {
-        mCardAnchor[i+6].addCard(mDeck.PopCard());
+        mCardAnchor[i+6].addCard(mDeck.popCard());
       }
       mCardAnchor[i+6].setHiddenCount(i);
     }
 
-    while (!mDeck.Empty()) {
-      mCardAnchor[0].addCard(mDeck.PopCard());
+    while (!mDeck.isEmpty()) {
+      mCardAnchor[0].addCard(mDeck.popCard());
     }
 
     if (mView.GetSettings().getBoolean("SolitaireStyleNormal", true)) {
@@ -536,13 +536,13 @@ class Spider extends Rules {
     while (i > 0) {
       for (int j = 0; j < 10 && i > 0; j++) {
         i--;
-        mCardAnchor[j].addCard(mDeck.PopCard());
+        mCardAnchor[j].addCard(mDeck.popCard());
         mCardAnchor[j].setHiddenCount(mCardAnchor[j].getCount() - 1);
       }
     }
 
-    while (!mDeck.Empty()) {
-      mCardAnchor[10].addCard(mDeck.PopCard());
+    while (!mDeck.isEmpty()) {
+      mCardAnchor[10].addCard(mDeck.popCard());
     }
     mIgnoreEvents = false;
   }
@@ -714,9 +714,9 @@ class Freecell extends Rules {
     }
 
     mDeck = new Deck(1);
-    while (!mDeck.Empty()) {
-      for (int i = 0; i < 8 && !mDeck.Empty(); i++) {
-        mCardAnchor[i+8].addCard(mDeck.PopCard());
+    while (!mDeck.isEmpty()) {
+      for (int i = 0; i < 8 && !mDeck.isEmpty(); i++) {
+        mCardAnchor[i+8].addCard(mDeck.popCard());
       }
     }
     mIgnoreEvents = false;
@@ -923,11 +923,11 @@ class FortyThieves extends Rules {
     mDeck = new Deck(2);
     for (int i = 0; i < 10; i++) {
       for (int j = 0; j < 4; j++){
-        mCardAnchor[i].addCard(mDeck.PopCard());
+        mCardAnchor[i].addCard(mDeck.popCard());
       }
     }
-    while (!mDeck.Empty()) {
-      mCardAnchor[18].addCard(mDeck.PopCard());
+    while (!mDeck.isEmpty()) {
+      mCardAnchor[18].addCard(mDeck.popCard());
     }
     mIgnoreEvents = false;
   }
