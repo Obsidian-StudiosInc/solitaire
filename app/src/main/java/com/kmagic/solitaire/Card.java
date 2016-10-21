@@ -104,15 +104,17 @@ class Card {
   public static void SetSize(int type,
                              int screenWidth,
                              int screenHeight) {
+    int width = Math.min(screenWidth,screenHeight);
+    int height = Math.max(screenWidth,screenHeight);
     if (type == Rules.SOLITAIRE) {
-      WIDTH = screenHeight/8;
-      HEIGHT = screenWidth/9;
+      WIDTH = width/8;
+      HEIGHT = height/9;
     } else if (type == Rules.FREECELL) {
-      WIDTH = screenHeight/10;
-      HEIGHT = screenWidth/11;
+      WIDTH = width/10;
+      HEIGHT = height/11;
     } else {
-      WIDTH = screenHeight/11;
-      HEIGHT = screenWidth/12;
+      WIDTH = width/11;
+      HEIGHT = height/12;
     }
   }
 }
