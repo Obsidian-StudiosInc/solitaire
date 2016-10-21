@@ -62,7 +62,7 @@ class MoveCard {
     if (mValid) {
       mValid = false;
       for (int i = 0; i < mCardCount; i++) {
-        mCardAnchor.AddCard(mCard[i]);
+        mCardAnchor.addCard(mCard[i]);
       }
       Clear();
     }
@@ -91,7 +91,7 @@ class MoveCard {
     if (mValid) {
       mValid = false;
       if (unhide) {
-        mCardAnchor.UnhideTopCard();
+        mCardAnchor.unhideTopCard();
       }
       ret = new Card[mCardCount];
       for (int i = 0; i < mCardCount; i++) {
@@ -116,7 +116,7 @@ class MoveCard {
 
   public void InitFromAnchor(CardAnchor cardAnchor, float x, float y) {
     mCardAnchor = cardAnchor;
-    Card[] cards = cardAnchor.GetCardStack();
+    Card[] cards = cardAnchor.getCardStack();
 
     for (int i = 0; i < cards.length; i++) {
       cards[i].setPosition(x, y + 15*i);

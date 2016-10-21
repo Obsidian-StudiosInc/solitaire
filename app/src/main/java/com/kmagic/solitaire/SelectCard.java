@@ -69,7 +69,7 @@ class SelectCard {
     mValid = true;
     mSelected = -1;
     mCardAnchor = cardAnchor;
-    Card[] card = cardAnchor.GetCardStack();
+    Card[] card = cardAnchor.getCardStack();
     for (int i = 0; i < card.length; i++) {
       mCard[i] = card[i];
     }
@@ -90,8 +90,8 @@ class SelectCard {
       mCard[i].setPosition(x, y + (i - mid) * (Card.HEIGHT + 5));
     }
 
-    mLeftEdge = cardAnchor.GetLeftEdge();
-    mRightEdge = cardAnchor.GetRightEdge();
+    mLeftEdge = cardAnchor.getLeftEdge();
+    mRightEdge = cardAnchor.getRightEdge();
   }
 
   public boolean Tap(float x, float y) {
@@ -113,7 +113,7 @@ class SelectCard {
     if (mValid) {
       mValid = false;
       for (int i = 0; i < mCardCount; i++) {
-        mCardAnchor.AddCard(mCard[i]);
+        mCardAnchor.addCard(mCard[i]);
       }
       Clear();
     }
@@ -126,7 +126,7 @@ class SelectCard {
       if (mSelected > 0) {
         for (int i = 0; i < mCardCount; i++) {
           if (i < mSelected) {
-            mCardAnchor.AddCard(mCard[i]);
+            mCardAnchor.addCard(mCard[i]);
           } else if (i == mSelected) {
             for (int j = 0; i < mCardCount; i++, j++) {
               mCard[j] = mCard[i];

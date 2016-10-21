@@ -296,9 +296,9 @@ public class SolitaireView extends View {
 
         cardCount = 0;
         for (int i = 0; i < mCardAnchor.length; i++) {
-          anchorCardCount[i] = mCardAnchor[i].GetCount();
-          anchorHiddenCount[i] = mCardAnchor[i].GetHiddenCount();
-          card = mCardAnchor[i].GetCards();
+          anchorCardCount[i] = mCardAnchor[i].getCount();
+          anchorHiddenCount[i] = mCardAnchor[i].getHiddenCount();
+          card = mCardAnchor[i].getCards();
           for (int j = 0; j < anchorCardCount[i]; j++, cardCount++) {
             value[cardCount] = card[j].getValue();
             suit[cardCount] = card[j].getSuit();
@@ -624,11 +624,11 @@ public class SolitaireView extends View {
       case MODE_NORMAL:
         if (!mHasMoved) {
             for (CardAnchor ca : mCardAnchor) {
-                if (ca.ExpandStack(x, y)) {
+                if (ca.expandStack(x, y)) {
                     mSelectCard.InitFromAnchor(ca);
                     ChangeViewMode(MODE_CARD_SELECT);
                     return true;
-                } else if (ca.TapCard(x, y)) {
+                } else if (ca.tapCard(x, y)) {
                     Refresh();
                     return true;
                 }
@@ -638,15 +638,15 @@ public class SolitaireView extends View {
       case MODE_MOVE_CARD:
         for (int close = 0; close < 2; close++) {
           CardAnchor prevAnchor = mMoveCard.GetAnchor();
-          boolean unhide = (prevAnchor.GetVisibleCount() == 0 &&
-                            prevAnchor.GetCount() > 0);
+          boolean unhide = (prevAnchor.getVisibleCount() == 0 &&
+                            prevAnchor.getCount() > 0);
           int count = mMoveCard.GetCount();
 
           for (int i = 0; i < mCardAnchor.length; i++) {
             if (mCardAnchor[i] != prevAnchor) {
-              if (mCardAnchor[i].CanDropCard(mMoveCard, close)) {
-                mMoveHistory.push(new Move(prevAnchor.GetNumber(), i, count, false, unhide));
-                mCardAnchor[i].AddMoveCard(mMoveCard);
+              if (mCardAnchor[i].canDropCard(mMoveCard, close)) {
+                mMoveHistory.push(new Move(prevAnchor.getNumber(), i, count, false, unhide));
+                mCardAnchor[i].addMoveCard(mMoveCard);
                 if (mViewMode == MODE_MOVE_CARD) {
                   ChangeViewMode(MODE_NORMAL);
                 }
@@ -658,7 +658,7 @@ public class SolitaireView extends View {
         if (!mMoveCard.HasMoved()) {
           CardAnchor anchor = mMoveCard.GetAnchor();
           mMoveCard.Release();
-          if (anchor.ExpandStack(x, y)) {
+          if (anchor.expandStack(x, y)) {
             mSelectCard.InitFromAnchor(anchor);
             ChangeViewMode(MODE_CARD_SELECT);
           } else {
@@ -690,19 +690,19 @@ public class SolitaireView extends View {
       case MODE_NORMAL:
         Card card = null;
           for (CardAnchor ca : mCardAnchor) {
-              card = ca.GrabCard(x, y);
+              card = ca.grabCard(x, y);
               if (card != null) {
                   if (y < card.getY() + Card.HEIGHT / 4) {
                       boolean lastIgnore = mRules.GetIgnoreEvents();
                       mRules.SetIgnoreEvents(true);
-                      ca.AddCard(card);
+                      ca.addCard(card);
                       mRules.SetIgnoreEvents(lastIgnore);
-                      if (ca.ExpandStack(x, y)) {
+                      if (ca.expandStack(x, y)) {
                           mMoveCard.InitFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
                           ChangeViewMode(MODE_MOVE_CARD);
                           break;
                       }
-                      card = ca.PopCard();
+                      card = ca.popCard();
                   }
                   mMoveCard.SetAnchor(ca);
                   mMoveCard.AddCard(card);
@@ -724,7 +724,7 @@ public class SolitaireView extends View {
       case MODE_NORMAL:
         if (Math.abs(mDownPoint.x - x) > 15 || Math.abs(mDownPoint.y - y) > 15) {
             for (CardAnchor ca : mCardAnchor) {
-                if (ca.CanMoveStack(mDownPoint.x, mDownPoint.y)) {
+                if (ca.canMoveStack(mDownPoint.x, mDownPoint.y)) {
                     mMoveCard.InitFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
                     ChangeViewMode(MODE_MOVE_CARD);
                     return true;
@@ -792,32 +792,32 @@ public class SolitaireView extends View {
       if (move.GetToBegin() != move.GetToEnd()) {
         for (int i = move.GetToBegin(); i <= move.GetToEnd(); i++) {
           for (int j = 0; j < move.GetCount(); j++) {
-            mUndoStorage[count++] = mCardAnchor[i].PopCard();
+            mUndoStorage[count++] = mCardAnchor[i].popCard();
           }
         }
       } else {
         for (int i = 0; i < move.GetCount(); i++) {
-          mUndoStorage[count++] = mCardAnchor[move.GetToBegin()].PopCard();
+          mUndoStorage[count++] = mCardAnchor[move.GetToBegin()].popCard();
         }
       }
       if (move.GetUnhide()) {
-        mCardAnchor[from].SetHiddenCount(mCardAnchor[from].GetHiddenCount() + 1);
+        mCardAnchor[from].setHiddenCount(mCardAnchor[from].getHiddenCount() + 1);
       }
       if (move.GetInvert()) {
         for (int i = 0; i < count; i++) {
-          mCardAnchor[from].AddCard(mUndoStorage[i]);
+          mCardAnchor[from].addCard(mUndoStorage[i]);
         }
       } else {
         for (int i = count-1; i >= 0; i--) {
-          mCardAnchor[from].AddCard(mUndoStorage[i]);
+          mCardAnchor[from].addCard(mUndoStorage[i]);
         }
       }
       if (move.GetAddDealCount()) {
         mRules.AddDealCount();
       }
       if (mUndoStorage[0].getValue() == 1) {
-        for (int i = 0; i < mCardAnchor[from].GetCount(); i++) {
-          Card card = mCardAnchor[from].GetCards()[i];
+        for (int i = 0; i < mCardAnchor[from].getCount(); i++) {
+          Card card = mCardAnchor[from].getCards()[i];
         }
       }
       Refresh();
@@ -887,8 +887,8 @@ public class SolitaireView extends View {
       cards[i] = 0;
     }
       for (CardAnchor ca : mCardAnchor) {
-          for (int j = 0; j < ca.GetCount(); j++) {
-              Card card = ca.GetCards()[j];
+          for (int j = 0; j < ca.getCount(); j++) {
+              Card card = ca.getCards()[j];
               int idx = card.getSuit() * 13 + card.getValue() - 1;
               if (cards[idx] >= matchCount) {
                   mTextView.setTextSize(20);

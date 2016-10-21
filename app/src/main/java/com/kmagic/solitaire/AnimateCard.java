@@ -83,8 +83,8 @@ public class AnimateCard {
                         CardAnchor anchor,
                         int count,
                         Runnable callback) {
-    float x = anchor.GetX();
-    float y = anchor.GetNewY();
+    float x = anchor.getX();
+    float y = anchor.getNewY();
     mCardAnchor = anchor;
     mCallback = callback;
     mAnimate = true;
@@ -102,8 +102,8 @@ public class AnimateCard {
    * @param anchor the card anchor to move the card to
    */
   public void moveCard(Card card, CardAnchor anchor) {
-    float x = anchor.GetX();
-    float y = anchor.GetNewY();
+    float x = anchor.getX();
+    float y = anchor.getNewY();
     mCardAnchor = anchor;
     mCallback = null;
     mAnimate = true;
@@ -141,7 +141,7 @@ public class AnimateCard {
    */
   private void finish() {
     for (int i = 0; i < mCount; i++) {
-      mCardAnchor.AddCard(mCard[i]);
+      mCardAnchor.addCard(mCard[i]);
       mCard[i] = null;
     }
     mCardAnchor = null;
@@ -157,7 +157,7 @@ public class AnimateCard {
   public void cancel() {
     if (mAnimate) {
       for (int i = 0; i < mCount; i++) {
-        mCardAnchor.AddCard(mCard[i]);
+        mCardAnchor.addCard(mCard[i]);
         mCard[i] = null;
       }
       mCardAnchor = null;

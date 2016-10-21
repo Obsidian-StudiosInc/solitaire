@@ -80,11 +80,11 @@ public class Replay implements Runnable {
 
       if (move.GetInvert()) {
         for (int i = 0; i < mSinkCount; i++) {
-          mSinkCard[i] = mSinkFrom.PopCard();
+          mSinkCard[i] = mSinkFrom.popCard();
         }
       } else {
         for (int i = mSinkCount-1; i >= 0; i--) {
-          mSinkCard[i] = mSinkFrom.PopCard();
+          mSinkCard[i] = mSinkFrom.popCard();
         }
       }
       mAnimateCard.moveCards(mSinkCard, mSinkAnchor, mSinkCount, this);
@@ -97,7 +97,7 @@ public class Replay implements Runnable {
   public void run() {
     if (mIsPlaying) {
       if (mSinkUnhide) {
-        mSinkFrom.UnhideTopCard();
+        mSinkFrom.unhideTopCard();
       }
       PlayNext();
     }

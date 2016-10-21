@@ -155,9 +155,9 @@ class NormalSolitaire extends Rules {
     mCardAnchor[0] = CardAnchor.CreateAnchor(CardAnchor.DEAL_FROM, 0, this);
     mCardAnchor[1] = CardAnchor.CreateAnchor(CardAnchor.DEAL_TO, 1, this);
     if (mDealThree) {
-      mCardAnchor[1].SetShowing(3);
+      mCardAnchor[1].setShowing(3);
     } else {
-      mCardAnchor[1].SetShowing(1);
+      mCardAnchor[1].setShowing(1);
     }
 
     // Top anchors for placing cards
@@ -168,13 +168,13 @@ class NormalSolitaire extends Rules {
     // Middle anchor stacks
     for (int i = 0; i < 7; i++) {
       mCardAnchor[i+6] = CardAnchor.CreateAnchor(CardAnchor.GENERIC_ANCHOR, i+6, this);
-      mCardAnchor[i+6].SetStartSeq(GenericAnchor.START_KING);
-      mCardAnchor[i+6].SetBuildSeq(GenericAnchor.SEQ_DSC);
-      mCardAnchor[i+6].SetMoveSeq(GenericAnchor.SEQ_ASC);
-      mCardAnchor[i+6].SetSuit(GenericAnchor.SUIT_RB);
-      mCardAnchor[i+6].SetWrap(false);
-      mCardAnchor[i+6].SetBehavior(GenericAnchor.PACK_MULTI);
-      mCardAnchor[i+6].SetDisplay(GenericAnchor.DISPLAY_MIX);
+      mCardAnchor[i+6].setStartSeq(GenericAnchor.START_KING);
+      mCardAnchor[i+6].setBuildSeq(GenericAnchor.SEQ_DSC);
+      mCardAnchor[i+6].setMoveSeq(GenericAnchor.SEQ_ASC);
+      mCardAnchor[i+6].setSuit(GenericAnchor.SUIT_RB);
+      mCardAnchor[i+6].setWrap(false);
+      mCardAnchor[i+6].setBehavior(GenericAnchor.PACK_MULTI);
+      mCardAnchor[i+6].setDisplay(GenericAnchor.DISPLAY_MIX);
     }
 
     if (map != null) {
@@ -191,9 +191,9 @@ class NormalSolitaire extends Rules {
         for (int i = 0; i < 13; i++) {
           for (int j = 0; j < cardCount[i]; j++, cardIdx++) {
             Card card = new Card(value[cardIdx], suit[cardIdx]);
-            mCardAnchor[i].AddCard(card);
+            mCardAnchor[i].addCard(card);
           }
-          mCardAnchor[i].SetHiddenCount(hiddenCount[i]);
+          mCardAnchor[i].setHiddenCount(hiddenCount[i]);
         }
         if (mDealsLeft != -1) {
           // Reset to zero as GetScore() uses it in its calculation.
@@ -210,13 +210,13 @@ class NormalSolitaire extends Rules {
     mDeck = new Deck(1);
     for (int i = 0; i < 7; i++) {
       for (int j = 0; j <= i; j++) {
-        mCardAnchor[i+6].AddCard(mDeck.PopCard());
+        mCardAnchor[i+6].addCard(mDeck.PopCard());
       }
-      mCardAnchor[i+6].SetHiddenCount(i);
+      mCardAnchor[i+6].setHiddenCount(i);
     }
 
     while (!mDeck.Empty()) {
-      mCardAnchor[0].AddCard(mDeck.PopCard());
+      mCardAnchor[0].addCard(mDeck.PopCard());
     }
 
     if (mView.GetSettings().getBoolean("SolitaireStyleNormal", true)) {
@@ -241,25 +241,25 @@ class NormalSolitaire extends Rules {
     int maxHeight = height - (20 + Card.HEIGHT);
     rem /= 8;
     for (int i = 0; i < 7; i++) {
-      mCardAnchor[i+6].SetPosition(rem + i * (rem+Card.WIDTH), 20 + Card.HEIGHT);
-      mCardAnchor[i+6].SetMaxHeight(maxHeight);
+      mCardAnchor[i+6].setPosition(rem + i * (rem+Card.WIDTH), 20 + Card.HEIGHT);
+      mCardAnchor[i+6].setMaxHeight(maxHeight);
     }
 
     for (int i = 3; i >= 0; i--) {
-      mCardAnchor[i+2].SetPosition(rem + (6-i) * (rem + Card.WIDTH), 10);
+      mCardAnchor[i+2].setPosition(rem + (6-i) * (rem + Card.WIDTH), 10);
     }
 
     for (int i = 0; i < 2; i++) {
-      mCardAnchor[i].SetPosition(rem + i * (rem + Card.WIDTH), 10);
+      mCardAnchor[i].setPosition(rem + i * (rem + Card.WIDTH), 10);
     }
 
     // Setup edge cards (Touch sensor loses sensitivity towards the edge).
-    mCardAnchor[0].SetLeftEdge(0);
-    mCardAnchor[2].SetRightEdge(width);
-    mCardAnchor[6].SetLeftEdge(0);
-    mCardAnchor[12].SetRightEdge(width);
+    mCardAnchor[0].setLeftEdge(0);
+    mCardAnchor[2].setRightEdge(width);
+    mCardAnchor[6].setLeftEdge(0);
+    mCardAnchor[12].setRightEdge(width);
     for (int i = 0; i < 7; i++) {
-      mCardAnchor[i+6].SetBottom(height);
+      mCardAnchor[i+6].setBottom(height);
     }
   }
 
@@ -269,18 +269,18 @@ class NormalSolitaire extends Rules {
       return;
     }
     if (event == EVENT_DEAL) {
-      if (mCardAnchor[0].GetCount() == 0) {
+      if (mCardAnchor[0].getCount() == 0) {
         boolean addDealCount = false;
         if (mDealsLeft == 0) {
-          mCardAnchor[0].SetDone(true);
+          mCardAnchor[0].setDone(true);
           return;
         } else if (mDealsLeft > 0) {
           mDealsLeft--;
           addDealCount = true;
         }
         int count = 0;
-        while (mCardAnchor[1].GetCount() > 0) {
-          mCardAnchor[0].AddCard(mCardAnchor[1].PopCard());
+        while (mCardAnchor[1].getCount() > 0) {
+          mCardAnchor[0].addCard(mCardAnchor[1].popCard());
           count++;
         }
         mMoveHistory.push(new Move(1, 0, count, true, false, addDealCount));
@@ -288,18 +288,18 @@ class NormalSolitaire extends Rules {
       } else {
         int count = 0;
         int maxCount = mDealThree ? 3 : 1;
-        for (int i = 0; i < maxCount && mCardAnchor[0].GetCount() > 0; i++) {
-          mCardAnchor[1].AddCard(mCardAnchor[0].PopCard());
+        for (int i = 0; i < maxCount && mCardAnchor[0].getCount() > 0; i++) {
+          mCardAnchor[1].addCard(mCardAnchor[0].popCard());
           count++;
         }
-        if (mDealsLeft == 0 && mCardAnchor[0].GetCount() == 0) {
-          mCardAnchor[0].SetDone(true);
+        if (mDealsLeft == 0 && mCardAnchor[0].getCount() == 0) {
+          mCardAnchor[0].setDone(true);
         }
         mMoveHistory.push(new Move(0, 1, count, true, false));
       }
     } else if (event == EVENT_STACK_ADD) {
-      if (mCardAnchor[2].GetCount() == 13 && mCardAnchor[3].GetCount() == 13 &&
-          mCardAnchor[4].GetCount() == 13 && mCardAnchor[5].GetCount() == 13) {
+      if (mCardAnchor[2].getCount() == 13 && mCardAnchor[3].getCount() == 13 &&
+          mCardAnchor[4].getCount() == 13 && mCardAnchor[5].getCount() == 13) {
         SignalWin();
       } else {
         if (mAutoMoveLevel == AUTO_MOVE_ALWAYS ||
@@ -316,17 +316,17 @@ class NormalSolitaire extends Rules {
   @Override
   public void EventProcess(int event, CardAnchor anchor, Card card) {
     if (mIgnoreEvents) {
-      anchor.AddCard(card);
+      anchor.addCard(card);
       return;
     }
     if (event == EVENT_FLING) {
       mWasFling = true;
       if (!TryToSinkCard(anchor, card)) {
-        anchor.AddCard(card);
+        anchor.addCard(card);
         mWasFling = false;
       }
     } else {
-      anchor.AddCard(card);
+      anchor.addCard(card);
     }
   }
 
@@ -338,7 +338,7 @@ class NormalSolitaire extends Rules {
     if (event == EVENT_SMART_MOVE) {
       int i;
       for (i = 0; i < 7; i++) {
-        if (mCardAnchor[i+6].GetCount() > 0 &&
+        if (mCardAnchor[i+6].getCount() > 0 &&
             TryToSink(mCardAnchor[i+6])) {
           break;
         }
@@ -356,12 +356,12 @@ class NormalSolitaire extends Rules {
       CardAnchor anchor = moveCard.GetAnchor();
       Card card = moveCard.DumpCards(false)[0];
       for (int i = 0; i < 4; i++) {
-        if (mCardAnchor[i+2].DropSingleCard(card)) {
+        if (mCardAnchor[i+2].dropSingleCard(card)) {
           EventAlert(EVENT_FLING, anchor, card);
           return true;
         }
       }
-      anchor.AddCard(card);
+      anchor.addCard(card);
     } else {
       moveCard.Release();
     }
@@ -369,18 +369,18 @@ class NormalSolitaire extends Rules {
   }
 
   private boolean TryToSink(CardAnchor anchor) {
-    Card card = anchor.PopCard();
+    Card card = anchor.popCard();
     boolean ret = TryToSinkCard(anchor, card);
     if (!ret) {
-      anchor.AddCard(card);
+      anchor.addCard(card);
     }
     return ret;
   }
 
   private boolean TryToSinkCard(CardAnchor anchor, Card card) {
     for (int i = 0; i < 4; i++) {
-      if (mCardAnchor[i+2].DropSingleCard(card)) {
-        mMoveHistory.push(new Move(anchor.GetNumber(), i+2, 1, false, anchor.UnhideTopCard()));
+      if (mCardAnchor[i+2].dropSingleCard(card)) {
+        mMoveHistory.push(new Move(anchor.getNumber(), i+2, 1, false, anchor.unhideTopCard()));
         mAnimateCard.moveCard(card, mCardAnchor[i+2]);
         return true;
       }
@@ -445,7 +445,7 @@ class NormalSolitaire extends Rules {
     if (mDealsLeft != -1) {
       int score = mCarryOverScore - 52;
       for (int i = 0; i < 4; i++) {
-        score += 5 * mCardAnchor[i+2].GetCount();
+        score += 5 * mCardAnchor[i+2].getCount();
       }
       if (score != mLastScore) {
         if (score < 0) {
@@ -464,7 +464,7 @@ class NormalSolitaire extends Rules {
     if (mDealsLeft != -1) {
       int score = mCarryOverScore - 52;
       for (int i = 0; i < 4; i++) {
-        score += 5 * mCardAnchor[i+2].GetCount();
+        score += 5 * mCardAnchor[i+2].getCount();
       }
       return score;
     }
@@ -475,7 +475,7 @@ class NormalSolitaire extends Rules {
   public void AddDealCount() {
     if (mDealsLeft != -1) {
       mDealsLeft++;
-      mCardAnchor[0].SetDone(false);
+      mCardAnchor[0].setDone(false);
     }
   }
 }
@@ -494,13 +494,13 @@ class Spider extends Rules {
     for (int i = 0; i < 10; i++) {
       mCardAnchor[i] = CardAnchor.CreateAnchor(CardAnchor.SPIDER_STACK, i, this);
       mCardAnchor[i] = CardAnchor.CreateAnchor(CardAnchor.GENERIC_ANCHOR, i, this);
-      mCardAnchor[i].SetBuildSeq(GenericAnchor.SEQ_DSC);
-      mCardAnchor[i].SetBuildSuit(GenericAnchor.SEQ_ANY);
-      mCardAnchor[i].SetMoveSeq(GenericAnchor.SEQ_ASC);
-      mCardAnchor[i].SetMoveSuit(GenericAnchor.SUIT_SAME);
-      mCardAnchor[i].SetBehavior(GenericAnchor.PACK_MULTI);
-      mCardAnchor[i].SetDisplay(GenericAnchor.DISPLAY_MIX);
-      mCardAnchor[i].SetHack(GenericAnchor.DEALHACK);
+      mCardAnchor[i].setBuildSeq(GenericAnchor.SEQ_DSC);
+      mCardAnchor[i].setBuildSuit(GenericAnchor.SEQ_ANY);
+      mCardAnchor[i].setMoveSeq(GenericAnchor.SEQ_ASC);
+      mCardAnchor[i].setMoveSuit(GenericAnchor.SUIT_SAME);
+      mCardAnchor[i].setBehavior(GenericAnchor.PACK_MULTI);
+      mCardAnchor[i].setDisplay(GenericAnchor.DISPLAY_MIX);
+      mCardAnchor[i].setHack(GenericAnchor.DEALHACK);
     }
 
     mCardAnchor[10] = CardAnchor.CreateAnchor(CardAnchor.DEAL_FROM, 10, this);
@@ -519,9 +519,9 @@ class Spider extends Rules {
         for (int i = 0; i < mCardAnchorCount; i++) {
           for (int j = 0; j < cardCount[i]; j++, cardIdx++) {
             Card card = new Card(value[cardIdx], suit[cardIdx]);
-            mCardAnchor[i].AddCard(card);
+            mCardAnchor[i].addCard(card);
           }
-          mCardAnchor[i].SetHiddenCount(hiddenCount[i]);
+          mCardAnchor[i].setHiddenCount(hiddenCount[i]);
         }
 
         mIgnoreEvents = false;
@@ -536,13 +536,13 @@ class Spider extends Rules {
     while (i > 0) {
       for (int j = 0; j < 10 && i > 0; j++) {
         i--;
-        mCardAnchor[j].AddCard(mDeck.PopCard());
-        mCardAnchor[j].SetHiddenCount(mCardAnchor[j].GetCount() - 1);
+        mCardAnchor[j].addCard(mDeck.PopCard());
+        mCardAnchor[j].setHiddenCount(mCardAnchor[j].getCount() - 1);
       }
     }
 
     while (!mDeck.Empty()) {
-      mCardAnchor[10].AddCard(mDeck.PopCard());
+      mCardAnchor[10].addCard(mDeck.PopCard());
     }
     mIgnoreEvents = false;
   }
@@ -550,20 +550,20 @@ class Spider extends Rules {
   public void Resize(int width, int height) {
     int rem = (width - (Card.WIDTH * 10)) / 10;
     for (int i = 0; i < 10; i++) {
-      mCardAnchor[i].SetPosition(rem/2 + i * (rem + Card.WIDTH), 10);
-      mCardAnchor[i].SetMaxHeight(height-10);
+      mCardAnchor[i].setPosition(rem/2 + i * (rem + Card.WIDTH), 10);
+      mCardAnchor[i].setMaxHeight(height-10);
     }
     // Setup edge cards (Touch sensor loses sensitivity towards the edge).
-    mCardAnchor[0].SetLeftEdge(0);
-    mCardAnchor[9].SetRightEdge(width);
+    mCardAnchor[0].setLeftEdge(0);
+    mCardAnchor[9].setRightEdge(width);
 
     for (int i = 0; i < 10; i++) {
-      mCardAnchor[i].SetBottom(height);
+      mCardAnchor[i].setBottom(height);
     }
     // These two are offscreen as the user doesn't need to see them, but they
     // are needed to hold onto out of play cards.
-    mCardAnchor[10].SetPosition(-50, 1);
-    mCardAnchor[11].SetPosition(-50, 1);
+    mCardAnchor[10].setPosition(-50, 1);
+    mCardAnchor[11].setPosition(-50, 1);
   }
 
   @Override
@@ -572,7 +572,7 @@ class Spider extends Rules {
 
   @Override
   public void EventProcess(int event, CardAnchor anchor, Card card) {
-    anchor.AddCard(card);
+    anchor.addCard(card);
   }
 
   @Override
@@ -581,23 +581,23 @@ class Spider extends Rules {
       return;
     }
     if (event == EVENT_STACK_ADD) {
-      if (anchor.GetCount() - anchor.GetHiddenCount() >= 13) {
-        Card[] card = anchor.GetCards();
-        if (card[anchor.GetCount()-1].getValue() == 1) {
-          int suit = card[anchor.GetCount()-1].getSuit();
+      if (anchor.getCount() - anchor.getHiddenCount() >= 13) {
+        Card[] card = anchor.getCards();
+        if (card[anchor.getCount()-1].getValue() == 1) {
+          int suit = card[anchor.getCount()-1].getSuit();
           int val = 2;
-          for (int i = anchor.GetCount() - 2; i >= 0 && val < 14; i--, val++) {
+          for (int i = anchor.getCount() - 2; i >= 0 && val < 14; i--, val++) {
             if (card[i].getValue() != val || card[i].getSuit() != suit) {
               break;
             }
           }
           if (val == 14) {
             for (int j = 0; j < 13; j++) {
-              mCardAnchor[11].AddCard(anchor.PopCard());
+              mCardAnchor[11].addCard(anchor.popCard());
             }
-            mMoveHistory.push(new Move(anchor.GetNumber(), 11, 13, true, anchor.UnhideTopCard()));
+            mMoveHistory.push(new Move(anchor.getNumber(), 11, 13, true, anchor.unhideTopCard()));
 
-            if (mCardAnchor[11].GetCount() == mCardCount) {
+            if (mCardAnchor[11].getCount() == mCardCount) {
               SignalWin();
             }
           }
@@ -605,18 +605,18 @@ class Spider extends Rules {
       }
       if (mStillDealing) {
         // Post another event if we aren't done yet.
-        EventAlert(EVENT_DEAL_NEXT, mCardAnchor[anchor.GetNumber()+1]);
+        EventAlert(EVENT_DEAL_NEXT, mCardAnchor[anchor.getNumber()+1]);
       }
     } else if (event == EVENT_DEAL) {
-      if (mCardAnchor[10].GetCount() > 0) {
-        int count = mCardAnchor[10].GetCount() > 10 ? 10 : mCardAnchor[10].GetCount();
-        mAnimateCard.moveCard(mCardAnchor[10].PopCard(), mCardAnchor[0]);
+      if (mCardAnchor[10].getCount() > 0) {
+        int count = mCardAnchor[10].getCount() > 10 ? 10 : mCardAnchor[10].getCount();
+        mAnimateCard.moveCard(mCardAnchor[10].popCard(), mCardAnchor[0]);
         mMoveHistory.push(new Move(10, 0, count-1, 1, false, false));
         mStillDealing = true;
       }
     } else if (event == EVENT_DEAL_NEXT) {
-      if (mCardAnchor[10].GetCount() > 0 && anchor.GetNumber() < 10) {
-        mAnimateCard.moveCard(mCardAnchor[10].PopCard(), anchor);
+      if (mCardAnchor[10].getCount() > 0 && anchor.getNumber() < 10) {
+        mAnimateCard.moveCard(mCardAnchor[10].popCard(), anchor);
       } else {
         mView.StopAnimating();
         mStillDealing = false;
@@ -654,7 +654,7 @@ class Spider extends Rules {
 
   @Override
   public String GetString() {
-    int dealCount = mCardAnchor[10].GetCount() / 10;
+    int dealCount = mCardAnchor[10].getCount() / 10;
     if (dealCount == 1) {
       return "1 deal left";
     }
@@ -702,9 +702,9 @@ class Freecell extends Rules {
         for (int i = 0; i < 16; i++) {
           for (int j = 0; j < cardCount[i]; j++, cardIdx++) {
             Card card = new Card(value[cardIdx], suit[cardIdx]);
-            mCardAnchor[i].AddCard(card);
+            mCardAnchor[i].addCard(card);
           }
-          mCardAnchor[i].SetHiddenCount(hiddenCount[i]);
+          mCardAnchor[i].setHiddenCount(hiddenCount[i]);
         }
 
         mIgnoreEvents = false;
@@ -716,7 +716,7 @@ class Freecell extends Rules {
     mDeck = new Deck(1);
     while (!mDeck.Empty()) {
       for (int i = 0; i < 8 && !mDeck.Empty(); i++) {
-        mCardAnchor[i+8].AddCard(mDeck.PopCard());
+        mCardAnchor[i+8].addCard(mDeck.PopCard());
       }
     }
     mIgnoreEvents = false;
@@ -725,18 +725,18 @@ class Freecell extends Rules {
   public void Resize(int width, int height) {
     int rem = (width - (Card.WIDTH * 8)) / 8;
     for (int i = 0; i < 8; i++) {
-      mCardAnchor[i].SetPosition(rem/2 + i * (rem + Card.WIDTH), 10);
-      mCardAnchor[i+8].SetPosition(rem/2 + i * (rem + Card.WIDTH), 30 + Card.HEIGHT);
-      mCardAnchor[i+8].SetMaxHeight(height - 30 - Card.HEIGHT);
+      mCardAnchor[i].setPosition(rem/2 + i * (rem + Card.WIDTH), 10);
+      mCardAnchor[i+8].setPosition(rem/2 + i * (rem + Card.WIDTH), 30 + Card.HEIGHT);
+      mCardAnchor[i+8].setMaxHeight(height - 30 - Card.HEIGHT);
     }
 
     // Setup edge cards (Touch sensor loses sensitivity towards the edge).
-    mCardAnchor[0].SetLeftEdge(0);
-    mCardAnchor[7].SetRightEdge(width);
-    mCardAnchor[8].SetLeftEdge(0);
-    mCardAnchor[15].SetRightEdge(width);
+    mCardAnchor[0].setLeftEdge(0);
+    mCardAnchor[7].setRightEdge(width);
+    mCardAnchor[8].setLeftEdge(0);
+    mCardAnchor[15].setRightEdge(width);
     for (int i = 0; i < 8; i++) {
-      mCardAnchor[i+8].SetBottom(height);
+      mCardAnchor[i+8].setBottom(height);
     }
   }
 
@@ -745,9 +745,9 @@ class Freecell extends Rules {
       return;
     }
     if (event == EVENT_STACK_ADD) {
-      if (anchor.GetNumber() >= 4 && anchor.GetNumber() < 8) {
-        if (mCardAnchor[4].GetCount() == 13 && mCardAnchor[5].GetCount() == 13 &&
-            mCardAnchor[6].GetCount() == 13 && mCardAnchor[7].GetCount() == 13) {
+      if (anchor.getNumber() >= 4 && anchor.getNumber() < 8) {
+        if (mCardAnchor[4].getCount() == 13 && mCardAnchor[5].getCount() == 13 &&
+            mCardAnchor[6].getCount() == 13 && mCardAnchor[7].getCount() == 13) {
           SignalWin();
         } else {
           if (mAutoMoveLevel == AUTO_MOVE_ALWAYS ||
@@ -768,12 +768,12 @@ class Freecell extends Rules {
       CardAnchor anchor = moveCard.GetAnchor();
       Card card = moveCard.DumpCards(false)[0];
       for (int i = 0; i < 4; i++) {
-        if (mCardAnchor[i+4].DropSingleCard(card)) {
+        if (mCardAnchor[i+4].dropSingleCard(card)) {
           EventAlert(EVENT_FLING, anchor, card);
           return true;
         }
       }
-      anchor.AddCard(card);
+      anchor.addCard(card);
     } else {
       moveCard.Release();
     }
@@ -784,34 +784,34 @@ class Freecell extends Rules {
   @Override
   public void EventProcess(int event, CardAnchor anchor, Card card) {
     if (mIgnoreEvents) {
-      anchor.AddCard(card);
+      anchor.addCard(card);
       return;
     }
     if (event == EVENT_FLING) {
       mWasFling = true;
       if (!TryToSinkCard(anchor, card)) {
-        anchor.AddCard(card);
+        anchor.addCard(card);
         mWasFling = false;
       }
     } else {
-      anchor.AddCard(card);
+      anchor.addCard(card);
     }
   }
 
   private boolean TryToSink(CardAnchor anchor) {
-    Card card = anchor.PopCard();
+    Card card = anchor.popCard();
     boolean ret = TryToSinkCard(anchor, card);
     if (!ret) {
-      anchor.AddCard(card);
+      anchor.addCard(card);
     }
     return ret;
   }
 
   private boolean TryToSinkCard(CardAnchor anchor, Card card) {
     for (int i = 0; i < 4; i++) {
-      if (mCardAnchor[i+4].DropSingleCard(card)) {
+      if (mCardAnchor[i+4].dropSingleCard(card)) {
         mAnimateCard.moveCard(card, mCardAnchor[i+4]);
-        mMoveHistory.push(new Move(anchor.GetNumber(), i+4, 1, false, false));
+        mMoveHistory.push(new Move(anchor.getNumber(), i+4, 1, false, false));
         return true;
       }
     }
@@ -826,13 +826,13 @@ class Freecell extends Rules {
     }
     if (event == EVENT_SMART_MOVE) {
       for (int i = 0; i < 4; i++) {
-        if (mCardAnchor[i].GetCount() > 0 &&
+        if (mCardAnchor[i].getCount() > 0 &&
             TryToSink(mCardAnchor[i])) {
           return;
         }
       }
       for (int i = 0; i < 8; i++) {
-        if (mCardAnchor[i+8].GetCount() > 0 &&
+        if (mCardAnchor[i+8].getCount() > 0 &&
             TryToSink(mCardAnchor[i+8])) {
           return;
         }
@@ -846,12 +846,12 @@ class Freecell extends Rules {
   public int CountFreeSpaces() {
     int free = 0;
     for (int i = 0; i < 4; i++) {
-      if (mCardAnchor[i].GetCount() == 0) {
+      if (mCardAnchor[i].getCount() == 0) {
         free++;
       }
     }
     for (int i = 0; i < 8; i++) {
-      if (mCardAnchor[i+8].GetCount() == 0) {
+      if (mCardAnchor[i+8].getCount() == 0) {
         free++;
       }
     }
@@ -880,13 +880,13 @@ class FortyThieves extends Rules {
     // Anchor stacks
     for (int i = 0; i < 10; i++) {
       mCardAnchor[i] = CardAnchor.CreateAnchor(CardAnchor.GENERIC_ANCHOR, i, this);
-      mCardAnchor[i].SetBuildSeq(GenericAnchor.SEQ_DSC);
-      mCardAnchor[i].SetMoveSeq(GenericAnchor.SEQ_ASC);
-      mCardAnchor[i].SetSuit(GenericAnchor.SUIT_SAME);
-      mCardAnchor[i].SetWrap(false);
-      mCardAnchor[i].SetPickup(GenericAnchor.PACK_LIMIT_BY_FREE);
-      mCardAnchor[i].SetDropoff(GenericAnchor.PACK_MULTI);
-      mCardAnchor[i].SetDisplay(GenericAnchor.DISPLAY_ALL);
+      mCardAnchor[i].setBuildSeq(GenericAnchor.SEQ_DSC);
+      mCardAnchor[i].setMoveSeq(GenericAnchor.SEQ_ASC);
+      mCardAnchor[i].setSuit(GenericAnchor.SUIT_SAME);
+      mCardAnchor[i].setWrap(false);
+      mCardAnchor[i].setPickup(GenericAnchor.PACK_LIMIT_BY_FREE);
+      mCardAnchor[i].setDropoff(GenericAnchor.PACK_MULTI);
+      mCardAnchor[i].setDisplay(GenericAnchor.DISPLAY_ALL);
     }
     // Bottom anchors for holding cards
     for (int i = 0; i < 8; i++) {
@@ -909,9 +909,9 @@ class FortyThieves extends Rules {
         for (int i = 0; i < 20; i++) {
           for (int j = 0; j < cardCount[i]; j++, cardIdx++) {
             Card card = new Card(value[cardIdx], suit[cardIdx]);
-            mCardAnchor[i].AddCard(card);
+            mCardAnchor[i].addCard(card);
           }
-          mCardAnchor[i].SetHiddenCount(hiddenCount[i]);
+          mCardAnchor[i].setHiddenCount(hiddenCount[i]);
         }
 
         mIgnoreEvents = false;
@@ -923,11 +923,11 @@ class FortyThieves extends Rules {
     mDeck = new Deck(2);
     for (int i = 0; i < 10; i++) {
       for (int j = 0; j < 4; j++){
-        mCardAnchor[i].AddCard(mDeck.PopCard());
+        mCardAnchor[i].addCard(mDeck.PopCard());
       }
     }
     while (!mDeck.Empty()) {
-      mCardAnchor[18].AddCard(mDeck.PopCard());
+      mCardAnchor[18].addCard(mDeck.PopCard());
     }
     mIgnoreEvents = false;
   }
@@ -935,19 +935,19 @@ class FortyThieves extends Rules {
   public void Resize(int width, int height) {
     int rem = (width - (Card.WIDTH * 10)) / 10;
     for (int i = 0; i < 10; i++) {
-      mCardAnchor[i].SetMaxHeight(height - 30 - Card.HEIGHT);
-      mCardAnchor[i].SetPosition(rem/2 + i * (rem + Card.WIDTH), 30 + Card.HEIGHT);
+      mCardAnchor[i].setMaxHeight(height - 30 - Card.HEIGHT);
+      mCardAnchor[i].setPosition(rem/2 + i * (rem + Card.WIDTH), 30 + Card.HEIGHT);
       
-      mCardAnchor[i+10].SetPosition(rem/2 + i * (rem + Card.WIDTH), 10);
+      mCardAnchor[i+10].setPosition(rem/2 + i * (rem + Card.WIDTH), 10);
     }
 
     // Setup edge cards (Touch sensor loses sensitivity towards the edge).
-    mCardAnchor[0].SetLeftEdge(0);
-    mCardAnchor[9].SetRightEdge(width);
-    mCardAnchor[10].SetLeftEdge(0);
-    mCardAnchor[19].SetRightEdge(width);
+    mCardAnchor[0].setLeftEdge(0);
+    mCardAnchor[9].setRightEdge(width);
+    mCardAnchor[10].setLeftEdge(0);
+    mCardAnchor[19].setRightEdge(width);
     for (int i = 0; i < 10; i++) {
-      mCardAnchor[i].SetBottom(height);
+      mCardAnchor[i].setBottom(height);
     }
   }
 
@@ -957,12 +957,12 @@ class FortyThieves extends Rules {
       CardAnchor anchor = moveCard.GetAnchor();
       Card card = moveCard.DumpCards(false)[0];
       for (int i = 0; i < 8; i++) {
-        if (mCardAnchor[i+10].DropSingleCard(card)) {
+        if (mCardAnchor[i+10].dropSingleCard(card)) {
           mEventPoster.PostEvent(EVENT_FLING, anchor, card);
           return true;
         }
       }
-      anchor.AddCard(card);
+      anchor.addCard(card);
     } else {
       moveCard.Release();
     }
@@ -972,34 +972,34 @@ class FortyThieves extends Rules {
   @Override
   public void EventProcess(int event, CardAnchor anchor, Card card) {
     if (mIgnoreEvents) {
-      anchor.AddCard(card);
+      anchor.addCard(card);
       return;
     }
     if (event == EVENT_FLING) {
       mWasFling = true;
       if (!TryToSinkCard(anchor, card)) {
-        anchor.AddCard(card);
+        anchor.addCard(card);
         mWasFling = false;
       }
     } else {
-      anchor.AddCard(card);
+      anchor.addCard(card);
     }
   }
   
   private boolean TryToSink(CardAnchor anchor) {
-    Card card = anchor.PopCard();
+    Card card = anchor.popCard();
     boolean ret = TryToSinkCard(anchor, card);
     if (!ret) {
-      anchor.AddCard(card);
+      anchor.addCard(card);
     }
     return ret;
   }
 
   private boolean TryToSinkCard(CardAnchor anchor, Card card) {
     for (int i = 0; i < 8; i++) {
-      if (mCardAnchor[i+10].DropSingleCard(card)) {
+      if (mCardAnchor[i+10].dropSingleCard(card)) {
         mAnimateCard.moveCard(card, mCardAnchor[i+10]);
-        mMoveHistory.push(new Move(anchor.GetNumber(), i+10, 1, false, false));
+        mMoveHistory.push(new Move(anchor.getNumber(), i+10, 1, false, false));
         return true;
       }
     }
@@ -1012,19 +1012,19 @@ class FortyThieves extends Rules {
       return;
     }
     if (event == EVENT_DEAL) {
-      if (mCardAnchor[18].GetCount()>0){
-        mCardAnchor[19].AddCard(mCardAnchor[18].PopCard());
-        if (mCardAnchor[18].GetCount() == 0) {
-          mCardAnchor[18].SetDone(true);
+      if (mCardAnchor[18].getCount()>0){
+        mCardAnchor[19].addCard(mCardAnchor[18].popCard());
+        if (mCardAnchor[18].getCount() == 0) {
+          mCardAnchor[18].setDone(true);
         }
         mMoveHistory.push(new Move(18, 19, 1, true, false));
       }
     } else if (event == EVENT_STACK_ADD) {
-      if (anchor.GetNumber() >= 10 && anchor.GetNumber() < 18) {
-        if (mCardAnchor[10].GetCount() == 13 && mCardAnchor[11].GetCount() == 13 &&
-            mCardAnchor[12].GetCount() == 13 && mCardAnchor[13].GetCount() == 13 &&
-            mCardAnchor[14].GetCount() == 13 && mCardAnchor[15].GetCount() == 13 &&
-            mCardAnchor[16].GetCount() == 13 && mCardAnchor[17].GetCount() == 13) {
+      if (anchor.getNumber() >= 10 && anchor.getNumber() < 18) {
+        if (mCardAnchor[10].getCount() == 13 && mCardAnchor[11].getCount() == 13 &&
+            mCardAnchor[12].getCount() == 13 && mCardAnchor[13].getCount() == 13 &&
+            mCardAnchor[14].getCount() == 13 && mCardAnchor[15].getCount() == 13 &&
+            mCardAnchor[16].getCount() == 13 && mCardAnchor[17].getCount() == 13) {
           SignalWin();
         } else {
           if (mAutoMoveLevel == AUTO_MOVE_ALWAYS ||
@@ -1046,7 +1046,7 @@ class FortyThieves extends Rules {
     }
     if (event == EVENT_SMART_MOVE) {
       for (int i = 0; i < 10; i++) {
-        if (mCardAnchor[i].GetCount() > 0 &&
+        if (mCardAnchor[i].getCount() > 0 &&
             TryToSink(mCardAnchor[i])) {
           return;
         }
@@ -1060,7 +1060,7 @@ class FortyThieves extends Rules {
   public int CountFreeSpaces() {
     int free = 0;
     for (int i = 0; i < 10; i++) {
-      if (mCardAnchor[i].GetCount() == 0) {
+      if (mCardAnchor[i].getCount() == 0) {
         free++;
       }
     }
@@ -1083,7 +1083,7 @@ class FortyThieves extends Rules {
 
   @Override
   public String GetString() {
-    int cardsLeft = mCardAnchor[18].GetCount();
+    int cardsLeft = mCardAnchor[18].getCount();
     if (cardsLeft == 1) {
       return "1 card left";
     }
