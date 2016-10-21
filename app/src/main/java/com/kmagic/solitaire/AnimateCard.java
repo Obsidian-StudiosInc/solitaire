@@ -62,7 +62,7 @@ public class AnimateCard {
         mCard[j].movePosition(-mDx, -mDy);
       }
       for (int i = 0; i < mCount; i++) {
-        drawMaster.DrawCard(canvas, mCard[i]);
+        drawMaster.drawCard(canvas, mCard[i]);
       }
       mFrames--;
       if (mFrames <= 0) {

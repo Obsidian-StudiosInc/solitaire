@@ -72,7 +72,7 @@ public class Options {
         if (bigCards != ((RadioButton)solitaire.findViewById(R.id.big_cards)).isChecked()) {
           editor.putBoolean("DisplayBigCards", !bigCards);
           commit = true;
-          drawMaster.DrawCards(!bigCards);
+          drawMaster.drawCards(!bigCards);
         }
 
         if (displayTime != ((CheckBox)solitaire.findViewById(R.id.display_time)).isChecked()) {

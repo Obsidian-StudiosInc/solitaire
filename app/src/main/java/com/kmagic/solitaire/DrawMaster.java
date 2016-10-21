@@ -30,7 +30,10 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.view.Display;
 import android.view.WindowManager;
 
-
+/**
+ * Handles all drawing for the game
+ * Backgrounds, cards, suits, etc
+ */
 public class DrawMaster {
 
   private Context mContext;
@@ -58,9 +61,13 @@ public class DrawMaster {
   private Bitmap mBoardBitmap;
   private Canvas mBoardCanvas;
 
-    private int mFontSize;
+  private int mFontSize;
 
-  public DrawMaster(Context context) {
+  /**
+   * Create a new instance of DrawMaster
+   * @param context
+   */
+  public DrawMaster(final Context context) {
 
     mContext = context;
     mResources = mContext.getResources();
@@ -96,29 +103,63 @@ public class DrawMaster {
     mLastSeconds = -1;
 
     mCardBitmap = new Bitmap[52];
-    DrawCards(false);
+    drawCards(false);
     mBoardBitmap = Bitmap.createBitmap(mScreenWidth, mScreenHeight, Bitmap.Config.RGB_565);
     mBoardCanvas = new Canvas(mBoardBitmap);
   }
 
-  public int GetWidth() { return mScreenWidth; }
-  public int GetHeight() { return mScreenHeight; }
-  public Canvas GetBoardCanvas() { return mBoardCanvas; }
+  /**
+   * Get the screen's width
+   * @return the screen width
+   */
+  public int getWidth() { return mScreenWidth; }
 
-  public void DrawCard(Canvas canvas, Card card) {
+  /**
+   * Get the screen's height
+   * @return the screen height
+   */
+  public int getHeight() { return mScreenHeight; }
+
+  /**
+   * Get the playing board canvas
+   * @return board canvas
+   */
+  public Canvas getBoardCanvas() { return mBoardCanvas; }
+
+  /**
+   * Draw a card
+   * @param canvas canvas to draw on
+   * @param card card to draw
+   */
+  public void drawCard(final Canvas canvas, final Card card) {
     float x = card.getX();
     float y = card.getY();
     int idx = card.getSuit()*13+(card.getValue()-1);
     canvas.drawBitmap(mCardBitmap[idx], x, y, mSuitPaint);
   }
 
-  public void DrawHiddenCard(Canvas canvas, Card card) {
+  /**
+   * Draw a hidden card
+   * @param canvas canvas to draw on
+   * @param card hidden card to draw
+   */
+  public void drawHiddenCard(final Canvas canvas, final Card card) {
     float x = card.getX();
     float y = card.getY();
     canvas.drawBitmap(mCardHidden, x, y, mSuitPaint);
   }
 
-  public void DrawEmptyAnchor(Canvas canvas, float x, float y, boolean done) {
+  /**
+   * Draw an empty anchor
+   * @param canvas canvas to draw on
+   * @param x x coordinate of the anchor
+   * @param y y coordinate of the anchor
+   * @param done anchor done with any movement
+   */
+  public void drawEmptyAnchor(final Canvas canvas,
+                              final float x,
+                              final float y,
+                              final boolean done) {
     RectF pos = new RectF(x, y, x + Card.WIDTH, y + Card.HEIGHT);
     if (!done) {
       canvas.drawRoundRect(pos, 4, 4, mEmptyAnchorPaint);
@@ -127,57 +168,99 @@ public class DrawMaster {
     }
   }
 
-  public void DrawBackground(Canvas canvas) {
+  /**
+   * Draw game background, green board
+   * @param canvas canvas to draw on
+   */
+  public void drawBackground(final Canvas canvas) {
     canvas.drawRect(0, 0, mScreenWidth, mScreenHeight, mBGPaint);
   }
 
-  public void DrawShade(Canvas canvas) {
+  /**
+   * Draw shade background
+   * @param canvas canvas to draw on
+   */
+  public void drawShade(final Canvas canvas) {
     canvas.drawRect(0, 0, mScreenWidth, mScreenHeight, mShadePaint);
   }
 
-  public void DrawLightShade(Canvas canvas) {
+  /**
+   * Draw light shade background
+   * @param canvas canvas to draw on
+   */
+  public void drawLightShade(final Canvas canvas) {
     canvas.drawRect(0, 0, mScreenWidth, mScreenHeight, mLightShadePaint);
   }
 
-  public void DrawLastBoard(Canvas canvas) {
+  public void drawLastBoard(final Canvas canvas) {
     canvas.drawBitmap(mBoardBitmap, 0, 0, mSuitPaint);
   }
 
-  public void SetScreenSize(int width, int height) {
+  /**
+   * Set the game screen size
+   * @param width width of the screen
+   * @param height height of the screen
+   */
+  public void setScreenSize(final int width, final int height) {
     mScreenWidth = width;
     mScreenHeight = height;
     mBoardBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
     mBoardCanvas = new Canvas(mBoardBitmap);
   }
 
+  /**
+   * Get a base paint object with anti alias
+   * @return paint object
+   */
   public static Paint getPaint() {
     final Paint paint = new Paint();
     paint.setAntiAlias(true);
     return(paint);
   }
 
+  /**
+   * Get red paint for general use
+   * @return black paint object
+   */
   public static Paint getBlackPaint() {
     final Paint paint = getPaint();
     paint.setARGB(255, 0, 0, 0);
     return(paint);
   }
 
+  /**
+   * Get red paint for general use
+   * @return red paint object
+   */
   public static Paint getRedPaint() {
     final Paint paint = getPaint();
     paint.setARGB(255, 255, 0, 0);
     return(paint);
   }
 
-  public static Paint getTextPaint(float fontSize,Paint.Align align) {
-    Paint paint = new Paint();
+  /**
+   * Get paint for text use
+   * @return red paint object
+   */
+  public static Paint getTextPaint(final float fontSize,
+                                   final Paint.Align align) {
+    Paint paint = getPaint();
     paint.setTextSize(fontSize);
-    paint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
+    paint.setTypeface(Typeface.create(Typeface.SANS_SERIF,
+                                      Typeface.BOLD));
     paint.setTextAlign(align);
-    paint.setAntiAlias(true);
     return(paint);
   }
 
-  public void drawPedestal(final Canvas canvas, final float width, final float height) {
+  /**
+   * Draw a pedestal ( clubs and spades stand on this )
+   * @param canvas canvas to draw on
+   * @param width width of the pedestal
+   * @param height height of the pedestal
+   */
+  public void drawPedestal(final Canvas canvas,
+                           final float width,
+                           final float height) {
     final Paint paint = getBlackPaint();
     final float width_half = width/2;
     final float width_fifth = width/5;
@@ -193,7 +276,15 @@ public class DrawMaster {
     canvas.drawPath(path,paint);
   }
 
-  public void drawClub(final Canvas canvas, final float width, final float height) {
+  /**
+   * Draw a club
+   * @param canvas canvas to draw on
+   * @param width width of the club
+   * @param height height of the club
+   */
+  public void drawClub(final Canvas canvas,
+                       final float width,
+                       final float height) {
     final Paint paint = getBlackPaint();
     final float width_half = width/2;
     final float width_fifth = width/5;
@@ -204,7 +295,15 @@ public class DrawMaster {
     drawPedestal(canvas,width,height);
   }
 
-  public void drawDiamond(final Canvas canvas, final float width, final float height) {
+  /**
+   * Draw a diamond
+   * @param canvas canvas to draw on
+   * @param width width of the diamond
+   * @param height height of the diamond
+   */
+  public void drawDiamond(final Canvas canvas,
+                          final float width,
+                          final float height) {
     final Paint paint = getRedPaint();
     final Path path = new Path();
     path.moveTo(width/2,0);
@@ -217,7 +316,15 @@ public class DrawMaster {
     canvas.drawPath(path,paint);
   }
 
-  public void drawHeart(final Canvas canvas, final float width, final float height) {
+  /**
+   * Draw a heart
+   * @param canvas canvas to draw on
+   * @param width width of the heart
+   * @param height height of the heart
+   */
+  public void drawHeart(final Canvas canvas,
+                        final float width,
+                        final float height) {
     final Paint paint = getRedPaint();
     final float width_half = width/2;
     final float width_quarter = width/4;
@@ -234,7 +341,15 @@ public class DrawMaster {
     canvas.drawPath(path,paint);
   }
 
-  public void drawSpade(final Canvas canvas, final float width, final float height) {
+  /**
+   * Draw a spade
+   * @param canvas canvas to draw on
+   * @param width width of the spade
+   * @param height height of the spade
+   */
+  public void drawSpade(final Canvas canvas,
+                        final float width,
+                        final float height) {
     final Paint paint = getBlackPaint();
     final float width_half = width/2;
     final float width_quarter = width/4;
@@ -253,7 +368,15 @@ public class DrawMaster {
     drawPedestal(canvas,width,height);
   }
 
-  public void drawSuit(final int suit, final Canvas canvas, final  float size) {
+  /**
+   * Draw a card suit, wrapper method for the various suit types
+   * @param suit suit to draw
+   * @param canvas canvas to draw on
+   * @param size size of the suit to draw
+   */
+  public void drawSuit(final int suit,
+                       final Canvas canvas,
+                       final float size) {
     if(suit==0) {
       drawClub(canvas, size, size);
     } else if(suit==1) {
@@ -265,7 +388,13 @@ public class DrawMaster {
     }
   }
 
-  private void DrawBigCards(Resources r) {
+  /**
+   * Draw regular cards with suits representing values on card
+   * @param r application resources reference
+   * @param size the size multiplier with regular being 0.5
+   */
+  private void drawBigCards(final Resources r,
+                            final float size) {
 
     final Bitmap[] bigSuit = new Bitmap[4];
     final Bitmap[] suit = new Bitmap[4];
@@ -273,7 +402,7 @@ public class DrawMaster {
     final String[] card_values = mResources.getStringArray(R.array.card_values);
     final Paint cardFrontPaint = new Paint();
     final Paint cardBorderPaint = new Paint();
-    final Paint textPaintLeft = getTextPaint(mFontSize*0.75f,Paint.Align.LEFT);
+    final Paint textPaintLeft = getTextPaint(mFontSize*size,Paint.Align.LEFT);
     float textSize = textPaintLeft.getTextSize();
 
     Drawable drawable = ResourcesCompat.getDrawable(r, R.drawable.cardback, null);
@@ -330,6 +459,14 @@ public class DrawMaster {
     }
   }
 
+  /**
+   * Create a face card bitmap from resources
+   * @param r application resources reference
+   * @param id drawable resource id (R.drawable.id)
+   * @param width width of the bitmap
+   * @param height height of the bitmap
+   * @return bitmap of the face card resource
+   */
   private Bitmap createFaceBitmap(final Resources r,
                                   final int id,
                                   final int width,
@@ -342,7 +479,12 @@ public class DrawMaster {
     return(bitmap);
   }
 
-  private void DrawCards(Resources r, float size) {
+  /**
+   * Draw regular cards with suits representing values on card
+   * @param r application resources reference
+   * @param size the size multiplier with regular being 0.5
+   */
+  private void drawCards(final Resources r, final float size) {
 
     Paint cardFrontPaint = new Paint();
     Paint cardBorderPaint = new Paint();
@@ -356,8 +498,8 @@ public class DrawMaster {
     Bitmap blackQueen;
     Bitmap blackKing;
     Canvas canvas;
-    int width = Card.WIDTH;
-    int height = Card.HEIGHT;
+    final int width = Card.WIDTH;
+    final int height = Card.HEIGHT;
 
     final String[] card_values = mResources.getStringArray(R.array.card_values);
     final Paint textPaintLeft = getTextPaint(mFontSize*size,Paint.Align.LEFT);
@@ -388,8 +530,8 @@ public class DrawMaster {
       drawSuit(i,canvas,suitsSmallSize);
     }
 
-    int faceWidth = width - 20;
-    int faceHeight = height/2 - (int)suitsSize;
+    final int faceWidth = width - 20;
+    final int faceHeight = height/2 - (int)suitsSize;
     blackJack = createFaceBitmap(r,R.drawable.blackjack, faceWidth, faceHeight);
     blackQueen = createFaceBitmap(r,R.drawable.blackqueen, faceWidth, faceHeight);
     blackKing = createFaceBitmap(r,R.drawable.blackking, faceWidth, faceHeight);
@@ -548,46 +690,68 @@ public class DrawMaster {
     }
   }
 
-  public void DrawCards(boolean bigCards) {
+  /**
+   * Draw cards wrapper, draw big or regular cards
+   * @param bigCards display big cards if true, regular otherwise
+   */
+  public void drawCards(boolean bigCards) {
     if (bigCards) {
-      DrawBigCards(mContext.getResources());
+      drawBigCards(mContext.getResources(),0.75f);
     } else {
-      DrawCards(mContext.getResources(),0.5f);
+      drawCards(mContext.getResources(),0.5f);
     }
   }
 
+  /**
+   * Draw face card bitmap, with its top/left corner at (x,y),
+   * using the specified paint
+   * @param canvas canvas to draw on
+   * @param bitmap bitmap image to draw
+   * @param left left side of the bitmap being drawn (y)
+   * @param top top side of the bitmap being drawn (x)
+   * @param paint paint used to draw the bitmap
+   */
   public void drawFaceBitmap(final Canvas canvas,
                              final Bitmap bitmap,
-                             final float suitsSmallSize,
-                             final float suitsSize,
+                             final float left,
+                             final float top,
                              final Paint paint) {
-    canvas.drawBitmap(bitmap, suitsSmallSize, suitsSize, paint);
+    canvas.drawBitmap(bitmap, left, top, paint);
     canvas.rotate(180,Card.WIDTH/2,Card.HEIGHT/2);
-    canvas.drawBitmap(bitmap, suitsSmallSize, suitsSize, paint);
+    canvas.drawBitmap(bitmap, left, top, paint);
   }
 
-
-    public void DrawTime(Canvas canvas, int millis) {
-        int seconds = (millis / 1000) % 60;
-        int minutes = millis / 60000;
-        if (seconds != mLastSeconds) {
-            mLastSeconds = seconds;
-            // String.format is insanely slow (~15ms)
-            if (seconds < 10) {
-                mTimeString = minutes + ":0" + seconds;
-            } else {
-                mTimeString = minutes + ":" + seconds;
-            }
-        }
-        mTimePaint.setARGB(255, 20, 20, 20);
-        final int textX = mScreenHeight-mFontSize;
-        final int textY = mScreenWidth-mFontSize;
-        canvas.drawText(mTimeString, textY, textX, mTimePaint);
-        mTimePaint.setARGB(255, 0, 0, 0);
-        canvas.drawText(mTimeString, textY-1, textX-1, mTimePaint);
+  /**
+   * Draw time, elapsed game time
+   * @param canvas canvas to draw on
+   * @param millis the time in millis to draw
+   */
+  public void drawTime(final Canvas canvas, final int millis) {
+    int seconds = (millis / 1000) % 60;
+    int minutes = millis / 60000;
+    if (seconds != mLastSeconds) {
+      mLastSeconds = seconds;
+      // String.format is insanely slow (~15ms)
+      if (seconds < 10) {
+        mTimeString = minutes + ":0" + seconds;
+      } else {
+        mTimeString = minutes + ":" + seconds;
+      }
     }
+    mTimePaint.setARGB(255, 20, 20, 20);
+    final int textX = mScreenHeight-mFontSize;
+    final int textY = mScreenWidth-mFontSize;
+    canvas.drawText(mTimeString, textY, textX, mTimePaint);
+    mTimePaint.setARGB(255, 0, 0, 0);
+    canvas.drawText(mTimeString, textY-1, textX-1, mTimePaint);
+  }
 
-  public void DrawRulesString(Canvas canvas, String score) {
+  /**
+   * Draw score
+   * @param canvas canvas to draw on
+   * @param score the score to draw
+   */
+  public void drawScore(final Canvas canvas, final String score) {
     mTimePaint.setARGB(255, 20, 20, 20);
       final int textX = mScreenHeight-(mFontSize*5)/2;
       final int textY = mScreenWidth-mFontSize;

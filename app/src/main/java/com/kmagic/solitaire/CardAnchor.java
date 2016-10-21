@@ -251,9 +251,9 @@ class CardAnchor {
   // ----------------------------
   public void Draw(DrawMaster drawMaster, Canvas canvas) {
     if (mCardCount == 0) {
-      drawMaster.DrawEmptyAnchor(canvas, mX, mY, mDone);
+      drawMaster.drawEmptyAnchor(canvas, mX, mY, mDone);
     } else {
-      drawMaster.DrawCard(canvas, mCard[mCardCount-1]);
+      drawMaster.drawCard(canvas, mCard[mCardCount-1]);
     }
   }
 }
@@ -306,11 +306,11 @@ class DealTo extends CardAnchor {
   @Override
   public void Draw(DrawMaster drawMaster, Canvas canvas) {
     if (mCardCount == 0) {
-      drawMaster.DrawEmptyAnchor(canvas, mX, mY, mDone);
+      drawMaster.drawEmptyAnchor(canvas, mX, mY, mDone);
     } else {
       for (int i = mCardCount - mShowing; i < mCardCount; i++) {
         if (i >= 0) {
-          drawMaster.DrawCard(canvas, mCard[i]);
+          drawMaster.drawCard(canvas, mCard[i]);
         }
       }
     }
@@ -398,13 +398,13 @@ class SeqStack extends CardAnchor {
   @Override
   public void Draw(DrawMaster drawMaster, Canvas canvas) {
     if (mCardCount == 0) {
-      drawMaster.DrawEmptyAnchor(canvas, mX, mY, mDone);
+      drawMaster.drawEmptyAnchor(canvas, mX, mY, mDone);
     } else {
       for (int i = 0; i < mCardCount; i++) {
         if (i < mHiddenCount) {
-          drawMaster.DrawHiddenCard(canvas, mCard[i]);
+          drawMaster.drawHiddenCard(canvas, mCard[i]);
         } else {
-          drawMaster.DrawCard(canvas, mCard[i]);
+          drawMaster.drawCard(canvas, mCard[i]);
         }
       }
     }
@@ -464,9 +464,9 @@ class DealFrom extends CardAnchor {
   @Override
   public void Draw(DrawMaster drawMaster, Canvas canvas) {
     if (mCardCount == 0) {
-      drawMaster.DrawEmptyAnchor(canvas, mX, mY, mDone);
+      drawMaster.drawEmptyAnchor(canvas, mX, mY, mDone);
     } else {
-      drawMaster.DrawHiddenCard(canvas, mCard[mCardCount-1]);
+      drawMaster.drawHiddenCard(canvas, mCard[mCardCount-1]);
     }
   }
 }
@@ -911,35 +911,35 @@ class GenericAnchor extends CardAnchor {
   @Override
   public void Draw(DrawMaster drawMaster, Canvas canvas) {
     if (mCardCount == 0) {
-      drawMaster.DrawEmptyAnchor(canvas, mX, mY, mDone);
+      drawMaster.drawEmptyAnchor(canvas, mX, mY, mDone);
       return;
     }
     switch (mDISPLAY){
       case GenericAnchor.DISPLAY_ALL:
         for (int i = 0; i < mCardCount; i++) {
-          drawMaster.DrawCard(canvas, mCard[i]);
+          drawMaster.drawCard(canvas, mCard[i]);
         }
         break;
       case GenericAnchor.DISPLAY_HIDE:
         for (int i = 0; i < mCardCount; i++) {
-          drawMaster.DrawHiddenCard(canvas, mCard[i]);
+          drawMaster.drawHiddenCard(canvas, mCard[i]);
         }
         break;
       case GenericAnchor.DISPLAY_MIX:
         for (int i = 0; i < mCardCount; i++) {
           if (i < mHiddenCount) {
-            drawMaster.DrawHiddenCard(canvas, mCard[i]);
+            drawMaster.drawHiddenCard(canvas, mCard[i]);
           } else {
-            drawMaster.DrawCard(canvas, mCard[i]);
+            drawMaster.drawCard(canvas, mCard[i]);
           }
         }
         break;
       case GenericAnchor.DISPLAY_ONE:
         for (int i = 0; i < mCardCount; i++) {
           if (i < mCardCount-1) {
-            drawMaster.DrawHiddenCard(canvas, mCard[i]);
+            drawMaster.drawHiddenCard(canvas, mCard[i]);
           } else {
-            drawMaster.DrawCard(canvas, mCard[i]);
+            drawMaster.drawCard(canvas, mCard[i]);
           }
         }
         break;

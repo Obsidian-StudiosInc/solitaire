@@ -148,11 +148,11 @@ public class SolitaireView extends View {
     if (oldGameType.equals(mRules.GetGameTypeString())) {
       mRules.SetCarryOverScore(oldScore);
     }
-    Card.SetSize(gameType,mDrawMaster.GetWidth(), mDrawMaster.GetHeight());
-    mDrawMaster.DrawCards(GetSettings().getBoolean("DisplayBigCards", false));
+    Card.SetSize(gameType,mDrawMaster.getWidth(), mDrawMaster.getHeight());
+    mDrawMaster.drawCards(GetSettings().getBoolean("DisplayBigCards", false));
     mCardAnchor = mRules.GetAnchorArray();
-    if (mDrawMaster.GetWidth() > 1) {
-      mRules.Resize(mDrawMaster.GetWidth(), mDrawMaster.GetHeight());
+    if (mDrawMaster.getWidth() > 1) {
+      mRules.Resize(mDrawMaster.getWidth(), mDrawMaster.getHeight());
       Refresh();
     }
     SetDisplayTime(GetSettings().getBoolean("DisplayTime", true));
@@ -345,7 +345,7 @@ public class SolitaireView extends View {
   }
 
   public boolean LoadSave() {
-    mDrawMaster.DrawCards(GetSettings().getBoolean("DisplayBigCards", false));
+    mDrawMaster.drawCards(GetSettings().getBoolean("DisplayBigCards", false));
     mTimePaused = true;
 
     try {
@@ -384,11 +384,11 @@ public class SolitaireView extends View {
 
       mGameStarted = !mMoveHistory.isEmpty();
       mRules = Rules.CreateRules(type, map, this, mMoveHistory, mAnimateCard);
-      Card.SetSize(type,mDrawMaster.GetWidth(), mDrawMaster.GetHeight());
+      Card.SetSize(type,mDrawMaster.getWidth(), mDrawMaster.getHeight());
       SetDisplayTime(GetSettings().getBoolean("DisplayTime", true));
       mCardAnchor = mRules.GetAnchorArray();
-      if (mDrawMaster.GetWidth() > 1) {
-        mRules.Resize(mDrawMaster.GetWidth(), mDrawMaster.GetHeight());
+      if (mDrawMaster.getWidth() > 1) {
+        mRules.Resize(mDrawMaster.getWidth(), mDrawMaster.getHeight());
         Refresh();
       }
       mTimePaused = false;
@@ -426,7 +426,7 @@ public class SolitaireView extends View {
   }
 
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-    mDrawMaster.SetScreenSize(w, h);
+    mDrawMaster.setScreenSize(w, h);
     mRules.Resize(w, h);
     mSelectCard.SetHeight(h);
   }
@@ -465,8 +465,8 @@ public class SolitaireView extends View {
   }
 
   public void DrawBoard() {
-      Canvas boardCanvas = mDrawMaster.GetBoardCanvas();
-      mDrawMaster.DrawBackground(boardCanvas);
+      Canvas boardCanvas = mDrawMaster.getBoardCanvas();
+      mDrawMaster.drawBackground(boardCanvas);
       for (CardAnchor ca : mCardAnchor) {
           ca.Draw(mDrawMaster, boardCanvas);
       }
@@ -490,12 +490,12 @@ public class SolitaireView extends View {
       SanityCheck();
       DrawBoard();
     }
-    mDrawMaster.DrawLastBoard(canvas);
+    mDrawMaster.drawLastBoard(canvas);
     if (mDisplayTime) {
-      mDrawMaster.DrawTime(canvas, mElapsed);
+      mDrawMaster.drawTime(canvas, mElapsed);
     }
     if (mRules.HasString()) {
-      mDrawMaster.DrawRulesString(canvas, mRules.GetString());
+      mDrawMaster.drawScore(canvas, mRules.GetString());
     }
 
     switch (mViewMode) {
@@ -511,7 +511,7 @@ public class SolitaireView extends View {
         }
       case MODE_WIN_STOP:
       case MODE_TEXT:
-        mDrawMaster.DrawShade(canvas);
+        mDrawMaster.drawShade(canvas);
         break;
       case MODE_ANIMATE:
         mAnimateCard.draw(mDrawMaster, canvas);

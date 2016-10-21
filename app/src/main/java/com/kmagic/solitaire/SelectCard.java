@@ -59,9 +59,9 @@ class SelectCard {
   }
 
   public void Draw(DrawMaster drawMaster, Canvas canvas) {
-    drawMaster.DrawLightShade(canvas);
+    drawMaster.drawLightShade(canvas);
     for (int i = 0; i < mCardCount; i++) {
-      drawMaster.DrawCard(canvas, mCard[i]);
+      drawMaster.drawCard(canvas, mCard[i]);
     }
   }
 
