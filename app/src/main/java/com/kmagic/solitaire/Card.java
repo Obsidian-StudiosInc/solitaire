@@ -88,7 +88,7 @@ class Card {
   /**
    * Move card to destination x,y coordinates
    * @param dx destination x coordinate
-   * @param dx destination y coordinate
+   * @param dy destination y coordinate
    */
   public void movePosition(float dx, float dy) {
     mX -= dx;
