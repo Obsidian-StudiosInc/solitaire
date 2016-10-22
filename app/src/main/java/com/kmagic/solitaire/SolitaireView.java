@@ -307,11 +307,11 @@ public class SolitaireView extends View {
 
         for (int i = 0; i < historySize; i++) {
           Move move = mMoveHistory.pop();
-          historyFrom[i] = move.GetFrom();
-          historyToBegin[i] = move.GetToBegin();
-          historyToEnd[i] = move.GetToEnd();
-          historyCount[i] = move.GetCount();
-          historyFlags[i] = move.GetFlags();
+          historyFrom[i] = move.getFrom();
+          historyToBegin[i] = move.getToBegin();
+          historyToEnd[i] = move.getToEnd();
+          historyCount[i] = move.getCount();
+          historyFlags[i] = move.getFlags();
         }
 
         oout.writeObject(SAVE_VERSION);
@@ -788,22 +788,22 @@ public class SolitaireView extends View {
     if (!mMoveHistory.empty()) {
       Move move = mMoveHistory.pop();
       int count = 0;
-      int from = move.GetFrom();
-      if (move.GetToBegin() != move.GetToEnd()) {
-        for (int i = move.GetToBegin(); i <= move.GetToEnd(); i++) {
-          for (int j = 0; j < move.GetCount(); j++) {
+      int from = move.getFrom();
+      if (move.getToBegin() != move.getToEnd()) {
+        for (int i = move.getToBegin(); i <= move.getToEnd(); i++) {
+          for (int j = 0; j < move.getCount(); j++) {
             mUndoStorage[count++] = mCardAnchor[i].popCard();
           }
         }
       } else {
-        for (int i = 0; i < move.GetCount(); i++) {
-          mUndoStorage[count++] = mCardAnchor[move.GetToBegin()].popCard();
+        for (int i = 0; i < move.getCount(); i++) {
+          mUndoStorage[count++] = mCardAnchor[move.getToBegin()].popCard();
         }
       }
-      if (move.GetUnhide()) {
+      if (move.getUnhide()) {
         mCardAnchor[from].setHiddenCount(mCardAnchor[from].getHiddenCount() + 1);
       }
-      if (move.GetInvert()) {
+      if (move.getInvert()) {
         for (int i = 0; i < count; i++) {
           mCardAnchor[from].addCard(mUndoStorage[i]);
         }
@@ -812,7 +812,7 @@ public class SolitaireView extends View {
           mCardAnchor[from].addCard(mUndoStorage[i]);
         }
       }
-      if (move.GetAddDealCount()) {
+      if (move.getAddDealCount()) {
         mRules.AddDealCount();
       }
       if (mUndoStorage[0].getValue() == 1) {

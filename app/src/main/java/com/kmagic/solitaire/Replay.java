@@ -49,9 +49,9 @@ public class Replay implements Runnable {
     mMoveStack.clear();
     while (!history.empty()) {
       Move move = history.peek();
-      if (move.GetToBegin() != move.GetToEnd()) {
-        for (int i = move.GetToEnd(); i >= move.GetToBegin(); i--) {
-          mMoveStack.push(new Move(move.GetFrom(), i, 1, false, false));
+      if (move.getToBegin() != move.getToEnd()) {
+        for (int i = move.getToEnd(); i >= move.getToBegin(); i--) {
+          mMoveStack.push(new Move(move.getFrom(), i, 1, false, false));
         }
       } else {
         mMoveStack.push(move);
@@ -71,14 +71,14 @@ public class Replay implements Runnable {
     }
     Move move = mMoveStack.pop();
 
-    if (move.GetToBegin() == move.GetToEnd()) {
-      mSinkCount = move.GetCount();
+    if (move.getToBegin() == move.getToEnd()) {
+      mSinkCount = move.getCount();
       mEventCount = 0;
-      mSinkAnchor = mCardAnchor[move.GetToBegin()];
-      mSinkUnhide = move.GetUnhide();
-      mSinkFrom = mCardAnchor[move.GetFrom()];
+      mSinkAnchor = mCardAnchor[move.getToBegin()];
+      mSinkUnhide = move.getUnhide();
+      mSinkFrom = mCardAnchor[move.getFrom()];
 
-      if (move.GetInvert()) {
+      if (move.getInvert()) {
         for (int i = 0; i < mSinkCount; i++) {
           mSinkCard[i] = mSinkFrom.popCard();
         }
