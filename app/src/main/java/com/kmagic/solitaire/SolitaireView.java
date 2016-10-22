@@ -220,7 +220,7 @@ public class SolitaireView extends View {
           mTextView.setVisibility(View.INVISIBLE);
         }
         DrawBoard();
-        mReplay.StopPlaying();
+        mReplay.stopPlaying();
         break;
     }
     mViewMode = newMode;
@@ -248,7 +248,7 @@ public class SolitaireView extends View {
       mRefreshHandler.SetRunning(false);
       mRules.ClearEvent();
       mRules.SetIgnoreEvents(true);
-      mReplay.StopPlaying();
+      mReplay.stopPlaying();
       try {
         mRefreshThread.join(1000);
       } catch (InterruptedException ignored) {
@@ -445,7 +445,7 @@ public class SolitaireView extends View {
     ChangeViewMode(MODE_WIN);
     mTextView.setVisibility(View.VISIBLE);
     mRules.SetIgnoreEvents(true);
-    mReplay.StartReplay(mMoveHistory, mCardAnchor);
+    mReplay.startReplay(mMoveHistory, mCardAnchor);
   }
 
   public void RestartGame() {
@@ -506,7 +506,7 @@ public class SolitaireView extends View {
         mSelectCard.Draw(mDrawMaster, canvas);
         break;
       case MODE_WIN:
-        if (mReplay.IsPlaying()) {
+        if (mReplay.isPlaying()) {
           mAnimateCard.draw(mDrawMaster, canvas);
         }
       case MODE_WIN_STOP:

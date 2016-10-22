@@ -19,6 +19,9 @@ package com.kmagic.solitaire;
 import android.util.Log;
 import java.util.Stack;
 
+/**
+ * Handles reply of game play
+ */
 public class Replay implements Runnable {
   private Stack<Move> mMoveStack;
   private SolitaireView mView;
@@ -27,24 +30,41 @@ public class Replay implements Runnable {
   private boolean mIsPlaying;
 
   private Card[] mSinkCard;
-  private int mSinkCount;
-  private int mEventCount;
-  private CardAnchor mSinkAnchor;
   private CardAnchor mSinkFrom;
   private boolean mSinkUnhide;
 
-  public Replay(SolitaireView view, AnimateCard animateCard) {
+  /**
+   * Create replace instance
+   * @param view parent view
+   * @param animateCard true if cards should be animated, false if not
+   */
+  public Replay(final SolitaireView view,
+                final AnimateCard animateCard) {
     mView = view;
     mAnimateCard = animateCard;
     mIsPlaying = false;
-    mMoveStack = new Stack<Move>();
+    mMoveStack = new Stack<>();
     mSinkCard = new Card[104];
   }
 
-  public boolean IsPlaying() { return mIsPlaying; }
-  public void StopPlaying() { mIsPlaying = false; }
+  /**
+   * Is replay playing
+   * @return true if replay is playing, false if not
+   */
+  public boolean isPlaying() { return mIsPlaying; }
 
-  public void StartReplay(Stack<Move> history, CardAnchor[] anchor) {
+  /**
+   * Stop playing replay
+   */
+  public void stopPlaying() { mIsPlaying = false; }
+
+  /**
+   * Start replay
+   * @param history history of card movements
+   * @param anchor card anchors
+   */
+  public void startReplay(final Stack<Move> history,
+                          final CardAnchor[] anchor) {
     mCardAnchor = anchor;
     mMoveStack.clear();
     while (!history.empty()) {
@@ -60,10 +80,16 @@ public class Replay implements Runnable {
     }
     mView.DrawBoard();
     mIsPlaying = true;
-    PlayNext();
+    playNext();
   }
 
-  public void PlayNext() {
+  /**
+   * Play next replay
+   */
+  public void playNext() {
+    int mSinkCount;
+    CardAnchor mSinkAnchor;
+
     if (!mIsPlaying || mMoveStack.empty()) {
       mIsPlaying = false;
       mView.StopAnimating();
@@ -73,7 +99,6 @@ public class Replay implements Runnable {
 
     if (move.getToBegin() == move.getToEnd()) {
       mSinkCount = move.getCount();
-      mEventCount = 0;
       mSinkAnchor = mCardAnchor[move.getToBegin()];
       mSinkUnhide = move.getUnhide();
       mSinkFrom = mCardAnchor[move.getFrom()];
@@ -94,12 +119,15 @@ public class Replay implements Runnable {
     }
   }
 
+  /**
+   * Run the replay
+   */
   public void run() {
     if (mIsPlaying) {
       if (mSinkUnhide) {
         mSinkFrom.unhideTopCard();
       }
-      PlayNext();
+      playNext();
     }
   }
 }
