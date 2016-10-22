@@ -27,7 +27,7 @@ import android.widget.RadioButton;
 public class Options {
 
   public Options(final Solitaire solitaire, final DrawMaster drawMaster) {
-    final int type = solitaire.GetSettings().getInt("LastType", Rules.SOLITAIRE);
+    final int type = solitaire.getSettings().getInt("LastType", Rules.SOLITAIRE);
 
     solitaire.setContentView(R.layout.options);
     View view = (View) solitaire.findViewById(R.id.options_view);
@@ -35,29 +35,29 @@ public class Options {
     view.setFocusableInTouchMode(true);
 
     // Display stuff
-    final boolean bigCards = solitaire.GetSettings().getBoolean("DisplayBigCards", false);
+    final boolean bigCards = solitaire.getSettings().getBoolean("DisplayBigCards", false);
     ((RadioButton)solitaire.findViewById(R.id.normal_cards)).setChecked(!bigCards);
     ((RadioButton)solitaire.findViewById(R.id.big_cards)).setChecked(bigCards);
 
-    final boolean displayTime = solitaire.GetSettings().getBoolean("DisplayTime", true);
+    final boolean displayTime = solitaire.getSettings().getBoolean("DisplayTime", true);
     ((CheckBox)solitaire.findViewById(R.id.display_time)).setChecked(displayTime);
 
     // Solitaire stuff
-    final boolean dealThree = solitaire.GetSettings().getBoolean("SolitaireDealThree", true);
-    final boolean styleNormal = solitaire.GetSettings().getBoolean("SolitaireStyleNormal", true);
+    final boolean dealThree = solitaire.getSettings().getBoolean("SolitaireDealThree", true);
+    final boolean styleNormal = solitaire.getSettings().getBoolean("SolitaireStyleNormal", true);
     ((RadioButton)solitaire.findViewById(R.id.deal_3)).setChecked(dealThree);
     ((RadioButton)solitaire.findViewById(R.id.deal_1)).setChecked(!dealThree);
     ((RadioButton)solitaire.findViewById(R.id.style_normal)).setChecked(styleNormal);
     ((RadioButton)solitaire.findViewById(R.id.style_vegas)).setChecked(!styleNormal);
 
     // Spider stuff
-    final int suits = solitaire.GetSettings().getInt("SpiderSuits", 4);
+    final int suits = solitaire.getSettings().getInt("SpiderSuits", 4);
     ((RadioButton)solitaire.findViewById(R.id.suits_4)).setChecked(suits == 4);
     ((RadioButton)solitaire.findViewById(R.id.suits_2)).setChecked(suits == 2);
     ((RadioButton)solitaire.findViewById(R.id.suits_1)).setChecked(suits == 1);
 
     // Automove 
-    final int autoMove = solitaire.GetSettings().getInt("AutoMoveLevel", Rules.AUTO_MOVE_ALWAYS);
+    final int autoMove = solitaire.getSettings().getInt("AutoMoveLevel", Rules.AUTO_MOVE_ALWAYS);
     ((RadioButton)solitaire.findViewById(R.id.auto_move_always)).setChecked(autoMove == Rules.AUTO_MOVE_ALWAYS);
     ((RadioButton)solitaire.findViewById(R.id.auto_move_fling_only)).setChecked(autoMove == Rules.AUTO_MOVE_FLING_ONLY);
     ((RadioButton)solitaire.findViewById(R.id.auto_move_never)).setChecked(autoMove == Rules.AUTO_MOVE_NEVER);
@@ -67,7 +67,7 @@ public class Options {
       public void onClick(View v) {
         boolean commit = false;
         boolean newGame = false;
-        SharedPreferences.Editor editor = solitaire.GetSettings().edit();
+        SharedPreferences.Editor editor = solitaire.getSettings().edit();
 
         if (bigCards != ((RadioButton)solitaire.findViewById(R.id.big_cards)).isChecked()) {
           editor.putBoolean("DisplayBigCards", !bigCards);
@@ -125,19 +125,19 @@ public class Options {
 
         if (commit) {
           editor.apply();
-          solitaire.RefreshOptions();
+          solitaire.refreshOptions();
         }
         if (newGame) {
-          solitaire.NewOptions();
+          solitaire.newGame();
         } else {
-          solitaire.CancelOptions();
+          solitaire.cancelOptions();
         }
       }
     });
     final Button decline = (Button) solitaire.findViewById(R.id.button_cancel);
     decline.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
-        solitaire.CancelOptions();
+        solitaire.cancelOptions();
       }
     });
 
@@ -147,7 +147,7 @@ public class Options {
         switch (keyCode) {
           case KeyEvent.KEYCODE_BACK:
           case KeyEvent.KEYCODE_HOME:
-            solitaire.CancelOptions();
+            solitaire.cancelOptions();
             return true;
         }
         return false;

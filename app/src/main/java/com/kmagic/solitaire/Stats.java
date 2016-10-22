@@ -34,7 +34,7 @@ public class Stats {
     statsView.setFocusableInTouchMode(true);
 
     Rules rules = view.GetRules();
-    final SharedPreferences settings = solitaire.GetSettings();
+    final SharedPreferences settings = solitaire.getSettings();
     final String gameAttemptString = rules.GetGameTypeString() + "Attempts";
     final String gameWinString = rules.GetGameTypeString() + "Wins";
     final String gameTimeString = rules.GetGameTypeString() + "Time";
@@ -76,7 +76,7 @@ public class Stats {
     final Button accept = (Button) solitaire.findViewById(R.id.button_accept);
     accept.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
-        solitaire.CancelOptions();
+        solitaire.cancelOptions();
       }
     });
     final Button clear = (Button) solitaire.findViewById(R.id.button_clear);
@@ -88,7 +88,7 @@ public class Stats {
         editor.putInt(gameTimeString, -1);
         editor.apply();
         view.ClearGameStarted();
-        solitaire.CancelOptions();
+        solitaire.cancelOptions();
       }
     });
     statsView.setOnKeyListener(new View.OnKeyListener() {
@@ -97,7 +97,7 @@ public class Stats {
         switch (keyCode) {
           case KeyEvent.KEYCODE_BACK:
           case KeyEvent.KEYCODE_HOME:
-            solitaire.CancelOptions();
+            solitaire.cancelOptions();
             return true;
         }
         return false;
