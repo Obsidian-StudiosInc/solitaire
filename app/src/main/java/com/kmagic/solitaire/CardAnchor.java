@@ -168,8 +168,8 @@ class CardAnchor {
   }
 
   public void addMoveCard(MoveCard moveCard) {
-    int count = moveCard.GetCount();
-    Card[] cards = moveCard.DumpCards();
+    int count = moveCard.getCount();
+    Card[] cards = moveCard.dumpCards();
 
     for (int i = 0; i < count; i++) {
       addCard(cards[i]);
@@ -482,14 +482,14 @@ class SeqSink extends CardAnchor {
 
   @Override
   public boolean canDropCard(MoveCard moveCard, int close) {
-    Card card = moveCard.GetTopCard();
+    Card card = moveCard.getTopCard();
     float x = card.getX() + Card.WIDTH/2;
     float y = card.getY() + Card.HEIGHT/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
 //    float my = mCardCount > 0 ? topCard.getY() : mY;
 
     if (isOverCard(x, y, close)) {
-      if (moveCard.GetCount() == 1) {
+      if (moveCard.getCount() == 1) {
         if ((topCard == null && card.getValue() == 1) ||
             (topCard != null && card.getSuit() == topCard.getSuit() &&
              card.getValue() == topCard.getValue() + 1)) {
@@ -516,7 +516,7 @@ class SuitSeqStack extends SeqStack {
   @Override
   public boolean canDropCard(MoveCard moveCard, int close) {
 
-    Card card = moveCard.GetTopCard();
+    Card card = moveCard.getTopCard();
     float x = card.getX() + Card.WIDTH/2;
     float y = card.getY() + Card.HEIGHT/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
@@ -563,7 +563,7 @@ class SpiderStack extends SeqStack {
   @Override
   public boolean canDropCard(MoveCard moveCard, int close) {
 
-    Card card = moveCard.GetTopCard();
+    Card card = moveCard.getTopCard();
     float x = card.getX() + Card.WIDTH/2;
     float y = card.getY() + Card.HEIGHT/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
@@ -642,7 +642,7 @@ class FreecellStack extends SeqStack {
   @Override
   public boolean canDropCard(MoveCard moveCard, int close) {
 
-    Card card = moveCard.GetTopCard();
+    Card card = moveCard.getTopCard();
     float x = card.getX() + Card.WIDTH/2;
     float y = card.getY() + Card.HEIGHT/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
@@ -650,7 +650,7 @@ class FreecellStack extends SeqStack {
 
     if (isOverCard(x, y, close)) {
       if (topCard == null) {
-        if (mRules.CountFreeSpaces() >= moveCard.GetCount()) {
+        if (mRules.CountFreeSpaces() >= moveCard.getCount()) {
           return true;
         }
       } else if ((card.getSuit()&1) != (topCard.getSuit()&1) &&
@@ -723,8 +723,8 @@ class FreecellHold extends CardAnchor {
 
   @Override
   public boolean canDropCard(MoveCard moveCard, int close) {
-    Card card = moveCard.GetTopCard();
-    return mCardCount == 0 && moveCard.GetCount() == 1 &&
+    Card card = moveCard.getTopCard();
+    return mCardCount == 0 && moveCard.getCount() == 1 &&
             isOverCard(card.getX() + Card.WIDTH / 2, card.getY() + Card.HEIGHT / 2, close);
   }
 
@@ -838,7 +838,7 @@ class GenericAnchor extends CardAnchor {
       return false;
     }
     
-    Card card = moveCard.GetTopCard();
+    Card card = moveCard.getTopCard();
     float x = card.getX() + Card.WIDTH/2;
     float y = card.getY() + Card.HEIGHT/2;
     //Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;

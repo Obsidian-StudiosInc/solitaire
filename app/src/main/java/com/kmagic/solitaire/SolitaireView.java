@@ -201,7 +201,7 @@ public class SolitaireView extends View {
         }
         break;
       case MODE_MOVE_CARD:
-        mMoveCard.Release();
+        mMoveCard.release();
         DrawBoard();
         break;
       case MODE_CARD_SELECT:
@@ -500,7 +500,7 @@ public class SolitaireView extends View {
 
     switch (mViewMode) {
       case MODE_MOVE_CARD:
-        mMoveCard.Draw(mDrawMaster, canvas);
+        mMoveCard.draw(mDrawMaster, canvas);
         break;
       case MODE_CARD_SELECT:
         mSelectCard.Draw(mDrawMaster, canvas);
@@ -637,10 +637,10 @@ public class SolitaireView extends View {
         break;
       case MODE_MOVE_CARD:
         for (int close = 0; close < 2; close++) {
-          CardAnchor prevAnchor = mMoveCard.GetAnchor();
+          CardAnchor prevAnchor = mMoveCard.getAnchor();
           boolean unhide = (prevAnchor.getVisibleCount() == 0 &&
                             prevAnchor.getCount() > 0);
-          int count = mMoveCard.GetCount();
+          int count = mMoveCard.getCount();
 
           for (int i = 0; i < mCardAnchor.length; i++) {
             if (mCardAnchor[i] != prevAnchor) {
@@ -655,21 +655,21 @@ public class SolitaireView extends View {
             }
           }
         }
-        if (!mMoveCard.HasMoved()) {
-          CardAnchor anchor = mMoveCard.GetAnchor();
-          mMoveCard.Release();
+        if (!mMoveCard.hasMoved()) {
+          CardAnchor anchor = mMoveCard.getAnchor();
+          mMoveCard.release();
           if (anchor.expandStack(x, y)) {
             mSelectCard.InitFromAnchor(anchor);
             ChangeViewMode(MODE_CARD_SELECT);
           } else {
             ChangeViewMode(MODE_NORMAL);
           }
-        } else if (mSpeed.IsFast() && mMoveCard.GetCount() == 1) {
+        } else if (mSpeed.IsFast() && mMoveCard.getCount() == 1) {
           if (!mRules.Fling(mMoveCard)) {
             ChangeViewMode(MODE_NORMAL);
           }
         } else {
-          mMoveCard.Release();
+          mMoveCard.release();
           ChangeViewMode(MODE_NORMAL);
         }
         return true;
@@ -698,14 +698,14 @@ public class SolitaireView extends View {
                       ca.addCard(card);
                       mRules.SetIgnoreEvents(lastIgnore);
                       if (ca.expandStack(x, y)) {
-                          mMoveCard.InitFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
+                          mMoveCard.initFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
                           ChangeViewMode(MODE_MOVE_CARD);
                           break;
                       }
                       card = ca.popCard();
                   }
-                  mMoveCard.SetAnchor(ca);
-                  mMoveCard.AddCard(card);
+                  mMoveCard.setAnchor(ca);
+                  mMoveCard.addCard(card);
                   ChangeViewMode(MODE_MOVE_CARD);
                   break;
               }
@@ -725,7 +725,7 @@ public class SolitaireView extends View {
         if (Math.abs(mDownPoint.x - x) > 15 || Math.abs(mDownPoint.y - y) > 15) {
             for (CardAnchor ca : mCardAnchor) {
                 if (ca.canMoveStack(mDownPoint.x, mDownPoint.y)) {
-                    mMoveCard.InitFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
+                    mMoveCard.initFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
                     ChangeViewMode(MODE_MOVE_CARD);
                     return true;
                 }
@@ -733,11 +733,11 @@ public class SolitaireView extends View {
         }
         break;
       case MODE_MOVE_CARD:
-        mMoveCard.MovePosition(dx, dy);
+        mMoveCard.movePosition(dx, dy);
         return true;
       case MODE_CARD_SELECT:
         if (mSelectCard.IsOnCard() && Math.abs(mDownPoint.x - x) > 30) {
-          mMoveCard.InitFromSelectCard(mSelectCard, x, y);
+          mMoveCard.initFromSelectCard(mSelectCard, x, y);
           ChangeViewMode(MODE_MOVE_CARD);
         } else {
           mSelectCard.Scroll(dy);
@@ -782,7 +782,7 @@ public class SolitaireView extends View {
     boolean oldIgnore = mRules.GetIgnoreEvents();
     mRules.SetIgnoreEvents(true);
 
-    mMoveCard.Release();
+    mMoveCard.release();
     mSelectCard.Release();
 
     if (!mMoveHistory.empty()) {

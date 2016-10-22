@@ -1,12 +1,13 @@
 /*
-  Copyright 2008 Google Inc.
-  
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +19,9 @@ package com.kmagic.solitaire;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 
-
+/**
+ * Used to move cards
+ */
 class MoveCard {
 
   private static final int MAX_CARDS = 13;
@@ -29,27 +32,57 @@ class MoveCard {
   private CardAnchor mCardAnchor;
   private PointF mOriginalPoint;
 
+  /**
+   * Create a new instance
+   */
   public MoveCard() {
     mCard = new Card[MAX_CARDS];
     mOriginalPoint = new PointF(1, 1);
-    Clear();
+    clear();
   }
 
-  public boolean IsValid() { return mValid; }
-  public CardAnchor GetAnchor() { return mCardAnchor; }
-  public int GetCount() { return mCardCount; }
-  public Card GetTopCard() { return mCard[0]; }
-  public void SetAnchor(CardAnchor anchor) { 
+  /**
+   * Get card anchor
+   * @return card anchor
+   */
+  public CardAnchor getAnchor() { return mCardAnchor; }
+
+  /**
+   * Get card count
+   * @return count of cards
+   */
+  public int getCount() { return mCardCount; }
+
+  /**
+   * Get the top card
+   * @return card on top
+   */
+  public Card getTopCard() { return mCard[0]; }
+
+  /**
+   * Set the card anchor
+   * @param anchor card anchor
+   */
+  public void setAnchor(CardAnchor anchor) {
     mCardAnchor = anchor;
   }
 
-  public void Draw(DrawMaster drawMaster, Canvas canvas) {
+  /**
+   * Draw cards
+   * @param drawMaster drawmaster instance
+   * @param canvas canvas to draw on
+   */
+  public void draw(final DrawMaster drawMaster,
+                   final Canvas canvas) {
     for (int i = 0; i < mCardCount; i++) {
       drawMaster.drawCard(canvas, mCard[i]);
     }
   }
 
-  private void Clear() {
+  /**
+   * Clear movement of all cards
+   */
+  private void clear() {
     mValid = false;
     mCardCount = 0;
     mCardAnchor = null;
@@ -58,17 +91,24 @@ class MoveCard {
     }
   }
 
-  public void Release() {
+  /**
+   * Release movement of all cards, then clear
+   */
+  public void release() {
     if (mValid) {
       mValid = false;
       for (int i = 0; i < mCardCount; i++) {
         mCardAnchor.addCard(mCard[i]);
       }
-      Clear();
+      clear();
     }
   }
 
-  public void AddCard(Card card) {
+  /**
+   *
+   * @param card
+   */
+  public void addCard(final Card card) {
     if (mCardCount == 0) {
       mOriginalPoint.set(card.getX(), card.getY());
     }
@@ -76,17 +116,31 @@ class MoveCard {
     mValid = true;
   }
 
-  public void MovePosition(float dx, float dy) {
+  /**
+   * Move position of cards to destination x,y coordinates
+   * @param dx destination x coordinate
+   * @param dx destination y coordinate
+   */
+  public void movePosition(final float dx, final float dy) {
     for (int i = 0; i < mCardCount; i++) {
       mCard[i].movePosition(dx, dy);
     }
   }
 
-  public Card[] DumpCards() {
-    return DumpCards(true);
+  /**
+   * Dump cards showing top card
+   * @return array of cards
+   */
+  public Card[] dumpCards() {
+    return dumpCards(true);
   }
 
-  public Card[] DumpCards(boolean unhide) {
+  /**
+   * Dump cards and un-hide top card
+   * @param unhide if true un-hides the top card
+   * @return array of cards
+   */
+  public Card[] dumpCards(final boolean unhide) {
     Card[] ret = null;
     if (mValid) {
       mValid = false;
@@ -97,43 +151,60 @@ class MoveCard {
       for (int i = 0; i < mCardCount; i++) {
         ret[i] = mCard[i];
       }
-      Clear();
+      clear();
     }
     return ret;
   }
 
-  public void InitFromSelectCard(SelectCard selectCard, float x, float y) {
+  /**
+   * Initialize card movement from a select card
+   * @param selectCard a select card
+   * @param x x coordinate
+   * @param y y coordinate
+   */
+  public void initFromSelectCard(final SelectCard selectCard,
+                                 final float x,
+                                 final float y) {
     int count = selectCard.GetCount();
     mCardAnchor = selectCard.GetAnchor();
     Card[] cards = selectCard.DumpCards();
 
     for (int i = 0; i < count; i++) {
       cards[i].setPosition(x - Card.WIDTH/2, y - Card.HEIGHT/2 + 15*i);
-      AddCard(cards[i]);
+      addCard(cards[i]);
     }
     mValid = true;
   }
 
-  public void InitFromAnchor(CardAnchor cardAnchor, float x, float y) {
+  /**
+   * Initialize card movement from anchor
+   * @param cardAnchor a card anchor
+   * @param x x coordinate
+   * @param y y coordinate
+   */
+  public void initFromAnchor(final CardAnchor cardAnchor,
+                             final float x,
+                             final float y) {
     mCardAnchor = cardAnchor;
     Card[] cards = cardAnchor.getCardStack();
 
     for (int i = 0; i < cards.length; i++) {
       cards[i].setPosition(x, y + 15*i);
-      AddCard(cards[i]);
+      addCard(cards[i]);
     }
     mValid = true;
   }
 
-  public boolean HasMoved() {
+  /**
+   * Has the card moved?
+   * @return true of the card moved, false if not
+   */
+  public boolean hasMoved() {
     float x = mCard[0].getX();
     float y = mCard[0].getY();
 
-    if (x >= mOriginalPoint.x - 2 && x <= mOriginalPoint.x + 2 &&
-        y >= mOriginalPoint.y - 2 && y <= mOriginalPoint.y + 2) {
-      return false;
-    }
-    return true;
+    return !(x >= mOriginalPoint.x - 2 && x <= mOriginalPoint.x + 2 &&
+            y >= mOriginalPoint.y - 2 && y <= mOriginalPoint.y + 2);
   }
 }
 

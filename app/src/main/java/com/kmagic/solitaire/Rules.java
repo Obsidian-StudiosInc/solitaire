@@ -90,7 +90,7 @@ public abstract class Rules {
   abstract public void EventProcess(int event, CardAnchor anchor, Card card);
   abstract public void EventProcess(int event);
   abstract public void Resize(int width, int height);
-  public boolean Fling(MoveCard moveCard) { moveCard.Release(); return false; }
+  public boolean Fling(MoveCard moveCard) { moveCard.release(); return false; }
   public void HandleEvents() { 
     while (!mIgnoreEvents && mEventPoster.HasEvent()) {
       mEventPoster.HandleEvent();
@@ -352,9 +352,9 @@ class NormalSolitaire extends Rules {
 
   @Override
   public boolean Fling(MoveCard moveCard) {
-    if (moveCard.GetCount() == 1) {
-      CardAnchor anchor = moveCard.GetAnchor();
-      Card card = moveCard.DumpCards(false)[0];
+    if (moveCard.getCount() == 1) {
+      CardAnchor anchor = moveCard.getAnchor();
+      Card card = moveCard.dumpCards(false)[0];
       for (int i = 0; i < 4; i++) {
         if (mCardAnchor[i+2].dropSingleCard(card)) {
           EventAlert(EVENT_FLING, anchor, card);
@@ -363,7 +363,7 @@ class NormalSolitaire extends Rules {
       }
       anchor.addCard(card);
     } else {
-      moveCard.Release();
+      moveCard.release();
     }
     return false;
   }
@@ -764,9 +764,9 @@ class Freecell extends Rules {
 
   @Override
   public boolean Fling(MoveCard moveCard) {
-    if (moveCard.GetCount() == 1) {
-      CardAnchor anchor = moveCard.GetAnchor();
-      Card card = moveCard.DumpCards(false)[0];
+    if (moveCard.getCount() == 1) {
+      CardAnchor anchor = moveCard.getAnchor();
+      Card card = moveCard.dumpCards(false)[0];
       for (int i = 0; i < 4; i++) {
         if (mCardAnchor[i+4].dropSingleCard(card)) {
           EventAlert(EVENT_FLING, anchor, card);
@@ -775,7 +775,7 @@ class Freecell extends Rules {
       }
       anchor.addCard(card);
     } else {
-      moveCard.Release();
+      moveCard.release();
     }
 
     return false;
@@ -953,9 +953,9 @@ class FortyThieves extends Rules {
 
   @Override
   public boolean Fling(MoveCard moveCard) {
-    if (moveCard.GetCount() == 1) {
-      CardAnchor anchor = moveCard.GetAnchor();
-      Card card = moveCard.DumpCards(false)[0];
+    if (moveCard.getCount() == 1) {
+      CardAnchor anchor = moveCard.getAnchor();
+      Card card = moveCard.dumpCards(false)[0];
       for (int i = 0; i < 8; i++) {
         if (mCardAnchor[i+10].dropSingleCard(card)) {
           mEventPoster.PostEvent(EVENT_FLING, anchor, card);
@@ -964,7 +964,7 @@ class FortyThieves extends Rules {
       }
       anchor.addCard(card);
     } else {
-      moveCard.Release();
+      moveCard.release();
     }
     return false;
   }
