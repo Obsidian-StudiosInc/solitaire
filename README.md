@@ -13,7 +13,10 @@ low resolution bitmaps for now but do scale. Work is still being done to
 dial in the scaling of cards, and adjusting suit and font sizes based on 
 screen size.
 
-This is a very early fork, contributions are welcome!
+Initial support for multi-screen! :eyes:
+Watch youtube or other while playing solitiare! 
+
+This is a early fork, contributions are welcome!
 
 ## Build Instructions
 
