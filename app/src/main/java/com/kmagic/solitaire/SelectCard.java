@@ -1,13 +1,13 @@
 /*
   Original Work Copyright 2008-2010 Google Inc.
   Modified Work Copyright 2016 Obsidian-Studios, Inc.
-  
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,13 +31,19 @@ class SelectCard {
   private float mRightEdge;
   private int mHeight;
 
+  /**
+   * Create new instances
+   */
   public SelectCard() {
     mHeight = 1;
     mCard = new Card[MAX_CARDS];
-    Clear();
+    clear();
   }
 
-  private void Clear() {
+  /**
+   * Clear selected cards, empty array
+   */
+  private void clear() {
     mValid = false;
     mSelected = -1;
     mCardCount = 0;
@@ -49,23 +55,46 @@ class SelectCard {
     }
   }
 
-  public void SetHeight(int height) { mHeight = height; }
+  /**
+   * Set height (presently has no effect)
+   * @param height height to set to
+   */
+  public void setHeight(final int height) { mHeight = height; }
 
-  public CardAnchor GetAnchor() { return mCardAnchor; }
-  public int GetCount() {
+  /**
+   * Get selected card anchor
+   * @return selected card anchor
+   */
+  public CardAnchor getAnchor() { return mCardAnchor; }
+
+  /**
+   * Get count of cards not selected
+   * @return count of cards not selected
+   */
+  public int getCount() {
     if (mSelected == -1)
       return mCardCount;
     return mCardCount - mSelected;
   }
 
-  public void Draw(DrawMaster drawMaster, Canvas canvas) {
+  /**
+   * Draw selected cards
+   * @param drawMaster draw master instance
+   * @param canvas canvas to draw on
+   */
+  public void draw(final DrawMaster drawMaster,
+                   final Canvas canvas) {
     drawMaster.drawLightShade(canvas);
     for (int i = 0; i < mCardCount; i++) {
       drawMaster.drawCard(canvas, mCard[i]);
     }
   }
 
-  public void InitFromAnchor(CardAnchor cardAnchor) {
+  /**
+   * Initials from card anchor
+   * @param cardAnchor card anchor instance
+   */
+  public void initFromAnchor(final CardAnchor cardAnchor) {
     mValid = true;
     mSelected = -1;
     mCardAnchor = cardAnchor;
@@ -94,7 +123,13 @@ class SelectCard {
     mRightEdge = cardAnchor.getRightEdge();
   }
 
-  public boolean Tap(float x, float y) {
+  /**
+   * Select nearby cards
+   * @param x x coordinate
+   * @param y y coordinate
+   * @return true of cards selected, false if not
+   */
+  public boolean tap(final float x, final float y) {
     float left = mLeftEdge == -1 ? mCard[0].getX() : mLeftEdge;
     float right = mRightEdge == -1 ? mCard[0].getX() + Card.WIDTH : mRightEdge;
     mSelected = -1;
@@ -109,17 +144,24 @@ class SelectCard {
     return false;
   }
 
-  public void Release() {
+  /**
+   * Release selected cards, and clear
+   */
+  public void release() {
     if (mValid) {
       mValid = false;
       for (int i = 0; i < mCardCount; i++) {
         mCardAnchor.addCard(mCard[i]);
       }
-      Clear();
+      clear();
     }
   }
 
-  public Card[] DumpCards() {
+  /**
+   * Dump selected cards and clear
+   * @return array of cards
+   */
+  public Card[] dumpCards() {
     Card[] ret = null;
     if (mValid) {
       mValid = false;
@@ -136,16 +178,20 @@ class SelectCard {
         }
       }
 
-      ret = new Card[GetCount()];
-      for (int i = 0; i < GetCount(); i++) {
+      ret = new Card[getCount()];
+      for (int i = 0; i < getCount(); i++) {
         ret[i] = mCard[i];
       }
-      Clear();
+      clear();
     }
     return ret;
   }
 
-  public void Scroll(float dy) {
+  /**
+   * Scroll the selected cards to y
+   * @param dy destination y coordinate
+   */
+  public void scroll(final float dy) {
     float x, y;
     for (int i = 0; i < mCardCount; i++) {
       x = mCard[i].getX();
@@ -154,7 +200,11 @@ class SelectCard {
     }
   }
 
-  public boolean IsOnCard() { return mSelected != -1; } 
+  /**
+   * Is selected card on a card
+   * @return true of on another card, false if not
+   */
+  public boolean isOnCard() { return mSelected != -1; }
 }
 
 

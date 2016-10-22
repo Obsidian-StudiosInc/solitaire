@@ -205,7 +205,7 @@ public class SolitaireView extends View {
         DrawBoard();
         break;
       case MODE_CARD_SELECT:
-        mSelectCard.Release();
+        mSelectCard.release();
         DrawBoard();
         break;
       case MODE_TEXT:
@@ -428,7 +428,7 @@ public class SolitaireView extends View {
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     mDrawMaster.setScreenSize(w, h);
     mRules.Resize(w, h);
-    mSelectCard.SetHeight(h);
+    mSelectCard.setHeight(h);
   }
 
   public void DisplayHelp() {
@@ -503,7 +503,7 @@ public class SolitaireView extends View {
         mMoveCard.draw(mDrawMaster, canvas);
         break;
       case MODE_CARD_SELECT:
-        mSelectCard.Draw(mDrawMaster, canvas);
+        mSelectCard.draw(mDrawMaster, canvas);
         break;
       case MODE_WIN:
         if (mReplay.isPlaying()) {
@@ -625,7 +625,7 @@ public class SolitaireView extends View {
         if (!mHasMoved) {
             for (CardAnchor ca : mCardAnchor) {
                 if (ca.expandStack(x, y)) {
-                    mSelectCard.InitFromAnchor(ca);
+                    mSelectCard.initFromAnchor(ca);
                     ChangeViewMode(MODE_CARD_SELECT);
                     return true;
                 } else if (ca.tapCard(x, y)) {
@@ -659,7 +659,7 @@ public class SolitaireView extends View {
           CardAnchor anchor = mMoveCard.getAnchor();
           mMoveCard.release();
           if (anchor.expandStack(x, y)) {
-            mSelectCard.InitFromAnchor(anchor);
+            mSelectCard.initFromAnchor(anchor);
             ChangeViewMode(MODE_CARD_SELECT);
           } else {
             ChangeViewMode(MODE_NORMAL);
@@ -674,8 +674,8 @@ public class SolitaireView extends View {
         }
         return true;
       case MODE_CARD_SELECT:
-        if (!mSelectCard.IsOnCard() && !mHasMoved) {
-          mSelectCard.Release();
+        if (!mSelectCard.isOnCard() && !mHasMoved) {
+          mSelectCard.release();
           ChangeViewMode(MODE_NORMAL);
           return true;
         }
@@ -712,7 +712,7 @@ public class SolitaireView extends View {
           }
         break;
       case MODE_CARD_SELECT:
-        mSelectCard.Tap(x, y);
+        mSelectCard.tap(x, y);
         break;
     }
     return true;
@@ -736,13 +736,13 @@ public class SolitaireView extends View {
         mMoveCard.movePosition(dx, dy);
         return true;
       case MODE_CARD_SELECT:
-        if (mSelectCard.IsOnCard() && Math.abs(mDownPoint.x - x) > 30) {
+        if (mSelectCard.isOnCard() && Math.abs(mDownPoint.x - x) > 30) {
           mMoveCard.initFromSelectCard(mSelectCard, x, y);
           ChangeViewMode(MODE_MOVE_CARD);
         } else {
-          mSelectCard.Scroll(dy);
-          if (!mSelectCard.IsOnCard()) {
-            mSelectCard.Tap(x, y);
+          mSelectCard.scroll(dy);
+          if (!mSelectCard.isOnCard()) {
+            mSelectCard.tap(x, y);
           }
         }
         return true;
@@ -783,7 +783,7 @@ public class SolitaireView extends View {
     mRules.SetIgnoreEvents(true);
 
     mMoveCard.release();
-    mSelectCard.Release();
+    mSelectCard.release();
 
     if (!mMoveHistory.empty()) {
       Move move = mMoveHistory.pop();

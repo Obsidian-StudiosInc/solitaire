@@ -92,7 +92,7 @@ class MoveCard {
   }
 
   /**
-   * Release movement of all cards, then clear
+   * release movement of all cards, then clear
    */
   public void release() {
     if (mValid) {
@@ -165,9 +165,9 @@ class MoveCard {
   public void initFromSelectCard(final SelectCard selectCard,
                                  final float x,
                                  final float y) {
-    int count = selectCard.GetCount();
-    mCardAnchor = selectCard.GetAnchor();
-    Card[] cards = selectCard.DumpCards();
+    int count = selectCard.getCount();
+    mCardAnchor = selectCard.getAnchor();
+    Card[] cards = selectCard.dumpCards();
 
     for (int i = 0; i < count; i++) {
       cards[i].setPosition(x - Card.WIDTH/2, y - Card.HEIGHT/2 + 15*i);
