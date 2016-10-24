@@ -101,8 +101,7 @@ public class DrawMaster {
     Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
     Point size = new Point();
     display.getSize(size);
-    setScreenSize(((size.x > size.y) ? size.x : size.y),
-                  ((size.x < size.y) ? size.x : size.y));
+    setScreenSize(size.x,size.y);
     drawCards(false);
   }
 
@@ -204,8 +203,8 @@ public class DrawMaster {
    * @param height height of the screen
    */
   public void setScreenSize(final int width, final int height) {
-    mScreenWidth = width;
-    mScreenHeight = height;
+    mScreenWidth = (width > height) ? width : height;
+    mScreenHeight = (width < height) ? width : height;
     if(mScreenWidth<=0)
       mScreenWidth = 480;
     if(mScreenHeight<=0)
