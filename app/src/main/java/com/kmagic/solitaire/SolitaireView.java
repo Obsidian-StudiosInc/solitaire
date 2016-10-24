@@ -158,7 +158,7 @@ public class SolitaireView extends View {
     if (oldGameType.equals(mRules.GetGameTypeString())) {
       mRules.SetCarryOverScore(oldScore);
     }
-    Card.SetSize(gameType,mDrawMaster.getWidth(), mDrawMaster.getHeight());
+    Card.setSize(gameType,mDrawMaster.getWidth(), mDrawMaster.getHeight());
     mDrawMaster.drawCards(getSettings().getBoolean("DisplayBigCards", false));
     mCardAnchor = mRules.GetAnchorArray();
     if (mDrawMaster.getWidth() > 1) {
@@ -443,7 +443,7 @@ public class SolitaireView extends View {
 
       mGameStarted = !mMoveHistory.isEmpty();
       mRules = Rules.CreateRules(type, map, this, mMoveHistory, mAnimateCard);
-      Card.SetSize(type,mDrawMaster.getWidth(), mDrawMaster.getHeight());
+      Card.setSize(type,mDrawMaster.getWidth(), mDrawMaster.getHeight());
       setDisplayTime(getSettings().getBoolean("DisplayTime", true));
       mCardAnchor = mRules.GetAnchorArray();
       if (mDrawMaster.getWidth() > 1) {

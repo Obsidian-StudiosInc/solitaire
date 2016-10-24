@@ -44,7 +44,7 @@ class Card {
    * @param value the card value
    * @param suit the card suit
    */
-  public Card(int value, int suit) {
+  public Card(final int value, final int suit) {
     mValue = value;
     mSuit = suit;
     mX = 1;
@@ -80,7 +80,7 @@ class Card {
    * @param x x coordinate
    * @param y y coordinate
    */
-  public void setPosition(float x, float y) {
+  public void setPosition(final float x, final float y) {
     mX = x;
     mY = y;
   }
@@ -90,7 +90,8 @@ class Card {
    * @param dx destination x coordinate
    * @param dy destination y coordinate
    */
-  public void movePosition(float dx, float dy) {
+  public void movePosition(final float dx,
+                           final float dy) {
     mX -= dx;
     mY -= dy;
   }
@@ -101,11 +102,11 @@ class Card {
    * @param screenWidth screen width
    * @param screenHeight screen height
    */
-  public static void SetSize(int type,
-                             int screenWidth,
-                             int screenHeight) {
-    int width = Math.min(screenWidth,screenHeight);
-    int height = Math.max(screenWidth,screenHeight);
+  public static void setSize(final int type,
+                             final int screenWidth,
+                             final int screenHeight) {
+    int width = (screenWidth < screenHeight) ? screenWidth : screenHeight;
+    int height = (screenWidth > screenHeight) ? screenWidth : screenHeight;
     if (type == Rules.SOLITAIRE) {
       WIDTH = width/8;
       HEIGHT = height/9;
