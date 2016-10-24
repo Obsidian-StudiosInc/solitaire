@@ -73,7 +73,7 @@ public class Solitaire extends Activity {
       editor.putBoolean("SolitaireSaveValid", false);
       editor.apply();
       // If save is corrupt, just start a new game.
-      if (mSolitaireView.LoadSave()) {
+      if (mSolitaireView.loadSave()) {
         helpSplashScreen();
         return;
       }

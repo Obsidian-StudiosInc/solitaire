@@ -158,13 +158,9 @@ public class SolitaireView extends View {
     if (oldGameType.equals(mRules.GetGameTypeString())) {
       mRules.SetCarryOverScore(oldScore);
     }
-    Card.setSize(gameType,mDrawMaster.getWidth(), mDrawMaster.getHeight());
     mDrawMaster.drawCards(getSettings().getBoolean("DisplayBigCards", false));
     mCardAnchor = mRules.GetAnchorArray();
-    if (mDrawMaster.getWidth() > 1) {
-      mRules.Resize(mDrawMaster.getWidth(), mDrawMaster.getHeight());
-      refresh();
-    }
+    resize(gameType);
     setDisplayTime(getSettings().getBoolean("DisplayTime", true));
     editor.putInt("LastType", gameType);
     editor.apply();
@@ -173,6 +169,18 @@ public class SolitaireView extends View {
     mTimePaused = false;
     mPaused = false;
     mGameStarted = false;
+  }
+
+  /**
+   * Resize game
+   * @param gameType game type
+   */
+  private void resize(final int gameType) {
+    if (mDrawMaster.getWidth() > 1) {
+      Card.setSize(gameType,mDrawMaster.getWidth(), mDrawMaster.getHeight());
+      mRules.Resize(mDrawMaster.getWidth(), mDrawMaster.getHeight());
+      refresh();
+    }
   }
 
   /**
@@ -403,21 +411,21 @@ public class SolitaireView extends View {
    * Load saved game
    * @return true if a saved game was loaded, false if not
    */
-  public boolean LoadSave() {
+  public boolean loadSave() {
     mDrawMaster.drawCards(getSettings().getBoolean("DisplayBigCards", false));
     mTimePaused = true;
 
     try {
       FileInputStream fin = mContext.openFileInput(SAVE_FILENAME);
       ObjectInputStream oin = new ObjectInputStream(fin);
-      
+
       String version = (String)oin.readObject();
       if (!version.equals(SAVE_VERSION)) {
         Log.e("SolitaireView.java", "Invalid save version");
         return false;
       }
       Bundle map = new Bundle();
-        
+
       map.putInt("cardAnchorCount", oin.readInt());
       map.putInt("cardCount", oin.readInt());
       int type = oin.readInt();
@@ -443,24 +451,20 @@ public class SolitaireView extends View {
 
       mGameStarted = !mMoveHistory.isEmpty();
       mRules = Rules.CreateRules(type, map, this, mMoveHistory, mAnimateCard);
-      Card.setSize(type,mDrawMaster.getWidth(), mDrawMaster.getHeight());
       setDisplayTime(getSettings().getBoolean("DisplayTime", true));
       mCardAnchor = mRules.GetAnchorArray();
-      if (mDrawMaster.getWidth() > 1) {
-        mRules.Resize(mDrawMaster.getWidth(), mDrawMaster.getHeight());
-        refresh();
-      }
+      resize(type);
       mTimePaused = false;
       return true;
       
     } catch (FileNotFoundException e) {
-      Log.e("SolitaireView.java", "LoadSave(): File not found");
+      Log.e("SolitaireView.java", "loadSave(): File not found");
     } catch (StreamCorruptedException e) {
-      Log.e("SolitaireView.java", "LoadSave(): Stream Corrupted");
+      Log.e("SolitaireView.java", "loadSave(): Stream Corrupted");
     } catch (IOException e) {
-      Log.e("SolitaireView.java", "LoadSave(): IOException");
+      Log.e("SolitaireView.java", "loadSave(): IOException");
     } catch (ClassNotFoundException e) {
-      Log.e("SolitaireView.java", "LoadSave(): Class not found exception");
+      Log.e("SolitaireView.java", "loadSave(): Class not found exception");
     }
     mTimePaused = false;
     mPaused = false;
