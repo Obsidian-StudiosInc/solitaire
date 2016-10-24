@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -158,9 +159,9 @@ public class SolitaireView extends View {
     if (oldGameType.equals(mRules.GetGameTypeString())) {
       mRules.SetCarryOverScore(oldScore);
     }
+    resize(gameType);
     mDrawMaster.drawCards(getSettings().getBoolean("DisplayBigCards", false));
     mCardAnchor = mRules.GetAnchorArray();
-    resize(gameType);
     setDisplayTime(getSettings().getBoolean("DisplayTime", true));
     editor.putInt("LastType", gameType);
     editor.apply();
@@ -512,6 +513,7 @@ public class SolitaireView extends View {
    * Display game help
    */
   public void displayHelp() {
+    mTextView.setTextColor(Color.WHITE);
     mTextView.setTextSize(15);
     mTextView.setGravity(Gravity.START);
     displayText(mContext.getResources().getText(R.string.help_text));
