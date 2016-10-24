@@ -1,13 +1,13 @@
 /*
   Original Work Copyright 2008-2010 Google Inc.
   Modified Work Copyright 2016 Obsidian-Studios, Inc.
-  
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -91,9 +91,15 @@ public class SolitaireView extends View {
 
   private int mWinningScore;
 
-    private boolean mLongKeyPress = false;
+  private boolean mLongKeyPress = false;
 
-  public SolitaireView(Context context, AttributeSet attrs) {
+  /**
+   * Create new instance
+   * @param context activity/application context
+   * @param attrs attributes from android manifest
+   */
+  public SolitaireView(final Context context,
+                       final AttributeSet attrs) {
     super(context, attrs);
     setFocusable(true);
     setFocusableInTouchMode(true);
@@ -118,7 +124,11 @@ public class SolitaireView extends View {
     mWinningScore = 0;
   }
 
-  public void InitGame(int gameType) {
+  /**
+   * Start the game
+   * @param gameType type of game, default solitaire
+   */
+  public void initGame(final int gameType) {
     int oldScore = 0;
     String oldGameType = "None";
 
@@ -127,7 +137,7 @@ public class SolitaireView extends View {
     setFocusableInTouchMode(true);
     requestFocus();
 
-    SharedPreferences.Editor editor = GetSettings().edit();
+    SharedPreferences.Editor editor = getSettings().edit();
     if (mRules != null) {
       if (mRules.HasScore()) {
         if (mViewMode == MODE_WIN || mViewMode == MODE_WIN_STOP) {
@@ -136,12 +146,12 @@ public class SolitaireView extends View {
           oldScore = mRules.GetScore();
         }
         oldGameType = mRules.GetGameTypeString();
-        if (oldScore > GetSettings().getInt(mRules.GetGameTypeString() + "Score", -52)) {
+        if (oldScore > getSettings().getInt(mRules.GetGameTypeString() + "Score", -52)) {
           editor.putInt(mRules.GetGameTypeString() + "Score", oldScore);
         }
       }
     }
-    ChangeViewMode(MODE_NORMAL);
+    changeViewMode(MODE_NORMAL);
     mTextView.setVisibility(View.INVISIBLE);
     mMoveHistory.clear();
     mRules = Rules.CreateRules(gameType, null, this, mMoveHistory, mAnimateCard);
@@ -149,13 +159,13 @@ public class SolitaireView extends View {
       mRules.SetCarryOverScore(oldScore);
     }
     Card.SetSize(gameType,mDrawMaster.getWidth(), mDrawMaster.getHeight());
-    mDrawMaster.drawCards(GetSettings().getBoolean("DisplayBigCards", false));
+    mDrawMaster.drawCards(getSettings().getBoolean("DisplayBigCards", false));
     mCardAnchor = mRules.GetAnchorArray();
     if (mDrawMaster.getWidth() > 1) {
       mRules.Resize(mDrawMaster.getWidth(), mDrawMaster.getHeight());
-      Refresh();
+      refresh();
     }
-    SetDisplayTime(GetSettings().getBoolean("DisplayTime", true));
+    setDisplayTime(getSettings().getBoolean("DisplayTime", true));
     editor.putInt("LastType", gameType);
     editor.apply();
     mStartTime = SystemClock.uptimeMillis();
@@ -165,13 +175,45 @@ public class SolitaireView extends View {
     mGameStarted = false;
   }
 
-  public SharedPreferences GetSettings() { return ((Solitaire)mContext).getSettings(); }
-  public DrawMaster GetDrawMaster() { return mDrawMaster; }
-  public Rules GetRules() { return mRules; }
-  public void ClearGameStarted() { mGameStarted = false; }
-  public void SetDisplayTime(boolean displayTime) { mDisplayTime = displayTime; }
+  /**
+   * Get settings from previous run
+   * @return shared preferences with previously stored settings
+   */
+  public SharedPreferences getSettings() {
+    return ((Solitaire)mContext).getSettings();
+  }
 
-  public void SetTimePassing(boolean timePassing) {
+  /**
+   * Get draw master
+   * @return existing instance of drawmaster
+   */
+  public DrawMaster getDrawMaster() { return mDrawMaster; }
+
+  /**
+   * Get game rules
+   * @return existing instance of game rules
+   */
+  public Rules getRules() { return mRules; }
+
+  /**
+   * Clear game started
+   */
+  public void clearGameStarted() { mGameStarted = false; }
+
+  /**
+   * Set display time, turn time elapsed on and off
+   * @param displayTime true to display time, false to not
+   */
+  public void setDisplayTime(final boolean displayTime) {
+    mDisplayTime = displayTime;
+  }
+
+  /**
+   * Set time is passing, start game play time clock, or stop/pause
+   * when not playing the game, options, stats, or help
+   * @param timePassing true to start counting time, false to stop
+   */
+  public void setTimePassing(final boolean timePassing) {
     if (timePassing && (mViewMode == MODE_WIN || mViewMode == MODE_WIN_STOP)) {
       return;
     }
@@ -183,69 +225,79 @@ public class SolitaireView extends View {
     }
   }
 
-  public void UpdateTime() {
+  /**
+   * Update time, add to time when play game
+   */
+  public void updateTime() {
     if (!mTimePaused) {
       int elapsed = (int)(SystemClock.uptimeMillis() - mStartTime);
       if (elapsed / 1000 > mElapsed / 1000) {
-        Refresh();
+        refresh();
       }
       mElapsed = elapsed;
     }
   }
 
-  private void ChangeViewMode(int newMode) {
+  /**
+   * Change the view mode between game other views
+   * @param newMode view mode to change to
+     */
+  private void changeViewMode(final int newMode) {
     switch (mViewMode) {
       case MODE_NORMAL:
         if (newMode != MODE_NORMAL) {
-          DrawBoard();
+          drawBoard();
         }
         break;
       case MODE_MOVE_CARD:
         mMoveCard.release();
-        DrawBoard();
+        drawBoard();
         break;
       case MODE_CARD_SELECT:
         mSelectCard.release();
-        DrawBoard();
+        drawBoard();
         break;
       case MODE_TEXT:
         mTextView.setVisibility(View.INVISIBLE);
         break;
       case MODE_ANIMATE:
-        mRefreshHandler.SetRefresh(RefreshHandler.SINGLE_REFRESH);
+        mRefreshHandler.setRefresh(RefreshHandler.SINGLE_REFRESH);
         break;
       case MODE_WIN:
       case MODE_WIN_STOP:
         if (newMode != MODE_WIN_STOP) {
           mTextView.setVisibility(View.INVISIBLE);
         }
-        DrawBoard();
+        drawBoard();
         mReplay.stopPlaying();
         break;
     }
     mViewMode = newMode;
     switch (newMode) {
       case MODE_WIN:
-        SetTimePassing(false);
+        setTimePassing(false);
       case MODE_MOVE_CARD:
       case MODE_CARD_SELECT:
       case MODE_ANIMATE:
-        mRefreshHandler.SetRefresh(RefreshHandler.LOCK_REFRESH);
+        mRefreshHandler.setRefresh(RefreshHandler.LOCK_REFRESH);
         break;
 
       case MODE_NORMAL:
       case MODE_TEXT:
       case MODE_WIN_STOP:
-        mRefreshHandler.SetRefresh(RefreshHandler.SINGLE_REFRESH);
+        mRefreshHandler.setRefresh(RefreshHandler.SINGLE_REFRESH);
         break;
     }
   }
 
+  /**
+   * Handle when the game is paused, called from main activity onPause
+   */
   public void onPause() {
     mPaused = true;
 
     if (mRefreshThread != null) {
-      mRefreshHandler.SetRunning(false);
+      mRefreshHandler.setRunning(false);
       mRules.ClearEvent();
       mRules.SetIgnoreEvents(true);
       mReplay.stopPlaying();
@@ -258,18 +310,21 @@ public class SolitaireView extends View {
         mAnimateCard.cancel();
       }
       if (mViewMode != MODE_WIN && mViewMode != MODE_WIN_STOP) {
-        ChangeViewMode(MODE_NORMAL);
+        changeViewMode(MODE_NORMAL);
       }
 
-      if (mRules != null && mRules.GetScore() > GetSettings().getInt(mRules.GetGameTypeString() + "Score", -52)) {
-        SharedPreferences.Editor editor = GetSettings().edit();
+      if (mRules != null && mRules.GetScore() > getSettings().getInt(mRules.GetGameTypeString() + "Score", -52)) {
+        SharedPreferences.Editor editor = getSettings().edit();
         editor.putInt(mRules.GetGameTypeString() + "Score", mRules.GetScore());
         editor.apply();
       }
     }
   }
 
-  public void SaveGame() {
+  /**
+   * Save game on quit or activity onStop
+   */
+  public void saveGame() {
     // This is supposed to have been called but I've seen instances where it wasn't.
     if (mRefreshThread != null) {
       onPause();
@@ -332,7 +387,7 @@ public class SolitaireView extends View {
         oout.writeObject(historyFlags);
         oout.close();
 
-        SharedPreferences.Editor editor = GetSettings().edit();
+        SharedPreferences.Editor editor = getSettings().edit();
         editor.putBoolean("SolitaireSaveValid", true);
         editor.apply();
 
@@ -344,8 +399,12 @@ public class SolitaireView extends View {
     }
   }
 
+  /**
+   * Load saved game
+   * @return true if a saved game was loaded, false if not
+   */
   public boolean LoadSave() {
-    mDrawMaster.drawCards(GetSettings().getBoolean("DisplayBigCards", false));
+    mDrawMaster.drawCards(getSettings().getBoolean("DisplayBigCards", false));
     mTimePaused = true;
 
     try {
@@ -385,11 +444,11 @@ public class SolitaireView extends View {
       mGameStarted = !mMoveHistory.isEmpty();
       mRules = Rules.CreateRules(type, map, this, mMoveHistory, mAnimateCard);
       Card.SetSize(type,mDrawMaster.getWidth(), mDrawMaster.getHeight());
-      SetDisplayTime(GetSettings().getBoolean("DisplayTime", true));
+      setDisplayTime(getSettings().getBoolean("DisplayTime", true));
       mCardAnchor = mRules.GetAnchorArray();
       if (mDrawMaster.getWidth() > 1) {
         mRules.Resize(mDrawMaster.getWidth(), mDrawMaster.getHeight());
-        Refresh();
+        refresh();
       }
       mTimePaused = false;
       return true;
@@ -408,63 +467,92 @@ public class SolitaireView extends View {
     return false;
   }
 
+  /**
+   * Handle when the game is resumed, called from main activity onResume
+   */
   public void onResume() {
     mStartTime = SystemClock.uptimeMillis() - mElapsed;
-    mRefreshHandler.SetRunning(true);
+    mRefreshHandler.setRunning(true);
     mRefreshThread = new Thread(mRefreshHandler);
     mRefreshThread.start();
     mRules.SetIgnoreEvents(false);
     mPaused = false;
   }
 
-  public void Refresh() {
-    mRefreshHandler.SingleRefresh();
+  public void refresh() {
+    mRefreshHandler.singleRefresh();
   }
 
-  public void SetTextView(TextView textView) {
+  /**
+   * Set the text view
+   * @param textView text view
+   */
+  public void setTextView(final TextView textView) {
     mTextView = textView;
   }
 
-  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+  /**
+   * Handle when the game size changes, screen size changes
+   * called from main activity onSizeChanged
+   */
+  protected void onSizeChanged(final int w,
+                               final int h,
+                               final int oldw,
+                               final int oldh) {
     mDrawMaster.setScreenSize(w, h);
     mRules.Resize(w, h);
     mSelectCard.setHeight(h);
   }
 
-  public void DisplayHelp() {
+  /**
+   * Display game help
+   */
+  public void displayHelp() {
     mTextView.setTextSize(15);
     mTextView.setGravity(Gravity.START);
-    DisplayText(mContext.getResources().getText(R.string.help_text));
+    displayText(mContext.getResources().getText(R.string.help_text));
   }
 
-  public void DisplayWin() {
-    MarkWin();
+  /**
+   * Display window
+   */
+  public void displayWin() {
+    markWin();
     mTextView.setTextSize(mContext.getResources().getDimensionPixelSize(R.dimen.font_size));
     mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-    DisplayText(mContext.getResources().getText(R.string.win_text));
-    ChangeViewMode(MODE_WIN);
+    displayText(mContext.getResources().getText(R.string.win_text));
+    changeViewMode(MODE_WIN);
     mTextView.setVisibility(View.VISIBLE);
     mRules.SetIgnoreEvents(true);
     mReplay.startReplay(mMoveHistory, mCardAnchor);
   }
 
-  public void RestartGame() {
+  /**
+   * Restart game
+   */
+  public void restartGame() {
     mRules.SetIgnoreEvents(true);
     while (!mMoveHistory.empty()) {
-      Undo();
+      undo();
     }
     mRules.SetIgnoreEvents(false);
-    Refresh();
+    refresh();
   }
 
-  public void DisplayText(CharSequence text) {
-    ChangeViewMode(MODE_TEXT);
+  /**
+   * Display text, used by help
+   */
+  public void displayText(final CharSequence text) {
+    changeViewMode(MODE_TEXT);
     mTextView.setVisibility(View.VISIBLE);
     mTextView.setText(text);
-    Refresh();
+    refresh();
   }
 
-  public void DrawBoard() {
+  /**
+   * Draw game board
+   */
+  public void drawBoard() {
       Canvas boardCanvas = mDrawMaster.getBoardCanvas();
       mDrawMaster.drawBackground(boardCanvas);
       for (CardAnchor ca : mCardAnchor) {
@@ -472,23 +560,29 @@ public class SolitaireView extends View {
       }
   }
 
+  /**
+   * Deal a hand
+   */
   public void deal() {
     if (mViewMode == MODE_TEXT) {
-      ChangeViewMode(MODE_NORMAL);
+      changeViewMode(MODE_NORMAL);
     } else if (mViewMode == MODE_NORMAL) {
       mRules.EventAlert(Rules.EVENT_DEAL, mCardAnchor[0]);
-      Refresh();
+      refresh();
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public void onDraw(Canvas canvas) {
+  public void onDraw(final Canvas canvas) {
 
     // Only draw the stagnant stuff if it may have changed
     if (mViewMode == MODE_NORMAL) {
-      // SanityCheck is for debug use only.
-      SanityCheck();
-      DrawBoard();
+      // sanityCheck is for debug use only.
+      sanityCheck();
+      drawBoard();
     }
     mDrawMaster.drawLastBoard(canvas);
     if (mDisplayTime) {
@@ -520,8 +614,12 @@ public class SolitaireView extends View {
     mRules.HandleEvents();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public boolean onKeyDown(int keyCode, KeyEvent msg) {
+  public boolean onKeyDown(final int keyCode,
+                           final KeyEvent msg) {
     switch (keyCode) {
     case KeyEvent.KEYCODE_DPAD_CENTER:
     case KeyEvent.KEYCODE_SEARCH:
@@ -532,8 +630,12 @@ public class SolitaireView extends View {
     return super.onKeyDown(keyCode, msg);
   }
 
-    @Override
-  public boolean onKeyLongPress(int keyCode, KeyEvent msg) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean onKeyLongPress(final int keyCode,
+                                final KeyEvent msg) {
     switch (keyCode) {
       case KeyEvent.KEYCODE_BACK:
         mLongKeyPress = true;
@@ -543,15 +645,19 @@ public class SolitaireView extends View {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public boolean onKeyUp(int keyCode, KeyEvent msg) {
+  public boolean onKeyUp(final int keyCode,
+                         final KeyEvent msg) {
       switch (keyCode) {
           case KeyEvent.KEYCODE_BACK:
               if(mLongKeyPress) {
                 ((Activity) mContext).openOptionsMenu();
                 mLongKeyPress = false;
               } else {
-                Undo();
+                undo();
               }
             return true;
         default:
@@ -559,14 +665,20 @@ public class SolitaireView extends View {
       }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean performClick() {
     super.performClick();
     return true;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public boolean onTouchEvent(MotionEvent event) {
+  public boolean onTouchEvent(final MotionEvent event) {
     boolean ret = false;
 
     // Yes you can get touch events while in the "paused" state.
@@ -581,7 +693,7 @@ public class SolitaireView extends View {
         editor.putBoolean("PlayedBefore", true);
         editor.apply();
         mTextViewDown = false;
-        ChangeViewMode(MODE_NORMAL);
+        changeViewMode(MODE_NORMAL);
       } if (event.getAction() == MotionEvent.ACTION_DOWN) {
         mTextViewDown = true;
       }
@@ -592,7 +704,7 @@ public class SolitaireView extends View {
     switch (event.getAction()) {
       case MotionEvent.ACTION_DOWN:
         mHasMoved = false;
-        mSpeed.Reset();
+        mSpeed.reset();
         ret = onDown(event.getX(), event.getY());
         mDownPoint.set(event.getX(), event.getY());
         break;
@@ -602,7 +714,7 @@ public class SolitaireView extends View {
         break;
       case MotionEvent.ACTION_MOVE:
         if (!mHasMoved) {
-          CheckMoved(event.getX(), event.getY());
+          checkMoved(event.getX(), event.getY());
         }
         ret = onMove(mLastPoint.x - event.getX(), mLastPoint.y - event.getY(),
                      event.getX(), event.getY());
@@ -612,24 +724,30 @@ public class SolitaireView extends View {
 
     if (!mGameStarted && !mMoveHistory.empty()) {
       mGameStarted = true;
-      MarkAttempt();
+      markAttempt();
     }
 
     mRules.HandleEvents();
     return ret;
   }
 
-  private boolean onRelease(float x, float y) {
+  /**
+   * Handle release of a movement
+   * @param x x coordinate
+   * @param y y coordinate
+   * @return true on release, false when not
+   */
+  private boolean onRelease(final float x, final float y) {
     switch (mViewMode) {
       case MODE_NORMAL:
         if (!mHasMoved) {
             for (CardAnchor ca : mCardAnchor) {
                 if (ca.expandStack(x, y)) {
                     mSelectCard.initFromAnchor(ca);
-                    ChangeViewMode(MODE_CARD_SELECT);
+                    changeViewMode(MODE_CARD_SELECT);
                     return true;
                 } else if (ca.tapCard(x, y)) {
-                    Refresh();
+                    refresh();
                     return true;
                 }
             }
@@ -648,7 +766,7 @@ public class SolitaireView extends View {
                 mMoveHistory.push(new Move(prevAnchor.getNumber(), i, count, false, unhide));
                 mCardAnchor[i].addMoveCard(mMoveCard);
                 if (mViewMode == MODE_MOVE_CARD) {
-                  ChangeViewMode(MODE_NORMAL);
+                  changeViewMode(MODE_NORMAL);
                 }
                 return true;
               }
@@ -660,23 +778,23 @@ public class SolitaireView extends View {
           mMoveCard.release();
           if (anchor.expandStack(x, y)) {
             mSelectCard.initFromAnchor(anchor);
-            ChangeViewMode(MODE_CARD_SELECT);
+            changeViewMode(MODE_CARD_SELECT);
           } else {
-            ChangeViewMode(MODE_NORMAL);
+            changeViewMode(MODE_NORMAL);
           }
-        } else if (mSpeed.IsFast() && mMoveCard.getCount() == 1) {
+        } else if (mSpeed.isFast() && mMoveCard.getCount() == 1) {
           if (!mRules.Fling(mMoveCard)) {
-            ChangeViewMode(MODE_NORMAL);
+            changeViewMode(MODE_NORMAL);
           }
         } else {
           mMoveCard.release();
-          ChangeViewMode(MODE_NORMAL);
+          changeViewMode(MODE_NORMAL);
         }
         return true;
       case MODE_CARD_SELECT:
         if (!mSelectCard.isOnCard() && !mHasMoved) {
           mSelectCard.release();
-          ChangeViewMode(MODE_NORMAL);
+          changeViewMode(MODE_NORMAL);
           return true;
         }
         break;
@@ -685,7 +803,13 @@ public class SolitaireView extends View {
     return false;
   }
 
-  public boolean onDown(float x, float y) {
+  /**
+   * Handle on down event
+   * @param x x coordinate
+   * @param y y coordinate
+   * @return true on down, false when not
+   */
+  public boolean onDown(final float x, final float y) {
     switch (mViewMode) {
       case MODE_NORMAL:
         Card card = null;
@@ -699,14 +823,14 @@ public class SolitaireView extends View {
                       mRules.SetIgnoreEvents(lastIgnore);
                       if (ca.expandStack(x, y)) {
                           mMoveCard.initFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
-                          ChangeViewMode(MODE_MOVE_CARD);
+                          changeViewMode(MODE_MOVE_CARD);
                           break;
                       }
                       card = ca.popCard();
                   }
                   mMoveCard.setAnchor(ca);
                   mMoveCard.addCard(card);
-                  ChangeViewMode(MODE_MOVE_CARD);
+                  changeViewMode(MODE_MOVE_CARD);
                   break;
               }
           }
@@ -718,15 +842,26 @@ public class SolitaireView extends View {
     return true;
   }
 
-  public boolean onMove(float dx, float dy, float x, float y) {
-    mSpeed.AddSpeed(dx, dy);
+  /**
+   * Handle on move
+   * @param dx destination x coordinate
+   * @param dy destination y coordinate
+   * @param x x coordinate
+   * @param y y coordinate
+   * @return true on movement, false when no movement
+   */
+  public boolean onMove(final float dx,
+                        final float dy,
+                        final float x,
+                        final float y) {
+    mSpeed.addSpeed(dx, dy);
     switch (mViewMode) {
       case MODE_NORMAL:
         if (Math.abs(mDownPoint.x - x) > 15 || Math.abs(mDownPoint.y - y) > 15) {
             for (CardAnchor ca : mCardAnchor) {
                 if (ca.canMoveStack(mDownPoint.x, mDownPoint.y)) {
                     mMoveCard.initFromAnchor(ca, x - Card.WIDTH / 2, y - Card.HEIGHT / 2);
-                    ChangeViewMode(MODE_MOVE_CARD);
+                    changeViewMode(MODE_MOVE_CARD);
                     return true;
                 }
             }
@@ -738,7 +873,7 @@ public class SolitaireView extends View {
       case MODE_CARD_SELECT:
         if (mSelectCard.isOnCard() && Math.abs(mDownPoint.x - x) > 30) {
           mMoveCard.initFromSelectCard(mSelectCard, x, y);
-          ChangeViewMode(MODE_MOVE_CARD);
+          changeViewMode(MODE_MOVE_CARD);
         } else {
           mSelectCard.scroll(dy);
           if (!mSelectCard.isOnCard()) {
@@ -751,7 +886,13 @@ public class SolitaireView extends View {
     return false;
   }
 
-  private void CheckMoved(float x, float y) {
+  /**
+   * Check if there has been movement of cards
+   * @param x x coordinate
+   * @param y y coordinate
+   * @return true if moved, false if not
+   */
+  private void checkMoved(final float x, final float y) {
     if (x >= mDownPoint.x - 30 && x <= mDownPoint.x + 30 &&
         y >= mDownPoint.y - 30 && y <= mDownPoint.y + 30) {
       mHasMoved = false;
@@ -760,22 +901,31 @@ public class SolitaireView extends View {
     }
   }
 
-  public void StartAnimating() {
-    DrawBoard();
+  /**
+   * Start animation
+   */
+  public void startAnimating() {
+    drawBoard();
     if (mViewMode != MODE_WIN && mViewMode != MODE_ANIMATE) {
-      ChangeViewMode(MODE_ANIMATE);
+      changeViewMode(MODE_ANIMATE);
     }
   }
 
-  public void StopAnimating() {
+  /**
+   * Stop animation
+   */
+  public void stopAnimating() {
     if (mViewMode == MODE_ANIMATE) {
-      ChangeViewMode(MODE_NORMAL);
+      changeViewMode(MODE_NORMAL);
     } else if (mViewMode == MODE_WIN) {
-      ChangeViewMode(MODE_WIN_STOP);
+      changeViewMode(MODE_WIN_STOP);
     }
   }
 
-  public void Undo() {
+  /**
+   * Undo card movement
+   */
+  public void undo() {
     if (mViewMode != MODE_NORMAL && mViewMode != MODE_WIN) {
       return;
     }
@@ -820,25 +970,31 @@ public class SolitaireView extends View {
           Card card = mCardAnchor[from].getCards()[i];
         }
       }
-      Refresh();
+      refresh();
     }
     mRules.SetIgnoreEvents(oldIgnore);
   }
 
-  private void MarkAttempt() {
+  /**
+   * Mark an attempt, record a game play attempt
+   */
+  private void markAttempt() {
     String gameAttemptString = mRules.GetGameTypeString() + "Attempts";
-    int attempts = GetSettings().getInt(gameAttemptString, 0);
-    SharedPreferences.Editor editor = GetSettings().edit();
+    int attempts = getSettings().getInt(gameAttemptString, 0);
+    SharedPreferences.Editor editor = getSettings().edit();
     editor.putInt(gameAttemptString, attempts + 1);
     editor.apply();
-  }      
+  }
 
-  private void MarkWin() {
+  /**
+   * Mark a win, record a game win
+   */
+  private void markWin() {
     String gameWinString = mRules.GetGameTypeString() + "Wins";
     String gameTimeString = mRules.GetGameTypeString() + "Time";
-    int wins = GetSettings().getInt(gameWinString, 0);
-    int bestTime = GetSettings().getInt(gameTimeString, -1);
-    SharedPreferences.Editor editor = GetSettings().edit();
+    int wins = getSettings().getInt(gameWinString, 0);
+    int bestTime = getSettings().getInt(gameTimeString, -1);
+    SharedPreferences.Editor editor = getSettings().edit();
 
     if (bestTime == -1 || mElapsed < bestTime) {
       editor.putInt(gameTimeString, mElapsed);
@@ -848,14 +1004,16 @@ public class SolitaireView extends View {
     editor.apply();
     if (mRules.HasScore()) {
       mWinningScore = mRules.GetScore();
-      if (mWinningScore > GetSettings().getInt(mRules.GetGameTypeString() + "Score", -52)) {
+      if (mWinningScore > getSettings().getInt(mRules.GetGameTypeString() + "Score", -52)) {
         editor.putInt(mRules.GetGameTypeString() + "Score", mWinningScore);
       }
     }
-  }      
+  }
 
-  // Simple function to check for a consistent state in Solitaire.
-  private void SanityCheck() {
+  /**
+   * Simple function to check for a consistent state in Solitaire
+   */
+  private void sanityCheck() {
     int cardCount;
     int matchCount;
     String type = mRules.GetGameTypeString();
@@ -893,7 +1051,7 @@ public class SolitaireView extends View {
               if (cards[idx] >= matchCount) {
                   mTextView.setTextSize(20);
                   mTextView.setGravity(Gravity.CENTER);
-                  DisplayText("Sanity Check Failed\nExtra: " + card.getValue() + " " + card.getSuit());
+                  displayText("Sanity Check Failed\nExtra: " + card.getValue() + " " + card.getSuit());
                   return;
               }
               cards[idx]++;
@@ -903,15 +1061,19 @@ public class SolitaireView extends View {
       if (cards[i] != matchCount) {
         mTextView.setTextSize(20);
         mTextView.setGravity(Gravity.CENTER);
-        DisplayText("Sanity Check Failed\nMissing: " + (i %13 + 1) + " " + i / 13);
+        displayText("Sanity Check Failed\nMissing: " + (i %13 + 1) + " " + i / 13);
         return;
       }
     }
   }
 
-  public void RefreshOptions() {
+  /**
+   * This is called for option changes that require
+   * a refresh, but not a new game type
+   */
+  public void refreshOptions() {
     mRules.RefreshOptions();
-    SetDisplayTime(GetSettings().getBoolean("DisplayTime", true));
+    setDisplayTime(getSettings().getBoolean("DisplayTime", true));
   }
 }
 
@@ -926,19 +1088,19 @@ class RefreshHandler implements Runnable {
   private int mRefresh;
   private SolitaireView mView;
 
-  public RefreshHandler(SolitaireView solitaireView) {
+  public RefreshHandler(final SolitaireView solitaireView) {
     mView = solitaireView;
     mRun = true;
     mRefresh = NO_REFRESH;
   }
 
-  public void SetRefresh(int refresh) {
+  public void setRefresh(final int refresh) {
     synchronized (this) {
       mRefresh = refresh;
     }
   }
 
-  public void SingleRefresh() {
+  public void singleRefresh() {
     synchronized (this) {
       if (mRefresh == NO_REFRESH) {
         mRefresh = SINGLE_REFRESH;
@@ -946,7 +1108,7 @@ class RefreshHandler implements Runnable {
     }
   }
 
-  public void SetRunning(boolean run) {
+  public void setRunning(final boolean run) {
     mRun = run;
   }
 
@@ -956,11 +1118,11 @@ class RefreshHandler implements Runnable {
         Thread.sleep(1000 / FPS);
       } catch (InterruptedException ignored) {
       }
-      mView.UpdateTime();
+      mView.updateTime();
       if (mRefresh != NO_REFRESH) {
         mView.postInvalidate();
         if (mRefresh == SINGLE_REFRESH) {
-          SetRefresh(NO_REFRESH);
+          setRefresh(NO_REFRESH);
         }
       }
     }
@@ -975,19 +1137,19 @@ class Speed {
 
   public Speed() {
     mSpeed = new float[SPEED_COUNT];
-    Reset();
+    reset();
   }
-  public void Reset() {
+  public void reset() {
     mIdx = 0;
     for (int i = 0; i < SPEED_COUNT; i++) {
       mSpeed[i] = 0;
     }
   }
-  public void AddSpeed(float dx, float dy) {
+  public void addSpeed(final float dx, final float dy) {
     mSpeed[mIdx] = dx*dx + dy*dy;
     mIdx = (mIdx + 1) % SPEED_COUNT;
   }
-  public boolean IsFast() {
+  public boolean isFast() {
     for (int i = 0; i < SPEED_COUNT; i++) {
       if (mSpeed[i] > SPEED_THRESHOLD) {
         return true;

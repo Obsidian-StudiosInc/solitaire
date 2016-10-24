@@ -33,7 +33,7 @@ public class Stats {
     statsView.setFocusable(true);
     statsView.setFocusableInTouchMode(true);
 
-    Rules rules = view.GetRules();
+    Rules rules = view.getRules();
     final SharedPreferences settings = solitaire.getSettings();
     final String gameAttemptString = rules.GetGameTypeString() + "Attempts";
     final String gameWinString = rules.GetGameTypeString() + "Wins";
@@ -87,7 +87,7 @@ public class Stats {
         editor.putInt(gameWinString, 0);
         editor.putInt(gameTimeString, -1);
         editor.apply();
-        view.ClearGameStarted();
+        view.clearGameStarted();
         solitaire.cancelOptions();
       }
     });

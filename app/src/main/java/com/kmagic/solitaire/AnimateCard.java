@@ -25,7 +25,7 @@ import java.lang.Math;
  */
 public class AnimateCard {
 
-  // Animation speed, pixels per frame
+  // Animation Speed, pixels per frame
   private static final float PPF = 40;
 
   protected SolitaireView mView;
@@ -130,7 +130,7 @@ public class AnimateCard {
     mDx = dx / mFrames;
     mDy = dy / mFrames;
 
-    mView.StartAnimating();
+    mView.startAnimating();
     if (!mAnimate) {
       finish();
     }
@@ -145,7 +145,7 @@ public class AnimateCard {
       mCard[i] = null;
     }
     mCardAnchor = null;
-    mView.DrawBoard();
+    mView.drawBoard();
     if (mCallback != null) {
       mCallback.run();
     }

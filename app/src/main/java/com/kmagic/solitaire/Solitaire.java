@@ -57,7 +57,7 @@ public class Solitaire extends Activity {
     mSettings = getSharedPreferences("SolitairePreferences", 0);
     setContentView(R.layout.main);
     mSolitaireView = (SolitaireView) findViewById(R.id.solitaire);
-    mSolitaireView.SetTextView((TextView) findViewById(R.id.text));
+    mSolitaireView.setTextView((TextView) findViewById(R.id.text));
 
   }
 
@@ -79,7 +79,7 @@ public class Solitaire extends Activity {
       }
     }
 
-    mSolitaireView.InitGame(mSettings.getInt("LastType", Rules.SOLITAIRE));
+    mSolitaireView.initGame(mSettings.getInt("LastType", Rules.SOLITAIRE));
     helpSplashScreen();
   }
 
@@ -88,7 +88,7 @@ public class Solitaire extends Activity {
    */
   private void helpSplashScreen() {
     if (!mSettings.getBoolean("PlayedBefore", false)) {
-      mSolitaireView.DisplayHelp();
+      mSolitaireView.displayHelp();
     }
   }
 
@@ -108,19 +108,19 @@ public class Solitaire extends Activity {
   public boolean onOptionsItemSelected(final MenuItem item) {
     switch (item.getItemId()) {
       case R.id.menu_solitaire:
-        mSolitaireView.InitGame(Rules.SOLITAIRE);
+        mSolitaireView.initGame(Rules.SOLITAIRE);
         break;
       case R.id.menu_spider:
-        mSolitaireView.InitGame(Rules.SPIDER);
+        mSolitaireView.initGame(Rules.SPIDER);
         break;
       case R.id.menu_freecell:
-        mSolitaireView.InitGame(Rules.FREECELL);
+        mSolitaireView.initGame(Rules.FREECELL);
         break;
       case R.id.menu_fortythieves:
-        mSolitaireView.InitGame(Rules.FORTYTHIEVES);
+        mSolitaireView.initGame(Rules.FORTYTHIEVES);
         break;
       case R.id.menu_restart:
-        mSolitaireView.RestartGame();
+        mSolitaireView.restartGame();
         break;
       case R.id.menu_deal:
         mSolitaireView.deal();
@@ -132,10 +132,10 @@ public class Solitaire extends Activity {
         displayOptions();
         break;
       case R.id.menu_help:
-        mSolitaireView.DisplayHelp();
+        mSolitaireView.displayHelp();
         break;
       case R.id.menu_save_quit:
-        mSolitaireView.SaveGame();
+        mSolitaireView.saveGame();
         mDoSave = false;
         finish();
         break;
@@ -164,7 +164,7 @@ public class Solitaire extends Activity {
   protected void onStop() {
     super.onStop();
     if (mDoSave) {
-      mSolitaireView.SaveGame();
+      mSolitaireView.saveGame();
     }
   }
 
@@ -189,15 +189,15 @@ public class Solitaire extends Activity {
    * Display options
    */
   public void displayOptions() {
-    mSolitaireView.SetTimePassing(false);
-    new Options(this, mSolitaireView.GetDrawMaster());
+    mSolitaireView.setTimePassing(false);
+    new Options(this, mSolitaireView.getDrawMaster());
   }
 
   /**
    * Display stats
    */
   public void displayStats() {
-    mSolitaireView.SetTimePassing(false);
+    mSolitaireView.setTimePassing(false);
     new Stats(this, mSolitaireView);
   }
 
@@ -207,7 +207,7 @@ public class Solitaire extends Activity {
   public void cancelOptions() {
     setContentView(mSolitaireView);
     mSolitaireView.requestFocus();
-    mSolitaireView.SetTimePassing(true);
+    mSolitaireView.setTimePassing(true);
   }
 
   /**
@@ -215,7 +215,7 @@ public class Solitaire extends Activity {
    */
   public void newGame() {
     setContentView(mSolitaireView);
-    mSolitaireView.InitGame(mSettings.getInt("LastType", Rules.SOLITAIRE));
+    mSolitaireView.initGame(mSettings.getInt("LastType", Rules.SOLITAIRE));
   }
 
   /**
@@ -224,6 +224,6 @@ public class Solitaire extends Activity {
    */
   public void refreshOptions() {
     setContentView(mSolitaireView);
-    mSolitaireView.RefreshOptions();
+    mSolitaireView.refreshOptions();
   }
 }

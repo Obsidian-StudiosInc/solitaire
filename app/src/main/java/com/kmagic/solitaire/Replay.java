@@ -76,9 +76,9 @@ public class Replay implements Runnable {
       } else {
         mMoveStack.push(move);
       }
-      mView.Undo();
+      mView.undo();
     }
-    mView.DrawBoard();
+    mView.drawBoard();
     mIsPlaying = true;
     playNext();
   }
@@ -92,7 +92,7 @@ public class Replay implements Runnable {
 
     if (!mIsPlaying || mMoveStack.empty()) {
       mIsPlaying = false;
-      mView.StopAnimating();
+      mView.stopAnimating();
       return;
     }
     Move move = mMoveStack.pop();

@@ -79,12 +79,12 @@ public abstract class Rules {
   public void AddDealCount() {}
 
   public int CountFreeSpaces() { return 0; }
-  protected void SignalWin() { mView.DisplayWin(); }
+  protected void SignalWin() { mView.displayWin(); }
 
   abstract public void Init(Bundle map);
-  public void EventAlert(int event) { if (!mIgnoreEvents) { mEventPoster.PostEvent(event); mView.Refresh(); } }
-  public void EventAlert(int event, CardAnchor anchor) { if (!mIgnoreEvents) { mEventPoster.PostEvent(event, anchor);  mView.Refresh();} }
-  public void EventAlert(int event, CardAnchor anchor, Card card) { if (!mIgnoreEvents) { mEventPoster.PostEvent(event, anchor, card);  mView.Refresh();} }
+  public void EventAlert(int event) { if (!mIgnoreEvents) { mEventPoster.PostEvent(event); mView.refresh(); } }
+  public void EventAlert(int event, CardAnchor anchor) { if (!mIgnoreEvents) { mEventPoster.PostEvent(event, anchor);  mView.refresh();} }
+  public void EventAlert(int event, CardAnchor anchor, Card card) { if (!mIgnoreEvents) { mEventPoster.PostEvent(event, anchor, card);  mView.refresh();} }
   public void ClearEvent() { mEventPoster.ClearEvent(); }
   abstract public void EventProcess(int event, CardAnchor anchor);
   abstract public void EventProcess(int event, CardAnchor anchor, Card card);
@@ -98,7 +98,7 @@ public abstract class Rules {
   }
 
   public void RefreshOptions() {
-    mAutoMoveLevel = mView.GetSettings().getInt("AutoMoveLevel", Rules.AUTO_MOVE_ALWAYS);
+    mAutoMoveLevel = mView.getSettings().getInt("AutoMoveLevel", Rules.AUTO_MOVE_ALWAYS);
     mWasFling = false;
   }
 
@@ -144,7 +144,7 @@ class NormalSolitaire extends Rules {
   @Override
   public void Init(Bundle map) {
     mIgnoreEvents = true;
-    mDealThree = mView.GetSettings().getBoolean("SolitaireDealThree", true);
+    mDealThree = mView.getSettings().getBoolean("SolitaireDealThree", true);
 
     // Thirteen total anchors for regular solitaire
     mCardCount = 52;
@@ -219,7 +219,7 @@ class NormalSolitaire extends Rules {
       mCardAnchor[0].addCard(mDeck.popCard());
     }
 
-    if (mView.GetSettings().getBoolean("SolitaireStyleNormal", true)) {
+    if (mView.getSettings().getBoolean("SolitaireStyleNormal", true)) {
       mDealsLeft = -1;
     } else {
       mDealsLeft = mDealThree ? 2 : 0;
@@ -284,7 +284,7 @@ class NormalSolitaire extends Rules {
           count++;
         }
         mMoveHistory.push(new Move(1, 0, count, true, false, addDealCount));
-        mView.Refresh();
+        mView.refresh();
       } else {
         int count = 0;
         int maxCount = mDealThree ? 3 : 1;
@@ -306,7 +306,7 @@ class NormalSolitaire extends Rules {
             (mAutoMoveLevel == AUTO_MOVE_FLING_ONLY && mWasFling)) {
           EventAlert(EVENT_SMART_MOVE);
         } else {
-          mView.StopAnimating();
+          mView.stopAnimating();
           mWasFling = false;
         }
       }
@@ -345,7 +345,7 @@ class NormalSolitaire extends Rules {
       }
       if (i == 7) {
         mWasFling = false;
-        mView.StopAnimating();
+        mView.stopAnimating();
       }
     }
   }
@@ -530,7 +530,7 @@ class Spider extends Rules {
       }
     }
 
-    int suits = mView.GetSettings().getInt("SpiderSuits", 4);
+    int suits = mView.getSettings().getInt("SpiderSuits", 4);
     mDeck = new Deck(2, suits);
     int i = 54;
     while (i > 0) {
@@ -618,7 +618,7 @@ class Spider extends Rules {
       if (mCardAnchor[10].getCount() > 0 && anchor.getNumber() < 10) {
         mAnimateCard.moveCard(mCardAnchor[10].popCard(), anchor);
       } else {
-        mView.StopAnimating();
+        mView.stopAnimating();
         mStillDealing = false;
       }
     }
@@ -626,7 +626,7 @@ class Spider extends Rules {
 
   @Override
   public String GetGameTypeString() {
-    int suits = mView.GetSettings().getInt("SpiderSuits", 4);
+    int suits = mView.getSettings().getInt("SpiderSuits", 4);
     if (suits == 1) {
       return "Spider1Suit";
     } else if (suits == 2) {
@@ -637,7 +637,7 @@ class Spider extends Rules {
   }
   @Override
   public String GetPrettyGameTypeString() {
-    int suits = mView.GetSettings().getInt("SpiderSuits", 4);
+    int suits = mView.getSettings().getInt("SpiderSuits", 4);
     if (suits == 1) {
       return "Spider One Suit";
     } else if (suits == 2) {
@@ -754,7 +754,7 @@ class Freecell extends Rules {
               (mAutoMoveLevel == AUTO_MOVE_FLING_ONLY && mWasFling)) {
             EventAlert(EVENT_SMART_MOVE);
           } else {
-            mView.StopAnimating();
+            mView.stopAnimating();
             mWasFling = false;
           }
         }
@@ -838,7 +838,7 @@ class Freecell extends Rules {
         }
       }
       mWasFling = false;
-      mView.StopAnimating();
+      mView.stopAnimating();
     }
   }
 
@@ -1031,7 +1031,7 @@ class FortyThieves extends Rules {
               (mAutoMoveLevel == AUTO_MOVE_FLING_ONLY && mWasFling)) {
             mEventPoster.PostEvent(EVENT_SMART_MOVE);
           } else {
-            mView.StopAnimating();
+            mView.stopAnimating();
             mWasFling = false;
           }
         }
@@ -1052,7 +1052,7 @@ class FortyThieves extends Rules {
         }
       }
       mWasFling = false;
-      mView.StopAnimating();
+      mView.stopAnimating();
     }
   }
 
