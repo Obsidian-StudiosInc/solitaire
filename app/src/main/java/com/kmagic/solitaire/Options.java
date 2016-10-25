@@ -30,7 +30,7 @@ public class Options {
     final int type = solitaire.getSettings().getInt("LastType", Rules.SOLITAIRE);
 
     solitaire.setContentView(R.layout.options);
-    View view = (View) solitaire.findViewById(R.id.options_view);
+    View view = solitaire.findViewById(R.id.options_view);
     view.setFocusable(true);
     view.setFocusableInTouchMode(true);
 
