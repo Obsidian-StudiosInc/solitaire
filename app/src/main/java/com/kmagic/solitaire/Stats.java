@@ -1,6 +1,6 @@
 /*
-  Copyright 2008 - 2010 Google Inc.
-  Copyright 2016 Obsidian-Studios, Inc.
+  Original Work Copyright 2008-2010 Google Inc.
+  Modified Work Copyright 2016 Obsidian-Studios, Inc.
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class Stats {
   public Stats(final Solitaire solitaire, final SolitaireView view) {
 
     solitaire.setContentView(R.layout.stats);
-    View statsView = (View) solitaire.findViewById(R.id.stats_view);
+    View statsView = solitaire.findViewById(R.id.stats_view);
     statsView.setFocusable(true);
     statsView.setFocusableInTouchMode(true);
 
