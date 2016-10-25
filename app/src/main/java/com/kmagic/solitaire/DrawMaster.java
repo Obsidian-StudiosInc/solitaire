@@ -209,7 +209,9 @@ public class DrawMaster {
       mScreenWidth = 480;
     if(mScreenHeight<=0)
       mScreenHeight = 320;
-    mBoardBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+    mBoardBitmap = Bitmap.createBitmap(mScreenWidth,
+                                       mScreenHeight,
+                                       Bitmap.Config.RGB_565);
     mBoardCanvas = new Canvas(mBoardBitmap);
   }
 
