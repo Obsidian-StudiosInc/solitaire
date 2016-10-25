@@ -18,6 +18,9 @@ Watch youtube or other while playing solitiare!
 
 This is a early fork, contributions are welcome!
 
+##Build Status
+Master Branch : [![Build Status](https://travis-ci.org/Obsidian-StudiosInc/solitaire.svg?branch=master)](https://travis-ci.org/Obsidian-StudiosInc/solitaire)
+
 ## Build Instructions
 
 To build you need the following
