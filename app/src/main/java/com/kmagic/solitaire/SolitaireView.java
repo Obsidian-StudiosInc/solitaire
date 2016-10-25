@@ -653,7 +653,7 @@ public class SolitaireView extends View {
         mLongKeyPress = true;
         return true;
       default:
-        return super.onKeyUp(keyCode, msg);
+        return super.onKeyLongPress(keyCode, msg);
     }
   }
 
