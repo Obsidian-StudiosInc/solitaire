@@ -30,6 +30,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.MotionEvent;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.lang.Math;
@@ -499,7 +500,9 @@ public class SolitaireView extends View {
   /**
    * Handle when the game size changes, screen size changes
    * called from main activity onSizeChanged
+   * {@inheritDoc}
    */
+  @Override
   protected void onSizeChanged(final int w,
                                final int h,
                                final int oldw,
@@ -552,6 +555,9 @@ public class SolitaireView extends View {
     changeViewMode(MODE_TEXT);
     mTextView.setVisibility(View.VISIBLE);
     mTextView.setText(text);
+    ViewGroup parentView = (ViewGroup) getParent();
+    parentView.removeView(mTextView);
+    parentView.addView(mTextView);
     refresh();
   }
 
@@ -587,7 +593,7 @@ public class SolitaireView extends View {
     // Only draw the stagnant stuff if it may have changed
     if (mViewMode == MODE_NORMAL) {
       // sanityCheck is for debug use only.
-      sanityCheck();
+      // sanityCheck();
       drawBoard();
     }
     mDrawMaster.drawLastBoard(canvas);
