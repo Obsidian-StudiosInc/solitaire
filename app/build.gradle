@@ -11,16 +11,25 @@ android {
         versionName "1.13"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
     lintOptions {
         abortOnError false
     }
     productFlavors {
+    }
+    signingConfigs {
+        release {
+            keyAlias mykey_alias
+            keyPassword mykey_password
+            storeFile file('../release.keystore')
+            storePassword mykey_password
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
     }
 }
 
