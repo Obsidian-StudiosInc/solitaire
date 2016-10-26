@@ -12,8 +12,14 @@ android:
 jdk:
 - oraclejdk8
 
+env:
+  global:
+  - secure: Y7caiQwnEyYm9dGFHSmHGQduQ8o14A/zIu7tXpOkBKkEQ2KM20EE4bmgaBTHxeS0cZg5z4hkOy14eq67yRnqASi4NeoQqwDZ+HZfYjbp9xKBOH3saNzSPlW5FJxSvuMU+2cxSDmfKMIalOOLnXLZbN4Yv2RIrWdNZcWDByRT2MOSCKYzM9N7JYiXJbkPiFCVaJOp7cdtomYcWcBqIY26fI1gE5c1VdE7y5gg6lqfLwuxgasTBlqZ30LucHx6qWJULt58VJaEWNqcDVNljntOZiQ6cuwIVhXmaAUUyvetyxgDr4XutsKdtTGjwc2eJX8CSbdu6/W8KUgyVlzVlRNbdTyPDwlNFU29aB0/rmJDJk7XjR+03+1blt3DTdfDRXFCRziZMLcahXOeovRqumHWrwVxKmHFLgAGHsg7zt/slQrjlXxsonrIXowvFvXkCJtFmjVGoE4ZVLaL+dmLZWLhC+rEdDrZkTB04IaVLW6TuJAsc5NPzJKpO7n1VARLBbq5IuNgwQRI0SwM9a7dnmDrfeUaK7cB0X1AKra30y20pt1v0Hpw2JQMQCBLjEjkHddi6bFiKc0W0w39pTAVq3MNMEl5xgdarw+r2GZ6+yXRLsGcKzIf4wb56szhyzSC+VSnEA9n/eIrkwHzGoNPevkgTmhrs2kbPQGEURAOxm6YrCE=
+  - secure: blTdGSrlR+gT7EHKxbly0yBZvQj9yHNyMtIY1ynygTuvf7bEKRy8fBKQ3nSmoBjfezk23gRGeBRnodRqnxSqlp/PtDQI5fSIIGqlNhRF779epJom09k4eSLu9dletuEkfA8V7J91wZJNREIEvHHw4lliFs9x7WsKKldYqaBZpLCEw+zCum8vczEYoiftSX6kj42vhLbf3z8mWumLIOF6Rl0kmRg2yH2x+7R0Gc2YjLODGbdwqj+qS6bdDG7RhKXXQjwMoExse9g6svemC9yR0vpqf5vBk0D9SiW0T17WHRazpJoLXApfb0oHGk86s2Po/HpOx9z1xUT1wd7/r3LXxHh7S3pwHs3MxoFUFVeM5gpvdsrKQxAMOQ16eUvkj5yjcnhgHjRflFLeZrZT6U6ROtoDBXvK1mRmdslw5H+yJ5jtOvWuHLQX3hEjRJXxRP80KpJBG9DnqAFi6JY4ckM3pVfb1khMA3khOGgq1pW+PAR5QMB/ZwEydKP5Sb30M0Pwx4K+gPG5dGlOLoCOBh0p6Xr7dpQCh/FFTa62pKUYJkFsbyZIgQkTdKqAeoKVdhF8gWVoDskTo0vZHl58ndG4zIdBt13xqv/CzINGCEX9wi+BnTILRDyLIO0zcF+DpBfwSV7WNPLNuloB8BiWBl6RBm6zUfe9EsyJuklvLFxBpdg=
+
 before_install:
-- 'openssl aes-256-cbc -K $encrypted_b37d956b1dfb_key -iv $encrypted_b37d956b1dfb_iv -in release.keystore.enc -out release.keystore -d || true'
+- openssl aes-256-cbc -K $encrypted_b37d956b1dfb_key -iv $encrypted_b37d956b1dfb_iv
+  -in release.keystore.enc -out release.keystore -d || true
 
 before_script:
 - wget http://services.gradle.org/distributions/gradle-2.14.1-bin.zip
@@ -24,17 +30,20 @@ before_script:
 script: gradle build
 
 before_deploy:
-  - cd app/build/outputs/apk; ls -la; md5sum app-release.apk > md5sum.txt; sha1sum app-release.apk > sha1sum.txt; cd -
+- cd app/build/outputs/apk
+- md5sum app-release.apk > md5sum.txt
+- sha1sum app-release.apk > sha1sum.txt
+- cd -
 
 deploy:
   provider: releases
   api_key:
     secure: SvdI+5/Gv0eQ93rZ/CRPpnJgPl6Ix56TpjjK7H7VLEqte8jx6H09CCAw0zgJ0rhjCLVp4ijcbI/CeTQ+MpB25dD4msrjGZwkSqVHGNWogAitgoB44+BhCAlSgio+h7ZOTxZ77L27j8yfd9kboSDPhzbPi8mwg6mbMfMfHzcTvR/9Lrv5C6dSXnN/zjOC/+/eex9WTeR8sHIwgnCq42Yo1oIgaJF+HkC1Lc09zxjuvceEMTusO++WVf9CEx9AXcArX2fjF2vLU8dTjkhVA1n4pI90WY+SBiE7JH6nQaR2DazEuJ32YZDsbCjqSVbW+2gl+9OE7ZUOpDez9yOJvHx8tYJw58w1z6zSadLae4UuBTdBXAWA3MwABfda1SL5Z7+AT3yNSO1gARn70rEjPuwgfc7uTQU/diKOv7XUOAryzJTdD6LAHtq9kKj0+ystqk/42AQLTy0eY6NQFjc1T9z+2/C/GenlANkJtOB5DSIue9mp2pXyetRvuM5bwYdmdWzUtHW69tCDOr3DCH7aJpnfwZoYyxisxQMapfeOkYrkmgBK9CH3Vr4NsidbjLLDdFrNJ8v+BcFPKy62MoWXE5MJurn827o6vbLDt2DKiSRWXC++zYHvv3pF962q4Bm2C9LF0ZJHJq1KADvpVduU5GgNE353QWtFGDHblCsolVo3yes=
   file:
-    - app/build/outputs/apk/app-release.apk
-    - app/build/outputs/apk/md5sum.txt
-    - app/build/outputs/apk/sha1sum.txt
+  - app/build/outputs/apk/app-release.apk
+  - app/build/outputs/apk/md5sum.txt
+  - app/build/outputs/apk/sha1sum.txt
   skip_cleanup: true
   on:
-   repo: Obsidian-StudiosInc/solitaire
-   tags: true
+    repo: Obsidian-StudiosInc/solitaire
+    tags: true
