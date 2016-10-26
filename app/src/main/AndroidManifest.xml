@@ -24,7 +24,6 @@
         android:fullBackupContent="true" >
         <activity android:name=".Solitaire"
                   android:label="@string/app_name"
-                  android:screenOrientation="landscape"
                   android:launchMode="singleInstance">
             <layout android:gravity="top"
                     android:minHeight="480dp"
