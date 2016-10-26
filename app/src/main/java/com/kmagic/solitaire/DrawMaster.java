@@ -203,8 +203,8 @@ public class DrawMaster {
    * @param height height of the screen
    */
   public void setScreenSize(final int width, final int height) {
-    mScreenWidth = (width > height) ? width : height;
-    mScreenHeight = (width < height) ? width : height;
+    mScreenWidth = width;
+    mScreenHeight = height;
     if(mScreenWidth<=0)
       mScreenWidth = 480;
     if(mScreenHeight<=0)
