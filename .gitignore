@@ -12,3 +12,4 @@
 /.idea/workspace.xml
 *.iml
 /local.properties
+/release.keystore
