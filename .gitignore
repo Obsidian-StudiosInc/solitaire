@@ -6,8 +6,7 @@
 .externalNativeBuild
 /gen
 .gradle
-/gradle/
-/gradlew
+/gradle*
 /.idea
 /.idea/libraries
 /.idea/workspace.xml
