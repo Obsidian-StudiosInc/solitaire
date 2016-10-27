@@ -1,25 +1,19 @@
 # Solitare
+[![License](http://img.shields.io/badge/license-APACHE2-blue.svg?style=plastic)](https://github.com/Obsidian-StudiosInc/solitaire/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/Obsidian-StudiosInc/solitaire.svg?branch=master)](https://travis-ci.org/Obsidian-StudiosInc/solitaire)
 
 A fork of the famous ad free 
 [Solitaire Game Suite from Ken Magic] (https://code.google.com/archive/p/solitaire-for-android/)
 The idea behind this fork is to update the app for higher resolution 
 displays, phones without menu buttons, and keep it in sync with current 
-Android version.
+Android version. Contributions are welcomed!
 
-Initial work has been done to replace low resolution bitmaps with draw 
-graphics based on screen and card size. All suits and card values have 
-been replaced with drawn graphics and text. The face cards will remain 
-low resolution bitmaps for now but do scale. Work is still being done to 
-dial in the scaling of cards, and adjusting suit and font sizes based on 
-screen size.
-
-Initial support for multi-screen! :eyes:
-Watch youtube or other while playing solitiare! 
-
-This is a early fork, contributions are welcome!
-
-##Build Status
-Master Branch : [![Build Status](https://travis-ci.org/Obsidian-StudiosInc/solitaire.svg?branch=master)](https://travis-ci.org/Obsidian-StudiosInc/solitaire)
+## Features
+ * Scalable card artwork no bitmaps (except face cards)
+ * Scales to screen resolution
+ * Multi-Window support
+ * Rotation support ( no longer landscape only )
+ * Menu via long press back button ( phones without menu button )
 
 ## Build Instructions
 
