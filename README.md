@@ -21,8 +21,8 @@ To build you need the following
 
 * JDK 1.8 or newer
 * Gradle 2.14.1 or newer
-* Android SDK 24 or newer ( update version in app/build.gradle)
-* Android Build Tools 24.0.3 or newer ( update version in app/build.gradle)
+* Android SDK 25 or newer ( update version in app/build.gradle)
+* Android Build Tools 25.0.0 or newer ( update version in app/build.gradle)
 * Android Support Repository 38
 * Google Repository 36
 
