@@ -1,6 +1,6 @@
 # Solitare
-[![License](http://img.shields.io/badge/license-APACHE2-blue.svg?style=plastic)](https://github.com/Obsidian-StudiosInc/solitaire/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Obsidian-StudiosInc/solitaire.svg?branch=master)](https://travis-ci.org/Obsidian-StudiosInc/solitaire)
+[![License](http://img.shields.io/badge/license-APACHE2-blue.svg?colorB=9977bb&style=plastic)](https://github.com/Obsidian-StudiosInc/solitaire/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/Obsidian-StudiosInc/solitaire.svg?colorA=9977bb&branch=master)](https://travis-ci.org/Obsidian-StudiosInc/solitaire)
 
 A fork of the famous ad free 
 [Solitaire Game Suite from Ken Magic] (https://code.google.com/archive/p/solitaire-for-android/)
