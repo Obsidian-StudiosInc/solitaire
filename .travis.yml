@@ -16,8 +16,10 @@ env:
   global:
   - secure: Wn4tsp7DbFlJMgn83HEvnFUg3tjDU3NYmWfqOEtrLjJPHMStAj14AYHZwb40zCg23xN/P82wSOjiHEzy3vyU6w86DgCELDHxT1QQGuDUl8SiRbBcdhwAkfj+bhtpuBky8yIUZx6kHQPAwdUEKnCCHWmSZMiVhk9kGiyBSdKGQTUJU6+exgUMUO4ovYYxITlC2h0DF1/rd0u+itQPdyq98q4up7OofhshZxVtsDQKn3ZF7gJC45bRnXKEgAXsL5rNmW9q2XUgVgjBSyFBfM72P8S4uN0T8R4z2tcrhsBD+e4gNSx0qwMMw0aKmq8kIoQ9eBuLi4LW7u4u05AxhfcuWWCHJ6fGaNC3Ec/ep/PbOXhAcGk54/TE6FeYHBv/2EdKbRa32rdWoTY/M/qXfOqj7xv07JzkjjPZh5tXxQqaQX5ysUvsGEeBIMKN1fdw84rVY3a5NomEfs4rKDh/3SvcEjunmsj5+CxA4MyYY5Hgd9KAKJZtY9PU2pnxdlr7IUZtp3ZT7vsr0xmSbkHEprJt7Ph//rLaZSnh15e2Tg9C033sRJ2yvDw7GKSCjTRXBMZadaPSTvqwwwtkNB68k4RzGTa9NgUJpaTYwUAUbTC+YWvVOe0CEIGo+tsbAH34/IJoeZ0BdfRMj/BBwZv5d5HxhvCBADMMQgVMqvswMLcE84k=
   - secure: hg27l127+ejpnmiU3t8CC2fAUVVymPzZyyZa04CDzysxAOMErVpagkhx8w8TzqVDhKzYZoxIxFPcz1JNTfzMnz2FOtngfZix/CFQEyS7XOzYsCZH9cz8yMSYJ/lKXAsQFyKPar2RgQOe92pifQ1I5U0z0vYgQjx8/7oYVdt5BW0f0IJr/kjElazG/m6I/9SVtX88aoTtqOdGPcOGXpHXV16Jys0Sd3A7jW/vOWvasOjUpIK20DKOQZ6k1Xq6AEsb5H+0ek398KA6yDlHJR6GHk9dgyVvA78NNpE7zn0FG2eHu/6b1tcMkKRp8lLsylpWz/raZ011sWEN2/zDSQ0DAeLb9eOwhWZ5KlBgxlL6XceiR0B/X+qKxzVnzxV7IxwPXWGA/gAKwIzHy7h2bgDvYoFSc1rehnA3lPRwVQef/+ePj3S+kDhtanJE87b39AuDQdxTkDiVz1dreVBGLU9sBzhDdI4gFoAEEifgoeRp2ugYE6dseZwewOHR3aDTd0elWxuxF0PL8w4ZKvhkztAPIO70s0T9XKZZmTK+84jSIAayPLiDnDq2zMyWCM/PmeuqUTVhKKoQjeDYJLd2TB1t6vvUM2udQClu3pk5hslQABtAAtxshlPlVMas9IMPWYEEMpJICfNxtcFWZoP8oXLidYZLSRvrEfka8zK3m2q1paM=
+  - secure: "T6K1bHlavYiuj6KnHGefQJ+WKRXN248JSCrFwSK+qR0TJwfs94qWSjtkXS7bdq1kZrtIiXg3tSguEAVw1Hm/i6dFN+AFa5lnpYP3DeLrC7u6AESP1+WNReoEdhZBzxy/5T4lHNAhBC++LIPj5kWzbETyi3EgyU93t1AQcAhypEyJVImPR6L/jB3c7Z2b3tYo0eaLLfKl62MIZdZx3dNK2CIvVF47CaedK1eI3zSLVDqOwoRrGuW4oX3r+lmVCE9Bt9SlfIhoOHg9/hyGkqQh97gdWMrRK57035svVzudgxqedyX2pt5+h2nrRp7vq7VAGmbqXNlbULKMBNrK/kix0QTICWvWGssz0Uzvdi+QhqNqsHFvdcB+DMQTwp2qP4fh2FmZkp9wIs2ALMYJzvVaSrg0zMpiUB517SY6iUraiNY6m69zl4AYdba0HDuzRA9EzONf5S4AKB6u4LMOkdMCN7cR/NyKS6USJtSXdHTGzOLBSikCdQOfOXzSWfL4FtAnyg3uJ98/RxTsM1ORr2BU4ZcQghsBvb18OwUhpqhQhTTe1PhSqES/45tBEqRljhf0N/ZMJxM0nYZNCYY6p7aNsjIPzvKXsfToocthEo4lPd+LLb8KinaIkMm7H4dtJA21jEW9FvG+g7iWIICd+D5q9I7ICsSVUT/Mz/BivBGIabM="
 
 before_install:
+ - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
  - openssl aes-256-cbc -K $encrypted_b37d956b1dfb_key -iv $encrypted_b37d956b1dfb_iv -in release.keystore.enc -out release.keystore -d
 
 before_script:
@@ -47,14 +49,6 @@ deploy:
   on:
     repo: Obsidian-StudiosInc/solitaire
     tags: true
-
-
-env:
-  global:
-   - secure: "T6K1bHlavYiuj6KnHGefQJ+WKRXN248JSCrFwSK+qR0TJwfs94qWSjtkXS7bdq1kZrtIiXg3tSguEAVw1Hm/i6dFN+AFa5lnpYP3DeLrC7u6AESP1+WNReoEdhZBzxy/5T4lHNAhBC++LIPj5kWzbETyi3EgyU93t1AQcAhypEyJVImPR6L/jB3c7Z2b3tYo0eaLLfKl62MIZdZx3dNK2CIvVF47CaedK1eI3zSLVDqOwoRrGuW4oX3r+lmVCE9Bt9SlfIhoOHg9/hyGkqQh97gdWMrRK57035svVzudgxqedyX2pt5+h2nrRp7vq7VAGmbqXNlbULKMBNrK/kix0QTICWvWGssz0Uzvdi+QhqNqsHFvdcB+DMQTwp2qP4fh2FmZkp9wIs2ALMYJzvVaSrg0zMpiUB517SY6iUraiNY6m69zl4AYdba0HDuzRA9EzONf5S4AKB6u4LMOkdMCN7cR/NyKS6USJtSXdHTGzOLBSikCdQOfOXzSWfL4FtAnyg3uJ98/RxTsM1ORr2BU4ZcQghsBvb18OwUhpqhQhTTe1PhSqES/45tBEqRljhf0N/ZMJxM0nYZNCYY6p7aNsjIPzvKXsfToocthEo4lPd+LLb8KinaIkMm7H4dtJA21jEW9FvG+g7iWIICd+D5q9I7ICsSVUT/Mz/BivBGIabM="
-
-before_install:
-     - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 addons:
   coverity_scan:
