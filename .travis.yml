@@ -47,3 +47,21 @@ deploy:
   on:
     repo: Obsidian-StudiosInc/solitaire
     tags: true
+
+
+env:
+  global:
+   - secure: "T6K1bHlavYiuj6KnHGefQJ+WKRXN248JSCrFwSK+qR0TJwfs94qWSjtkXS7bdq1kZrtIiXg3tSguEAVw1Hm/i6dFN+AFa5lnpYP3DeLrC7u6AESP1+WNReoEdhZBzxy/5T4lHNAhBC++LIPj5kWzbETyi3EgyU93t1AQcAhypEyJVImPR6L/jB3c7Z2b3tYo0eaLLfKl62MIZdZx3dNK2CIvVF47CaedK1eI3zSLVDqOwoRrGuW4oX3r+lmVCE9Bt9SlfIhoOHg9/hyGkqQh97gdWMrRK57035svVzudgxqedyX2pt5+h2nrRp7vq7VAGmbqXNlbULKMBNrK/kix0QTICWvWGssz0Uzvdi+QhqNqsHFvdcB+DMQTwp2qP4fh2FmZkp9wIs2ALMYJzvVaSrg0zMpiUB517SY6iUraiNY6m69zl4AYdba0HDuzRA9EzONf5S4AKB6u4LMOkdMCN7cR/NyKS6USJtSXdHTGzOLBSikCdQOfOXzSWfL4FtAnyg3uJ98/RxTsM1ORr2BU4ZcQghsBvb18OwUhpqhQhTTe1PhSqES/45tBEqRljhf0N/ZMJxM0nYZNCYY6p7aNsjIPzvKXsfToocthEo4lPd+LLb8KinaIkMm7H4dtJA21jEW9FvG+g7iWIICd+D5q9I7ICsSVUT/Mz/BivBGIabM="
+
+before_install:
+     - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "Obsidian-StudiosInc/solitaire"
+      description: "Build submitted via Travis CI"
+    notification_email: wlt@o-sinc.com
+    build_command_prepend: "gradle clean"
+    build_command: "gradle build"
+    branch_pattern: master
